@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "cypress:open": "cypress open"
+  },
+  "dependencies": {
+    "aws-amplify": "^4.2.10",
+    "storage-helper": "^1.4.1",
+    "vuex-persistedstate": "^4.0.0"
+  }
+}

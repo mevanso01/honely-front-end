@@ -1,0 +1,57 @@
+$body-font-family: 'lato', 'verdana', sans-serif;
+$heading-font-family: 'Avant Garde Gothic Md', 'lato', sans-serif;
+
+$font-family-secondary: 'Poppins', sans-serif;
+
+$color-emerald: #07871c;
+$color-emerald-lt: #00a650;
+$color-squash: #e74c3c;
+$color-orange: #e67e22;
+$color-gray-dk: #2c2c2c;
+$color-gray-shadow: #3c3c3c;
+$color-gray-shadowlt: #444444;
+$color-gray-mddk: #7c7c7c;
+$color-gray-med: #999999;
+$color-gray-mdlt: #bbbbbb;
+$color-gray-lt: #cccccc;
+$color-gray-vlt: #eeeeee;
+$color-gray-vlt2: #f2f2f2;
+$color-yellow: #fff100;
+
+$headings: (
+  'h4': (
+    'letter-spacing': 0.01em,
+    'weight': 900
+  ),
+  'h5': (
+    'letter-spacing': 0.01em,
+		'weight': 700
+  ),
+  'h6': (
+    'letter-spacing': 0.01em,
+    'size': 1rem,
+    'weight': 700
+  ),
+  'subtitle-1': (
+    'letter-spacing': 0.01em,
+  ),
+  'subtitle-2': (
+    'letter-spacing': 0.01em,
+  ),
+  'body-1': (
+    'size': .9375rem,
+  )
+);
+
+$material-dark: (
+  'app-bar': #0B1C3D,
+  'cards': #212121,
+  'tabs': #FFFFFF
+);
+
+$material-light: (
+  'app-bar': #FFFFFF,
+  'cards': #FAFAFA
+);
+
+$btn-text-transform: none;

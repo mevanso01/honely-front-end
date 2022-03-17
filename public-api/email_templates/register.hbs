@@ -1,0 +1,5 @@
+Honely Thanks for registering {{ user.firstName }}!
+
+{{#if verifyToken}}
+Please click this link to complete the verification process: http://localhost:8080/verify-email/{{ verifyToken }}
+{{/if}}

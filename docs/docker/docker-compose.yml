@@ -1,0 +1,95 @@
+version: '3.3'
+services:
+  authapi:
+    image: registry.metarhythm.com/mservice-authapi:latest
+    network_mode: "host"
+    ports:
+      - "4000:4000"
+    volumes:
+      - /opt/docker/conf_items/pem_keys:/app/pem_keys
+    environment:
+      HTTP_PORT: 4000
+      PEM_PATH: /app/pem_keys
+      DOMAIN: https://www.honely.com
+      FB_CLIENT_ID: 238412301476754
+      FB_CLIENT_SECRET: e203b302e635f45a14b3e6317947776b
+      GOOGLE_CLIENT_ID: 981277984294-81eavlpbfo1nnfgekbbv90ca3kd7s4d9.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: rTi5I0V-SkgBwCnYtTFNQO2D
+  honely:
+    image: registry.metarhythm.com/honely
+    network_mode: "host"
+    ports:
+      - "8083:8083"
+    environment: 
+      HTTP_PORT: 8083
+  honelypublicapi:
+    image: registry.metarhythm.com/honelypublicapi
+    network_mode: "host"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /opt/docker/conf_items/pem_keys:/app/pem_keys
+      - publicapistorage:/app/storage/uploads
+    environment: 
+      HTTP_PORT: 8080
+      PEM_PATH: /app/pem_keys
+      PG_HOST: postgresqlhost
+      PG_DB: honely
+      PG_USER: meta
+      PG_PASS: somepass
+      GREAT_SCHOOLS_API_KEY: wBYZN8deOj4a5gwCEdLpj7KIlEZC6usv5sAgVIs1
+      WALKSCORE_API_KEY: 4a248eb8ca74f73895826343c0ef2577
+      IPSTACK_API_KEY: 375ba15d55bc8d71d0143e3b9408bdd3
+      UPLOADS_DIR: /app/storage/uploads
+  blogservice:
+    image: registry.metarhythm.com/blogservice
+    network_mode: "host"
+    ports:
+      - "8082:8082"
+    volumes: 
+      - blogstorage:/app/storage
+    environment: 
+      HTTP_PORT: 8082
+      PG_HOST: postgresqlhost
+      PG_DB: honely
+      PG_USER: meta
+      PG_PASS: somepass
+      UPLOADS_DIR: /app/storage/uploads
+      POSTS_DIR: /app/storage/posts
+  userprofileapi:
+    image: registry.metarhythm.com/mservice-userprofileservice:latest
+    network_mode: "host"
+    ports:
+      - "3000:3000"
+    volumes:
+      - /root/honely/conf_items/password_rules:/app/password_rules
+    environment:
+      HTTP_PORT: 3000
+      PG_HOST: postgresqlhost 
+      PG_DB: honely
+      PG_USER: meta
+      PG_PASS: somepass
+      PW_MESSAGES_FILE: /app/password_rules/password-messages.properties
+      AUTH_PROPERTIES_FILE: /app/resources/sqlauth.properties
+  emailnotification:
+    image: registry.metarhythm.com/mservice-emailnotification:latest
+    network_mode: "host"
+    ports:
+      - "3001:3001"
+    volumes:
+      - /opt/docker/conf_items/email_templates:/app/email_templates
+    environment:
+      HTTP_PORT: 3001
+      TEMPLATE_DIR: /app/email_templates
+  mailhog:
+    image: mailhog/mailhog
+    network_mode: "host"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MH_UI_WEB_PATH: mailhog
+
+volumes:
+  blogstorage:
+  publicapistorage:

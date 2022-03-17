@@ -1,0 +1,964 @@
+/* ======================================================
+PAGE - SMART SEARCH
+====================================================== */
+.pg-forecast {
+    background: #ffffff;
+    min-height: 800px;
+    padding: 0 0 3rem 0;
+    font-family: 'Poppins', 'Roboto', Arial, Verdana, Helvetica, sans-serif;
+}
+.forecast-section {
+    min-height: 500px;
+    padding-bottom: 1.5rem;
+}
+.forecast-carousel-wrapper {
+}
+.forecast-carousel-content {
+    min-height: 500px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+.carousel-item {
+    padding-top: 2.5rem;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    width: 100%;
+    margin: auto;
+    transition: transform .5s, opacity .5s, z-index .5s;
+    z-index: 0;
+}
+.carousel-item.active {
+    opacity: 1;
+    position: relative;
+    z-index: 1;
+}
+.carousel-item.bg-white {
+    background: #ffffff;
+}
+.carousel-item.bg-default {
+    background: #f6f6f6;
+}
+.carousel-item.prev {
+    transform: translateX(-100%); /* Move 'prev' item to the left */
+}
+.carousel-item.next {
+    transform: translateX(100%); /* Move 'next' item to the right */
+}
+.forecast-carousel-controller {
+    padding: 1rem 0;
+    text-align: center;
+}
+.carousel-controller {
+}
+.carousel-controller li {
+    display: inline-block;
+    background: #cccccc;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+}
+.carousel-controller li:last-of-type {
+    margin-right: 0;
+}
+.carousel-controller li:hover {
+    background: #4d4d4d;
+}
+.carousel-controller li.active {
+    background: #4d4d4d;
+    width: 30px;
+    border-radius: 15px;
+}
+.forecast-heading-wrapper {
+    padding-bottom: 1.5rem;
+}
+.forecast-section-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1d1b;
+    margin-bottom: 1.5rem;
+}
+.forecast-address {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1f2937;
+}
+.forecast-content-wrapper {
+    color: #737373;
+}
+.forecast-property-img-wrapper {
+    width: 48%;
+}
+.forecast-property-img-wrapper p {
+    margin-bottom: 10px;
+}
+.forecast-property-img {
+    width: 100%;
+    background: #d3dee9;
+    color: #ffffff;
+    height: 380px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+}
+.forecast-property-img .property-fav-btn {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    line-height: 38px; /* due to icon style, make it bigger than font-size */
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+.forecast-data {
+    width: 49%;
+}
+.forecast-data p {
+    margin-bottom: 10px;
+}
+.forecast-data .forecast-value {
+    color: #1a1d1b;
+    font-size: 32px;
+    font-weight: 600;
+}
+.honely-forecast-container {
+    margin-top: 3rem;
+}
+.honely-forecast-tabs {
+    display: flex;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+.honely-forecast-tabs span {
+    display: inline-block;
+    background: transparent;
+    padding: 7px 10px;
+    margin-right: 1rem;
+    line-height: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+}
+.honely-forecast-tabs span:last-of-type {
+    margin-right: 0;
+}
+.honely-forecast-tabs span:hover, .honely-forecast-tabs span.active {
+    background: #5a6778;
+    color: #ffffff;
+}
+.honely-forecast-tab-content {
+    background: #fbfcfe;
+    border: 1px solid #d7dbe8;
+    font-weight: 500;
+    padding: 20px;
+    border-radius: 10px;
+}
+.honely-forecast-tab-content-title {
+    font-size: 20px;
+    color: #1a1d1b;
+    margin-bottom: 1.5rem;
+}
+.honely-forecast-data-row {
+    color: #36404e;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.honely-forecast-data-row label {
+    display: block;
+    width: 180px;
+}
+.honely-forecast-data-row p {
+    margin-bottom: 0;
+}
+.honely-forecast-data-row span.forecast-status {
+    margin-left: 3px;
+}
+.honely-forecast-data-row span.forecast-status.increase, .honely-forecast-data-row span.forecast-status-arrow.up  {
+    color: #24cb43;
+}
+.honely-forecast-data-row span.forecast-status.decrease, .honely-forecast-data-row span.forecast-status-arrow.down {
+    color: red;
+}
+.honely-forecast-data-row span.forecast-status-arrow {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 18px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    border-radius: 50%;
+}
+.honely-forecast-data-row span.forecast-status-arrow.up {
+    background: rgba(36, 203, 67, 0.2);
+}
+.honely-forecast-data-row span.forecast-status-arrow.down {
+    background: rgba(255, 0, 0, 0.1);
+}
+.honely-forecast-property-data {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: #737373;
+}
+.honely-forecast-property-data .property-data {
+    margin-right: 3rem;
+}
+.honely-forecast-property-data .property-data span {
+    color: #1a1d1b;
+    font-weight: 500;
+    margin: 0 15px;
+}
+.honely-forecast-property-data .property-data span:first-of-type {
+    margin-left: 0;
+}
+.honely-forecast-property-data .property-data span:last-of-type {
+    margin-right: 0;
+}
+.honely-forecast-property-data .property-options {
+    display: flex;
+    flex-wrap: wrap;
+}
+.honely-forecast-property-data .property-options-item {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+.honely-forecast-property-data .property-options span {
+    font-size: 40px;
+    color: #cccccc;
+    margin-right: 10px;
+}
+.honely-forecast-property-data .property-options p {
+    color:#5a6778;
+    max-width: 465px;
+    margin-bottom: 0;
+}
+.honely-forecast-property-data .property-options-item:hover > span {
+    color: #24cb43;
+}
+.honely-forecast-property-data .property-link-wrapper {
+    width: 100%;
+    margin-top: 1.5rem;
+}
+.honely-forecast-property-data .property-link-wrapper .property-link-btn {
+    display: inline-block;
+    color: #24cb43;
+    font-size: 14px;
+    border: 1px solid #24cb43;
+    padding: 12px 15px;
+    border-radius: 20px;
+}
+.honely-forecast-property-data .property-link-wrapper .property-link-btn:hover {
+    color: #57983f;
+    border-color: #57983f;
+}
+.honely-property-zip-data {
+    margin-top: 4rem;
+}
+.honely-property-zip-data-charts {
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.honely-property-zip-data-charts .chart-container {
+    width: 45%;
+    padding: 25px 20px;
+    background: #fbfcfe;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+.honely-property-zip-data-charts .chart-container p {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.honely-property-zip-data-charts .chart-container p span.forecast-value {
+    font-weight: 500;
+    color: #1a1d1b;
+}
+.honely-property-zip-data-charts .chart-container .chart-tilte {
+    color: #1a1d1b;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 14px;
+}
+.honely-property-zip-data-charts .chart-container .chart-tilte span {
+    color: #9ca3af;
+    margin-right: 3px;
+}
+.honely-property-zip-data-charts .chart-container .chart-wrapper {
+    clear: both;
+    overflow: hidden;
+}
+.forecast-neighborhood-data {
+    color: #737373;
+    font-weight: normal;
+    padding-top: 1.5rem;
+    overflow: hidden;
+    clear: both;
+}
+.forecast-neighborhood-left {
+    width: 68%;
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.forecast-neighborhood-right {
+    width: 30%;
+    float: left;
+    margin-left: 24px;
+}
+.forecast-wrapper {
+    background: #ffffff;
+    border: 1px solid #d7dbe8;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+.forecast-wrapper .forecast-wrapper-heading {
+    color: #1a1d1b;
+    line-height: 100%;
+    font-weight: 500;
+    padding: 15px;
+    border-bottom: 1px solid #d7dbe8;
+}
+.forecast-wrapper .forecast-wrapper-heading span.forecast-wrapper-heading-tab {
+    cursor: pointer;
+    color: #737373;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #d7dbe8;
+}
+.forecast-wrapper .forecast-wrapper-heading span.forecast-wrapper-heading-tab.active {
+    color: #1a1d1b;
+}
+.forecast-wrapper .forecast-wrapper-heading span.forecast-wrapper-heading-tab:last-of-type {
+    padding-right: 0;
+    margin-right: 0;
+    border-right: none;
+}
+.forecast-wrapper .forecast-wrapper-inner {
+    padding: 18px;
+}
+.forecast-wrapper .forecast-wrapper-inner .text-large {
+    font-size: 25px;
+    color: #1a1d1b;
+    margin-top: 10px;
+}
+.forecast-neighborhood-home-value {
+    width: 48.5%;
+}
+.forecast-neighborhood-rankings {
+    width: 48.5%;
+}
+.forecast-neighborhood-stats {
+    width: 100%;
+}
+.forecast-neighborhood-stats .forecast-wrapper-heading,
+.forecast-neighborhood-stats .forecast-data-row {
+    display: flex;
+    justify-content: space-between;
+}
+.forecast-neighborhood-stats .data-col {
+
+}
+.forecast-neighborhood-stats .data-col:nth-of-type(1) {
+    width: 55%;
+}
+.forecast-neighborhood-stats .data-col:nth-of-type(3) {
+    width: 5%;
+}
+.forecast-neighborhood-stats .data-col:nth-of-type(2), .forecast-neighborhood-stats .data-col:nth-of-type(4) {
+    width: 20%;
+    text-align: center;
+}
+.forecast-neighborhood-moving-trends {
+}
+.forecast-neighborhood-housing-price {
+}
+.forecast-neighborhood-listings {
+}
+.forecast-wrapper p.forecast-value-big {
+    text-align: center;
+    font-size: 55px;
+    font-weight: 600;
+    line-height: 100%;
+    margin-top: 38px;
+    margin-bottom: 1rem;
+    color: #1a1d1b;
+}
+.forecast-neighborhood-home-value .chart-wrapper {
+    width: 94%;
+    padding-bottom: 1rem;
+}
+.forecast-neighborhood-home-value .forecast-not-applicable {
+    padding-top: 1rem;
+    color: #dddddd;
+    text-align: center;
+}
+.forecast-neighborhood-home-value .forecast-not-applicable span {
+    display: block;
+    font-size: 70px;
+}
+.forecast-tab-content {
+    display: none;
+}
+.forecast-tab-content.active {
+    display: block;
+}
+.table-data {
+    width: 100%;
+    font-size: 15px;
+}
+.table-data th {
+    padding: 7px 5px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.table-data th.heading-bg {
+    background: #e5e7eb;
+    color: #737373;
+}
+.table-data td {
+    padding: 15px 5px;
+}
+.table-data td.spacer {
+    padding: 5px;
+}
+.forecast-neighborhood-data .table-data td:nth-of-type(2),
+.forecast-neighborhood-data .table-data td:nth-of-type(3),
+.forecast-neighborhood-stats .table-data td:nth-of-type(4) {
+    color: #1a1d1b;
+    text-align: center;
+    font-weight: 500;
+}
+.forecast-slider-wrapper {
+    margin-bottom: 1.5rem;
+}
+.forecast-slider-wrapper:last-of-type {
+    margin-bottom: 0;
+}
+.forecast-slider-wrapper label {
+    display: block; 
+    color: #1a1d1b;
+    font-weight: 500;
+    font-size: 15px;
+    padding-bottom: 10px;
+}
+.forecast-slider-wrapper .forecast-slider-legend {
+    display: flex;
+    justify-content: space-between;
+}
+.forecast-slider-wrapper .forecast-slider-legend span {
+    font-size: 12px;
+    font-weight: 500;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #5a6778;
+}
+.forecast-slider .v-messages {
+    display: none;
+}
+.forecast-slider .v-slider--horizontal {
+    margin-left: 0;
+    margin-right: 0;
+}
+.forecast-slider .v-slider--horizontal .v-slider__track-container {
+    height: 12px;
+}
+.forecast-slider .v-slider__thumb {
+    width: 22px;
+    height: 22px;
+}
+.forecast-slider .v-slider__track-background {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+} 
+.forecast-slider .v-slider__track-fill {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.forecast-chart-btns {
+    padding: 1rem 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.forecast-chart-btns span {
+    display: inline-block;
+    line-height: 100%;
+    text-align: center;
+    padding: 10px;
+    width: 75px;
+    margin-right: 15px;
+    color: #1a1d1b;
+    cursor: pointer;
+    border: 1px solid #1a1d1b;
+    border-radius: 20px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+}
+.forecast-chart-btns span:last-of-type {
+    margin-right: 0;
+}
+.forecast-chart-btns span:hover, .forecast-chart-btns span.active {
+    background: rgba(26, 29, 27, 0.1);
+    border-color: rgba(26, 29, 27, 0.1);
+}
+.forecast-rental-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.forecast-rental-container .forecast-wrapper {
+    width: 48%;
+}
+.forecat-rental-data .table-data td:nth-of-type(2),
+.forecat-rental-data .table-data td:nth-of-type(3),
+.forecat-rental-data .table-data td:nth-of-type(4) {
+    color: #1a1d1b;
+    text-align: center;
+    font-weight: 500;
+}
+/* BUYER SCORE */
+.forecast-buyer-score {
+}
+.buyer-score-container {
+    position: relative;
+    padding: 3rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d7dbe8;
+    border-radius: 10px;
+}
+.buyer-score-container .buyer-score-data {
+    width: 38%;
+}
+.buyer-score-container .buyer-score-chart {
+    width: 45%;
+    padding: 1.5rem;
+    border: 1px solid #d7dbe8;
+    border-radius: 10px;
+}
+.buyer-score-data .buyer-score-estimate {
+}
+.buyer-score-data label {
+    display: block;
+    color: #1a1d1b;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.buyer-score-data .buyer-score-estimate p.estimate-value {
+    font-size: 40px;
+    font-weight: 600;
+    color: #1a1d1b;
+}
+.buyer-score-data .buyer-score-offer {
+    padding-top: 3rem;
+}
+.buyer-score-chart .buyer-score-chart-heading {
+    color: #1a1d1b;
+    font-weight: 500;
+    font-size: 18px;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #d7dbe8;
+}
+.buyer-score-data .buyer-score-offer input[type="text"] {
+    font-size: 40px;
+    font-weight: 600;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom-color: #999999;
+    border-radius: 0;
+}
+.buyer-score-data .buyer-score-offer input[type="text"]:focus {
+    border-bottom-color: #24cb43;
+}
+.buyer-score-data .buyer-score-offer input[type="text"]::placeholder {
+    color: #e9e9e9;
+}
+.buyer-score-data .buyer-score-offer input[type="text"]::-ms-input-placeholder {
+    color: #e9e9e9;
+}
+.buyer-score-data .buyer-score-offer input[type="text"]::-ms-input-placeholder {
+    color: #e9e9e9;
+}
+.buyer-score-data .buyer-score-message {
+    height: 20px;
+    font-size: 12px;
+    padding-top: 5px;
+}
+.buyer-score-chart .chart-wrapper {
+    padding: 1.5rem 0;
+}
+.buyer-score-chart .chart-data-label {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #5a6778;
+}
+.forecast-buyer-score-listings {
+    padding: 2rem 0 1rem 0;
+}
+.forecast-buyer-score-search {
+    position: relative;
+    display: flex;
+    min-height: 300px;
+    margin-top: 2.5rem;
+    margin-bottom: 6rem;
+    padding: 2rem;
+    border: 1px solid #d7dbe8;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.forecast-buyer-score-search-wrapper {
+    width: 60%;
+}
+.buyer-score-search-heading {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    color: #1a1d1b;
+    padding-bottom: 2rem;
+}
+.buyer-score-property {
+    padding-bottom: 1.5rem;
+}
+.buyer-score-property-action-row {
+    display: flex;
+    padding-bottom: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+.buyer-score-property-address {
+    color: #1a1d1b;
+    font-size: 20px;
+    font-weight: 600;
+}
+.buyer-score-property-action {
+    background: #d1d5dB;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+/* SERVICE PROVIDERS */
+.forecast-services-section {
+    padding: 4rem 0 3rem 0;
+    color: #737373;
+}
+.service-providers-container {
+    padding-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;  
+}
+.service-providers-container.between {
+    justify-content: space-between;
+}
+.service-providers-container.evenly {
+    justify-content: space-evenly;
+}
+.service-providers-container .provider-wrapper {
+   width: 29%; 
+}
+.provider-wrapper {
+    background: #f1f6fC;
+    padding: 15px;
+    border-radius: 15px;
+    min-height: 320px;
+}
+.provider-wrapper .provider-picture {
+    background: #8dc6e4;
+    background-size: cover;
+    width: 150px;
+    height: 150px;
+    margin: 1rem auto;
+    border-radius: 50%;
+}
+.provider-wrapper .provider-info {
+    padding-top: 1rem;
+    text-align: center;
+}
+.provider-info p {
+    margin-bottom: 10px;
+}
+.provider-info .provider-name {
+    color: #1a1d1b;
+    font-size: 20px;
+    font-weight: 500;
+}
+.provider-info .provider-company {
+}
+
+.forecast-section .v-tabs > .v-tabs-bar {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+}
+.forecast-section .v-tab {
+    padding: unset;
+    margin: 0 32px 0 0;
+    text-transform: capitalize;
+}
+.forecast-section .v-tab:hover {
+    color:#24cb43 !important;
+}
+.forecast-section .v-tab--active:hover,
+.forecast-section .v-tab--active::before {
+    color:#24cb43 !important;
+}
+.forecast-section .v-tabs-items {
+    background-color: #ffffff;
+}
+.forecast-section .flex-wrapper {
+    padding: 30px 0;
+}
+.forecast-section .flex-wrapper .text-0 {
+    font-weight: 500;
+    line-height: 20px;
+    padding-top: 20px;
+}
+.forecast-section .flex-wrapper .text-1 {
+    font-family: Poppins,sans-serif;
+    font-size: 32px;
+    line-height: 20px;
+    font-weight: 500;
+    color: black;  
+}
+.forecast-section .flex-wrapper .text-2 {
+    font-family: Poppins,sans-serif;
+    font-size: 42px;
+    line-height: 60px;
+    font-weight: 500;
+    color: red;  
+    margin-bottom: 40px;
+}
+.forecast-section .flex-wrapper .flex-col-md-6 {
+    display: flex;
+    flex-direction: column;
+}
+.forecast-section .flex-wrapper .flex-col-md-4 {
+    display: flex;
+    flex-direction: column;
+}
+.forecast-section .flex-wrapper .warning-text {
+    color: #FF7D1F;
+    font-weight: 500;
+    padding-top: 40px;
+}
+.forecast-section .flex-wrapper input[type="text"] {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 48px;
+    width: 80%;
+    padding: unset;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom-color: #999999;
+    border-radius: 0;
+}
+.forecast-section .flex-wrapper .year-neighborhood-tab {
+    padding: 7px 25px !important;
+    text-transform: lowercase;
+}
+.forecast-section .flex-wrapper .info-right {
+    align-items: flex-end;
+}
+.forecast-section .flex-wrapper .green-board {
+    background: #EFFFF2;
+    border: 0.68547px solid #D7DBE8;
+    border-radius: 8px;
+    width: 50%;
+    padding: 10px 40px 30px 40px;    
+    text-align: center;
+}
+.forecast-section .flex-wrapper .flex-col-md-4 .green-board,
+.forecast-section .flex-wrapper .flex-col-md-4 .green-board
+{
+    width: 80%;
+}
+.forecast-section .flex-wrapper .green-board .sum-up {
+    display: flex;
+    justify-content: space-between;
+}
+.forecast-section .flex-wrapper .btn-reset {
+    display: inline-block;
+    background-color: #24cb43;
+    border: #f1f6fC;
+    border-radius: 25px;
+    padding: 5px 45px;
+    margin-top: 25px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+}
+.forecast-no-data {
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+}
+/* ======================================================
+MOBILE STYLES
+====================================================== */
+@media only screen and (max-width: 1300px) {
+    .forecast-neighborhood-left {
+        width: 67%;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .honely-forecast-data-row {
+        flex-wrap: wrap;
+    }
+    .honely-forecast-data-row label {
+        width: 150px;
+    }
+    .honely-forecast-property-data .property-options {
+        padding-top: 1rem;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .honely-property-zip-data-charts .chart-container {
+        width: 44%;
+    }
+    .forecast-neighborhood-left {
+        width: 100%;
+        float: none;
+    }
+    .forecast-neighborhood-right {
+        width: 100%;
+        margin-left: 0;
+        float: none;
+    }
+}
+@media only screen and (max-width: 900px) {
+    .forecast-section .flex-wrapper {
+        padding: 0 0 1rem 0;
+    }
+    .forecast-property-img-wrapper {
+        width: 43%;
+    }
+    .forecast-data {
+        width: 55%;
+    }
+    .honely-property-zip-data-charts .chart-container {
+        width: 43%;
+    }
+    .forecast-section .flex-wrapper .info-right {
+        padding-top: 2rem;
+    }
+}
+@media only screen and (max-width: 800px) { 
+    .forecast-rental-container .forecast-wrapper {
+        width: 100%;
+    }
+    .buyer-score-container {
+        padding: 2rem 1rem;
+    }
+    .buyer-score-container .buyer-score-data {
+        width: 45%;
+    }
+    .buyer-score-data .buyer-score-offer input[type="text"] {
+        width: 95%;
+    }
+    .buyer-score-container .buyer-score-chart {
+        width: 40%;
+        padding: 1rem;
+    }
+    .forecast-buyer-score-search-wrapper {
+        width: 100%;
+    }
+    .flex-wrapper .flex-col-md-4 {
+        width: 48%;
+    }
+    .forecast-section .flex-wrapper .flex-col-md-4.info-right {
+        width: 100%;
+        align-items: center;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .forecast-section-title {
+        font-size: 25px;
+    }
+    .forecast-property-img-wrapper {
+        width: 100%;
+    }
+    .forecast-data {
+        width: 100%;
+    }
+    .honely-property-zip-data-charts .chart-container {
+        width: 100%;
+    }
+    .forecast-neighborhood-data {
+        padding-top: 1rem;
+    }
+    .forecast-neighborhood-home-value {
+        width: 100%;
+    }
+    .forecast-neighborhood-rankings {
+        width: 100%;
+    }
+    .buyer-score-container .buyer-score-data {
+        width: 100%;
+    }
+    .buyer-score-container .buyer-score-chart {
+        width: 100%;
+    }
+    .buyer-score-search-heading {
+        font-size: 25px;
+    }
+    .flex-wrapper .flex-col-md-6 {
+        width: 100%;
+    }
+    .forecast-section .flex-wrapper .info-right {
+        align-items: center;
+    }
+    .forecast-section .flex-wrapper input[type="text"] {
+        width: 95%;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .honely-forecast-tabs {
+        flex-wrap: wrap;
+    }
+    .honely-forecast-tabs span {
+        width: 20%;
+    }
+    .honely-forecast-property-data .property-options {
+        margin-top: 1rem;
+    }
+    .flex-wrapper .flex-col-md-4 {
+        width: 100%;
+    }
+}

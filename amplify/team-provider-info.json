@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-honelyfrontend-dev-165631-authRole",
+      "UnauthRoleArn": "arn:aws:iam::043650377488:role/amplify-honelyfrontend-dev-165631-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::043650377488:role/amplify-honelyfrontend-dev-165631-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-honelyfrontend-dev-165631-deployment",
+      "UnauthRoleName": "amplify-honelyfrontend-dev-165631-unauthRole",
+      "StackName": "amplify-honelyfrontend-dev-165631",
+      "StackId": "arn:aws:cloudformation:us-east-1:043650377488:stack/amplify-honelyfrontend-dev-165631/bd5f2eb0-17f9-11ec-8372-1274aee51d03",
+      "AmplifyAppId": "duc7lcc380rel"
+    }
+  }
+}

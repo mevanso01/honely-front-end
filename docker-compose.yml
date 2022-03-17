@@ -1,0 +1,55 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: honely
+      POSTGRES_USER: meta
+      POSTGRES_PASSWORD: "meta"
+    volumes:
+      - ./init/postgres:/docker-entrypoint-initdb.d/
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  authapi:
+    image: registry.metarhythm.com/mservice-authapi:latest
+    network_mode: "host"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./public-api/pem_keys:/app/pem_keys
+    environment:
+      HTTP_PORT: 4000
+      PEM_PATH: /app/pem_keys
+
+  userprofileapi:
+    image: registry.metarhythm.com/mservice-userprofileservice:latest
+    network_mode: "host"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public-api/password_rules:/app/password_rules
+    environment:
+      HTTP_PORT: 3000
+      PG_DB: honely
+      PW_MESSAGES_FILE: /app/password_rules/password-messages.properties
+      AUTH_PROPERTIES_FILE: /app/resources/sqlauth.properties
+    depends_on:
+      - postgres
+
+  emailnotification:
+    image: registry.metarhythm.com/mservice-emailnotification:latest
+    network_mode: "host"
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./public-api/email_templates:/app/email_templates
+    environment:
+      HTTP_PORT: 3001
+      TEMPLATE_DIR: /app/email_templates

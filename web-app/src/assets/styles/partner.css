@@ -1,0 +1,129 @@
+/* ======================================================
+PAGE - PARTNER
+====================================================== */
+.page-banner-section.partner {
+    background-image: url("~@/assets/site_images/backgrounds/banner-partner-with-us.jpg");
+}
+.section-partner.contact-section {
+    padding-top: 4rem;
+}
+.partner-opportunities {
+    font-family: 'Poppins', 'Roboto', Arial, Verdana, Helvetica, sans-serif;
+}
+.partner-form {
+    max-width: 700px;
+}
+.partner-form-left-col {
+    max-width: 400px;
+}
+.partner-feature-img {
+    max-width: 104px;
+    margin-bottom: 1rem;
+}
+.feature-heading {
+    color: #36404e;
+    font-size: 20px;
+    font-weight: 500;
+}
+.page-section.partner .section-img {
+    width: 40%;
+}
+.partner-contact-section {
+    background: #fbfcfe;
+    font-family: 'Poppins', 'Roboto', Arial, Verdana, Helvetica, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.partner-contact-section .col-left {
+    width: 42%;
+    padding: 4rem;
+    background: rgb(36, 203, 67, 0.1);
+    background-image: url("~@/assets/site_images/backgrounds/bg_partner_contact.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+.partner-contact-section .col-right {
+    width: 45%;
+    padding: 4rem 1rem;
+}
+.partner-contact-section .feature-text {
+    font-weight: 600;
+    font-size: 40px;
+    font-family: 'Poppins', 'Roboto', Arial, Verdana, Helvetica, sans-serif;
+}
+.partner-contact-form {
+    max-width: 700px;
+}
+.partner-contact-form p:first-of-type {
+    font-weight: 500;
+    font-size: 18px;
+}
+.partner-contact-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.partner-contact-form textarea {
+    width: 97%;
+    border: 1px solid #dcdcdc; 
+}
+.partner-contact-form textarea:focus {
+    border-color: #24cb43;
+}
+/* ======================================================
+MOBILE
+====================================================== */
+@media (max-width: 1300px) { 
+    .partner-contact-section .col-left {
+        width: 35%;
+    }
+    .partner-contact-section .col-right {
+        width: 48%;
+    }
+}
+@media (max-width: 1000px) { 
+    .partner-contact-section .col-left {
+        padding: 4rem 2rem;
+    }
+    .partner-contact-section .col-right {
+        width: 52%;
+    }
+}
+@media (max-width: 800px) {
+    .page-section.partner .section-copy, .page-section.partner .section-img {
+        width: 48%;
+        font-size: 1rem;
+    }
+    .partner-contact-section {
+        display: block;
+    }
+    .partner-contact-section .col-left {
+        width: 100%;
+        padding: 2rem;
+    }
+    .partner-contact-section .col-right {
+        width: 85%;
+        padding: 2rem 0;
+        margin: 0 auto;
+    }
+    .partner-contact-section .feature-text {
+        font-size: 30px;
+    }
+    .partner-contact-form textarea {
+        width: 95%;
+    }
+}
+@media (max-width: 550px) {
+    .page-section.partner .section-copy {
+        width: 100%;
+        padding-bottom: 2rem;
+    }
+    .page-section.partner .section-img {
+        width: 80%;
+        max-width: 300px;
+        margin: 0 auto;
+        padding-bottom: 2rem;
+    }
+}

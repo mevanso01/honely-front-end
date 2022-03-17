@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: Honely Listings API
+  description: A proposed spec for searching and retrieval of listings for honely
+  version: 0.0.1
+servers:
+  - url: 'https'
+paths:
+  /suggestions:
+    get:
+      summary: Returns a list of autocomplete suggestions, based on the inputted query
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          required: true
+          description: search query entered by user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        suggestion:
+                          type: string
+                  total:
+                    type: integer
+        400:
+          description: Bad request, query parameter must be present and not blank
+  /listings:
+    get:
+      summary: Returns a set of listings, based on the inputted query. Listings objects should not include full details
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          required: true
+          description: search query entered by user
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: indicates page number requested for pagination (if not present, assume zero)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: indicates max listings that should be returned with this request (if not present, set a default value e.g. 50)
+        - in: query
+          name: sort
+          schema:
+            type: string
+          required: false
+          description: A field name to sort on e.g. newest, price, bedrooms, bathrooms, square_feet, lot_size
+        - in: query
+          name: sort_direction
+          schema:
+            type: string
+          required: false
+          description: "Direction or short: 'asc' or 'desc'"
+        - in: query
+          name: square_feet_min
+          schema:
+            type: integer
+          required: false
+          description: Filter to be applied to the search
+        - in: query
+          name: square_feet_max
+          schema:
+            type: integer
+          required: false
+          description: Filter to be applied to the search
+        - in: query
+          name: lot_size_min
+          schema:
+           type: integer
+          required: false
+          description: Filter to be applied to the search
+        - in: query
+          name: lot_size_max
+          schema:
+            type: integer
+          required: false
+          description: Filter to be applied to the search
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        fips:
+                          type: string
+                        apn:
+                          type: string
+                        address:
+                          type: string
+                        bedrooms:
+                          type: integer
+                        bathrooms:
+                          type: integer
+                        price:
+                          type: integer
+                        price_category:
+                          type: string
+                        price2:
+                          type: integer
+                        price2_category:
+                          type: string
+                        property_status:
+                          type: string
+                        realtor:
+                          type: string
+                        square_feet:
+                          type: integer
+                  total:
+                    type: integer
+        400:
+          description: Bad request, query parameter must be present and not blank
+  /listing/{fips}/{apn}:
+    get:
+      summary: Returns the full details for a single listing, based on the fips and apn codes
+      parameters:
+        - in: path
+          name: fips
+          schema:
+            type: string
+          required: true
+          description: fips code for property
+        - in: path
+          name: apn
+          schema:
+           type: string
+          required: true
+          description: apn code for property
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        fips:
+                          type: string
+                        apn:
+                          type: string
+                        address:
+                          type: string
+                        bedrooms:
+                          type: integer
+                        bathrooms:
+                          type: integer
+                        description:
+                          type: string
+                        has_garage:
+                          type: boolean
+                        latitude:
+                          type: string
+                        longitude:
+                          type: string
+                        lot_size:
+                          type: integer
+                        parking_spaces:
+                          type: integer
+                        price:
+                          type: integer
+                        price_category:
+                          type: string
+                        price2:
+                          type: integer
+                        price2_category:
+                          type: string
+                        property_status:
+                          type: string
+                        realtor:
+                          type: string
+                        square_feet:
+                          type: integer
+                        year_built:
+                          type: integer
+                  total:
+                    type: integer
+        400:
+          description: Bad request, query parameter must be present and not blank
+  /listing:
+    post:
+      description: Used to create a listing (details tbd)
+    put:
+      description: Used to update a listing (details tbd)

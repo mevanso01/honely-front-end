@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'Avant Garde Gothic Md';
+    src: url('fonts/itc_avant_garde_gothic_medium-webfont.woff2') format('woff2'),
+					url('fonts/itc_avant_garde_gothic_medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'Avant Garde Gothic MdOb';
+    src: url('fonts/itc_avant_garde_gothic_medium_oblique-webfont.woff2') format('woff2'),
+					url('fonts/itc_avant_garde_gothic_medium_oblique-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+	font-family: 'Avant Garde Gothic Bd';
+	src: url('fonts/itc_avant_garde_gothic_bold-webfont.woff2') format('woff2'),
+				url('fonts/itc_avant_garde_gothic_bold-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+
+@font-face {
+	font-family: 'Avant Garde Gothic BdOb';
+	src: url('fonts/itc_avant_garde_gothic_bold_oblique-webfont.woff2') format('woff2'),
+				url('fonts/itc_avant_garde_gothic_bold_oblique-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+
+}

@@ -1,0 +1,154 @@
+.contact-agent-form-card {
+    background-color: white;
+    padding-top: 1.5rem;
+}
+.contact-agent-form-card .header-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.contact-agent-form-card .header-wrapper .btn-close {
+    position: absolute;
+    top: -12px;
+    right: -30px;
+    background-color: transparent;
+    border: none;    
+}
+.contact-agent-form-card .header-wrapper .btn-close i {
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.2em;
+}
+.contact-agent-form-card .header-txt {
+    font-family: Poppins,sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+}
+.contact-agent-form-card .amount-txt {
+    font-family: Poppins,sans-serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: #24cb43;
+}
+.contact-agent-form-card .estimate-value {
+    font-family: Poppins,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 300;
+    color: black;
+}
+.contact-agent-form-card .form-contact {
+    margin: 0 25px;
+    box-sizing: border-box;
+}
+.contact-agent-form-card .form-contact .input-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.contact-agent-form-card .form-contact .input-container i {    
+    color: rgba(31,41,55,.4);
+    font-size: 18px;
+}
+.contact-agent-form-card .form-contact label {
+    font-family: Poppins,sans-serif;
+    color: #1f2937;
+    font-weight: 500;
+}
+.contact-agent-form-card .v-input__control .v-input__slot fieldset {
+    border-radius: 8px !important;
+    border-width: 2px !important;
+    border-color: #dcdcdc !important;
+}
+.contact-agent-form-card .v-input__control .v-text-field__slot input {
+    font-size: 18px;
+    padding: 0 !important;
+    border-width: 0px !important;
+}
+.contact-agent-form-card .v-input--is-focused .v-input__slot fieldset {
+    border-color: #24cb43 !important;
+}
+.contact-agent-form-card .purposes-box {
+    display: flex;    
+    flex-wrap: wrap;  
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.contact-agent-form-card .btn-purpose {
+    width: 50%;
+    padding: 5px;
+}
+.contact-agent-form-card .btn-purpose .content-box {
+    border: 2px solid rgba(31, 41, 55, 0.2);
+    border-radius: 10px;
+    color: rgba(31, 41, 55, 0.4);
+    text-align: center;
+    padding: 15px 0;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 1.1rem;
+}
+.contact-agent-form-card .btn-purpose .content-box:hover {
+    border: 2px solid #24cb43;
+    border-radius: 10px;
+    color: black;
+}
+.contact-agent-form-card .btn-purpose .content-box.active  {
+    border: 2px solid #24cb43;
+    border-radius: 10px;
+    color: black;
+}
+.contact-agent-form-card .btn-submit {
+    background-color: #24cb43 !important;
+    border: 1px solid #24cb43 !important;
+    border-radius: 40px;
+    color: aliceblue;
+    cursor: pointer;
+}
+.contact-agent-form-card .btn-submit:hover {
+    background-color: #fff !important;
+    border: 1px solid #24cb43 !important;
+    border-radius: 40px;
+}
+.contact-agent-form-card .btn-login {    
+    color: #24cb43;
+    cursor: pointer;
+}
+.contact-agent-form-card .btn-submit:hover .v-btn__content {    
+    color: #24cb43 !important;
+}
+.dialog-header-wrapper {
+    display: flex;
+    padding: 0 25px;
+    justify-content: space-between;
+}
+.dialog-title-wrapper {
+    width: 90%;
+    text-align: center;
+}
+.dialog-title-wrapper p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.dialog-title-wrapper .dialog-heading {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1d1b;
+}
+.dialog-title-wrapper .dialog-heading span {
+    color: #24cb43;
+    font-weight: 600;
+}
+.dialog-header-wrapper .btn-close {
+    padding: 0 5px;
+}
+.dialog-header-wrapper .btn-close i {
+    font-size: 20px;
+    cursor: pointer;
+}

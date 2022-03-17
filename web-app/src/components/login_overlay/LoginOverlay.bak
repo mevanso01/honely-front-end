@@ -1,0 +1,247 @@
+<template>
+  <v-overlay :value="showOverlay">
+    <v-container
+      v-click-outside="hideOverlay"
+      fluid
+    >
+      <v-row
+        align="center"
+        justify="center"
+      >
+        <v-col
+          md="12"
+        >
+          <v-card
+            class="elevation-3 rounded-lg login-form"
+            light
+            :min-width="$vuetify.breakpoint.xs ? 'auto' : '600px'"
+          >
+            <v-row
+              justify="center"
+              class="login-title
+              align-center"
+              no-gutters
+            >
+              <v-col
+                md="4"
+              >
+                <v-img
+                  :src="require('@/assets/logo.svg')"
+                  contain
+                  height="64"
+                  width="170"
+                  position="center"
+                />
+              </v-col>
+              <v-col
+                md="4"
+                class="align-center"
+              >
+                <div
+                  class="text-h5 modal-header"
+                >
+                  Account Login
+                </div>
+              </v-col>
+            </v-row>
+            <v-row
+              justify="center"
+            >
+              <v-col
+                md="10"
+                class="pb-0"
+              >
+                <v-container>
+                  <v-tabs-items
+                    v-model="tab"
+                  >
+                    <v-tab-item>
+                      <login-form @successfulLogin="onLogin" />
+                    </v-tab-item>
+                    <v-tab-item>
+                      <create-account-form @successfulLogin="onLogin" />
+                    </v-tab-item>
+                    <v-tab-item>
+                      <forgot-password-form @closeOverlay="hideOverlay" />
+                    </v-tab-item>
+                  </v-tabs-items>
+                </v-container>
+              </v-col>
+            </v-row>
+            <v-row
+              justify="center"
+            >
+              <v-col
+                md="10"
+                class="form-link-col"
+              >
+                <v-row
+                  no-gutters
+                  justify="space-between"
+                  class="form-links"
+                >
+                  <v-col
+                    v-if="tab != tabs.indexOf('sign-in')"
+                    md="6"
+                  >
+                    <a @click="changeTab('sign-in')"> Sign in &gt; </a>
+                  </v-col>
+                  <v-col
+                    v-if="tab != tabs.indexOf('forgot-password')"
+                    md="6"
+                    :class="{
+                      'text-right': tab == tabs.indexOf('create-account'),
+                      'text-left': tab != tabs.indexOf('create-account'),
+                    }"
+                  >
+                    <a @click="changeTab('forgot-password')">
+                      Forgot your password &gt;
+                    </a>
+                  </v-col>
+                  <v-col
+                    v-if="tab != tabs.indexOf('create-account')"
+                    md="6"
+                    class="text-right"
+                  >
+                    <a @click="changeTab('create-account')"> Create an account &gt; </a>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
+            <v-container
+              id="google-fb-container"
+              class="grey lighten-2 pb-10"
+            >
+              <v-row
+                no-gutters
+              >
+                <v-col
+                  md="12"
+                >
+                  <p class="grey--text text--darken-1 text-center">
+                    Or you can
+                  </p>
+                </v-col>
+              </v-row>
+              <v-row
+                justify="center"
+                no-gutters
+              >
+                <v-col
+                  md="10"
+                >
+                  <v-btn
+                    class="lighten-2 text--darken-3 btn-google"
+                    block
+                    @click="signInProvider('google')"
+                  >
+                    <!-- v-icon
+                      small
+                      left
+                    >
+                      mdi-google
+                    </v-icon -->
+                    Continue with Google
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row
+                justify="center"
+                no-gutters
+              >
+                <v-col
+                  md="10"
+                >
+                  <v-btn
+                    class="lighten-2 btn-facebook"
+                    block
+                    @click="signInProvider('facebook')"
+                  >
+                    <!-- v-icon
+                      small
+                      left
+                    >
+                      mdi-facebook
+                    </v-icon -->
+                    Continue with Facebook
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-overlay>
+</template>
+
+<script>
+  export default {
+    components: {
+      LoginForm: () => import('@/components/login_overlay/LoginForm'),
+      ForgotPasswordForm: () => import('@/components/login_overlay/ForgotPasswordForm'),
+      CreateAccountForm: () => import('@/components/login_overlay/CreateAccountForm'),
+    },
+    theme: {
+      options: { light: true },
+    },
+    props: {
+      showOverlay: Boolean,
+    },
+
+    data: () => ({
+      tab: 0,
+      tabs: ['sign-in', 'create-account', 'forgot-password'],
+    }),
+
+    methods: {
+      hideOverlay: function () {
+        this.$emit('hideLoginOverlay')
+      },
+      changeTab: function (tabId) {
+        this.tab = this.tabs.indexOf(tabId)
+      },
+      onLogin: function () {
+        // refresh page?
+        this.hideOverlay()
+      },
+      signInProvider (provider) {
+        window.location.href = '/auth/api/v1/authorize-' + provider
+      },
+    },
+  }
+</script>
+
+<style lang="sass">
+  .login-form
+    .login-title
+      padding: 10px 0
+      border-bottom: 5px solid orange
+
+    .modal-header
+      font-weight: normal
+      color: $color-gray-mddk
+      padding-top: 15px
+      letter-spacing: normal
+
+    p
+      margin-bottom: 5px
+
+    .form-links
+      padding: 0 14px
+
+    .form-link-col
+      padding-top: 0
+      margin-bottom: 20px
+
+    .btn-google
+      background: url('~@/assets/Google__G__Logo.svg') no-repeat 17px 8px
+      background-size: 20px 20px
+
+    .btn-facebook
+      background: #3b5998 url('~@/assets/icon-facebook-circle-white.svg') no-repeat 15px 7px
+      background-color: #3b5998 !important
+      background-size: 23px 23px
+      color: #ffffff !important
+</style>
