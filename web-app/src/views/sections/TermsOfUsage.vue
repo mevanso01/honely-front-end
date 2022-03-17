@@ -1,9 +1,15 @@
 <template>
+<!-- eslint-disable -->
+<div class="pg-static">
+  <div class="pg-static-banner terms">
+    <div class="pg-static-banner-overlay">
+      <div class="banner-heading">
+        <h1>Terms of Use</h1>
+      </div>
+    </div>
+  </div>
   <!-- vx: If the contents of this file are modified, the pdf version in s3 bucket needs to be updated too.. -->
   <div class="section section-wrapper">
-    <p class="feature-text text-large">
-      TERMS OF USE
-    </p>
     <p>Effective date: September 19, 2021</p>
     <div class="static-body feature-text text-exsmall list-normal static-subheadings list-ordered">
       <p><span>Honely, LLC (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) welcomes you to our Site. We invite you to access and use our website, </span><a href="https://www.honely.com">www.honely.com</a><span>, along with the services we provide through our website and subject to the following terms and conditions (the &ldquo;Terms of Use&rdquo; or &ldquo;Terms&rdquo;), which may be updated by us from time to time.</span></p>
@@ -208,4 +214,6 @@
       </ol>
     </div>
   </div>
+  </div>
+  <!-- eslint-enable -->
 </template>

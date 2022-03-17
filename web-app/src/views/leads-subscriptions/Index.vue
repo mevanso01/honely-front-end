@@ -1378,18 +1378,10 @@
               </div>
               <div class="btn-center">
                 <button
-                  v-if="trialUsed"
                   class="btn-subscription"
                   @click="doPayment()"
                 >
                   Subscribe Now
-                </button>
-                <button
-                  v-else
-                  class="btn-subscription"
-                  @click="doPayment()"
-                >
-                  Subscribe For 60 Day Free Trial
                 </button>
               </div>
             </div>
@@ -1410,6 +1402,10 @@
                   https://www.realtor-leads.info/?agent_id={{ agent_id }}
                 </span>
               </p>
+              <p class="btn-subscription-details-small-margin-bottom">Code to embed to Future Value page:</p>
+              <div class="btn-code-snipppet">
+                &lt;iframe src="https://www.realtor-leads.info/?agent_id={{ agent_id }}" height="600" width="100%" title="Find the future value of your home"&gt;&lt;/iframe&gt;
+              </div>
               <p
                 class="btn-subscription-details"
               >
@@ -1442,14 +1438,14 @@
                     {{ btnSubscriptionRenewalDate }}
                   </span>
                 </p>
-                <button
+                <!-- <button
                   color="red"
                   class="white-text"
                   style="margin-left: 45%"
                   @click="cancelButtonSubscription()"
                 >
-                  Cancel Subcription
-                </button>
+                  Cancel Subscription
+                </button> -->
               </div>
             </div>
           </v-tab-item>
@@ -1865,7 +1861,7 @@
         agent_last_name: null,
         services_list: null,
         agent_email: null,
-        trialUsed: false,
+        // trialUsed: false,
         userType: null,
         leadSlotSearchInput: '',
         // slotSubscriptionDetails: [],
@@ -2705,7 +2701,7 @@
                 this.btnSubscriptionRenewalDate = response.data.data.end_date.slice(0, -12)
               }
               this.btnSubscriptionId = response.data.data.subscription_id
-              this.trialUsed = response.data.trialUsed
+              // this.trialUsed = response.data.trialUsed
               if (response.data.data.renews !== 0) {
                 this.showButtonUnsubscribeBtn = true
               }
@@ -2757,21 +2753,12 @@
         this.tab = 'tab-1'
       },
       doPayment () {
-        if (!this.trialUsed) {
-          this.lineItems = [
-            {
-              price: 'price_1KEawXKnYAv7HjWU41Q425MF', // vx: trial one
-              quantity: 1,
-            },
-          ]
-        } else {
-          this.lineItems = [
-            {
-              price: 'price_1KEawhKnYAv7HjWUz7qr3ccf', // vx: no trial
-              quantity: 1,
-            },
-          ]
-        }
+        this.lineItems = [
+          {
+            price: 'price_1KEawhKnYAv7HjWUz7qr3ccf', // vx: no trial
+            quantity: 1,
+          },
+        ]
         this.successURL = 'https://www.honely.com/paymentSuccess?agent_id=' + this.agent_id + '&business_address=' + this.enteredBusinessAddress + '&company_type=' + this.companyType + '&website_url=' + this.enteredHomeUrl + '&agent_email=' + this.agent_email + '&business_name=' + this.enteredBusinessName
         if (this.enteredBusinessName === null || this.enteredBusinessName === '') {
           this.urlPrompt = 'Please enter business name'

@@ -101,36 +101,3 @@
     },
   }
 </script>
-
-<style lang="sass">
-  .login-form
-    .error-title
-      padding: 5px 0
-      border-bottom: 5px solid orange
-
-    .modal-header
-      font-weight: normal
-      color: $color-gray-mddk
-      padding-top: 15px
-      letter-spacing: normal
-
-    p
-      margin-bottom: 5px
-
-    .form-links
-      padding: 0 14px
-
-    .form-link-col
-      padding-top: 0
-      margin-bottom: 20px
-
-    .btn-google
-      background: url('~@/assets/Google__G__Logo.svg') no-repeat 17px 8px
-      background-size: 20px 20px
-
-    .btn-facebook
-      background: #3b5998 url('~@/assets/icon-facebook-circle-white.svg') no-repeat 15px 7px
-      background-color: #3b5998 !important
-      background-size: 23px 23px
-      color: #ffffff !important
-</style>

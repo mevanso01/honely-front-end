@@ -1,22 +1,16 @@
 <template>
-  <v-theme-provider light>
+  <!-- eslint-disable -->
+  <div class="pg-static">
+    <div class="pg-static-banner faq">
+      <div class="pg-static-banner-overlay">
+        <div class="banner-heading">
+          <h1>Frequently Asked Questions</h1>
+        </div>
+      </div>
+    </div>
     <div class="html-faq-container">
       <div class="flex-wrapper">
         <div class="flex-col12">
-          <!-- <div class="btn-group">
-            <v-btn
-              @click="all"
-            >
-              Open All
-            </v-btn>
-            <v-btn
-              class="ml-3"
-              @click="none"
-            >
-              Close All
-            </v-btn>
-          </div> -->
-
           <v-expansion-panels
             v-model="panel"
             multiple
@@ -28,9 +22,6 @@
             >
               <v-expansion-panel-header>
                 <h4>
-                  <!-- <span>
-                    Q{{ item.id }}.
-                  </span> -->
                   {{ item.question }}
                 </h4>
                 <template v-slot:actions>
@@ -48,12 +39,10 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </div>
-        <h2
-          class="my-4"
-        />
       </div>
     </div>
-  </v-theme-provider>
+  </div>
+  <!-- eslint-enable -->
 </template>
 
 <script>

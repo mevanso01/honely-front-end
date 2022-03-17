@@ -83,7 +83,7 @@
           <v-list-item-content
             class="navsubitemcontent extramargin"
           >
-            ©2021 Honely, LLC.
+            ©2022 Honely, LLC.
           </v-list-item-content>
         </v-list-item>
       </v-card>

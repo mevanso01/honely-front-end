@@ -151,26 +151,22 @@
 }
 .card-body {
     flex: 1 1 auto;
-    padding: 3rem !important;
+    padding: 3rem;
     box-sizing: border-box;
 }
 .card-body .card-content {
     display: flex;
-    flex-wrap: unset;
-    margin-right: -15px;
-    margin-left: -15px;
+    flex-wrap: wrap;
+	padding-right: 1rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    justify-content: space-between;
 }
 .card-body .card-left {
-    flex: 0 0 33.3333333333%;
-    max-width: 33.3333333333%;
-    padding-right: 15px;
-    padding-left: 15px;
+    width: 30%;
 }
 .card-body .card-right {
-    flex: 0 0 66.6666666667%;
-    max-width: 66.6666666667%;
-    padding-right: 15px;
-    padding-left: 15px;
+    width: 65%;
 }
 .member-card .social-btn {
     margin-top: 0.5rem;
@@ -264,6 +260,11 @@
     text-decoration: underline;
     margin-top: 0.5rem;
 }
+.member-card .btn-close i {
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.2em;
+    float: right;
+}
 /* ======================================================
 MOBILE
 ====================================================== */
@@ -295,8 +296,19 @@ MOBILE
         flex: none;
         max-width: 48%;
     }
+    .card-body .card-left {
+        min-width: 180px;
+        margin: 5px auto;
+    }
+    .card-body .card-right {
+        margin: 0 auto;
+        width: 90%;
+    }
 }
 @media (max-width: 500px) {
+    .card-body {
+        padding: 1rem;
+    }
     .meeting-container .flex-wrapper .flex-col4 {
         width: 44%;
     }

@@ -123,8 +123,26 @@
 p.btn-subscription-details {
     padding: 0 10px;
 }
+.btn-subscription-details-small-margin-bottom {
+    text-align: center;
+    margin-bottom: 5px !important;
+    font-size: 18px;
+    color: #404040;
+    line-height: 26px;
+}
 .btn-subscription-details p.large-font {
     font-size: 20px;
+}
+.btn-code-snipppet {
+    text-align: center;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
+    background-color: #efefef;
+    width: 90%;
+    margin-left: 5%;
+    padding: 24px;
+    margin-bottom: 24px;
+    word-break: normal;
 }
 .leads-subs-search-results {
     margin-top: 2rem;

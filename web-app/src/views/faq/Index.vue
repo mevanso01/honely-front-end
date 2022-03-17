@@ -11,7 +11,6 @@
     extends: View,
     mixins: [
       LoadSections([
-        'hero-short',
         'html-faq-content',
       ]),
     ],

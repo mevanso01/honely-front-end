@@ -55,7 +55,6 @@ const router = new Router({
           name: 'About Us',
           component: () => import('@/views/about/Index.vue'),
           meta: {
-            src: require('@/assets/banner-about.png'),
             copy: 'About us copy'
           },
         },
@@ -94,7 +93,6 @@ const router = new Router({
           name: 'FAQ',
           component: () => import('@/views/faq/Index.vue'),
           meta: {
-            src: require('@/assets/banner-faq.jpg'),
             copy: '',
             title: 'FAQ',
           },
@@ -219,11 +217,11 @@ const router = new Router({
           name: 'ResetPassword',
           component: () => import('@/views/reset-password/Index.vue'),
         },
-        {
+        /* {
           path: '/subscribe',
           name: 'Subscribe',
           component: () => import('@/views/subscribe/Index.vue'),
-        },
+        }, */
         {
           path: '/paymentSuccess',
           name: 'Payment Success',

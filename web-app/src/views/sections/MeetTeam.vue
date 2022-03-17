@@ -26,7 +26,7 @@
             <h4 class="member-role">
               {{ item.role }}
             </h4>
-            <div class="member-social">
+            <!-- <div class="member-social">
               <a
                 :href="item.twitter"
                 _target="blank"
@@ -42,7 +42,7 @@
               >
                 <i class="mdi mdi-linkedin" />
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -50,18 +50,25 @@
       <v-dialog
         v-model="dialog"
         scrollable
+        max-width= "1000px"
       >
         <div
           v-if="dialog_member"
           class="card card-body member-card"
         >
+          <div
+          class="btn-close"
+          @click="closeDialog"
+          >
+            <i class="fa fa-times" />
+          </div>
           <div class="card-content">
             <div class="card-left">
               <img
                 :src="dialog_member.photo"
                 width="100%"
               >
-              <div class="text-center social-btn">
+              <!-- <div class="text-center social-btn">
                 <a
                   :href="dialog_member.twitter"
                   _target="blank"
@@ -77,7 +84,7 @@
                 >
                   <i class="mdi mdi-linkedin" />
                 </a>
-              </div>
+              </div> -->
             </div>
             <div class="card-right">
               <h2 class="dialog-member-name">
@@ -132,6 +139,7 @@
           twitter: '',
           linkedin: '',
           photo: require('@/assets/site_images/graphics/team_member4.png'),
+          bio: 'Tigran is a passionate entrepreneur with vast experience in Media, Tech and Fashion. He has a bachelor\'s degree in Biological Sciences from UC Irvine but focused his career in the creative industries of Los Angeles. He\'s led multiple production companies as well as co-founded one of the earliest co-working spaces in Los Angeles. He is Head of Creative at Allocate Rite, a fintech company in NYC. \n\n His ability to tap into nascent technologies and creative problem solving has resulted in a wide range of projects including global fashion brands, fortune 500 companies such as Tesla and Sony and Apple. Tigran\'s cinematography and production projects with international artists and celebrities have amassed hundreds of millions of views.',
         },
         {
           id: '',
@@ -165,6 +173,10 @@
       openDialog (item) {
         this.dialog_member = item
         this.dialog = true
+      },
+      closeDialog () {
+        this.dialog_member = null
+        this.dialog = false
       },
     },
   }

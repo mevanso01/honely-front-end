@@ -168,11 +168,6 @@
             <p>Our co-branded property reports are extensive and feature every single data point you see when searching a property or running a property forecast in our site.</p>
         </div>
         <div class="cols">
-            <v-img
-                :src="require('@/assets/pdf-cover.png')"
-                max-width="225"
-                alt="PDF"
-            />
         </div>
     </div>
     <!-- eslint-disable -->

@@ -319,8 +319,8 @@
         zipPurchasePower: 2,
         urlPrompt: '',
         headers: [
-          { text: 'First Name', value: 'first_name' },
-          { text: 'Last Name', value: 'last_name' },
+          { text: 'Name', value: 'first_name' },
+          // { text: 'Last Name', value: 'last_name' },
           { text: 'Email', value: 'user_email' },
           { text: 'Phone Number', value: 'phone_number' },
           { text: 'Searched Address', value: 'searched_address' },
