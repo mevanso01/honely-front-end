@@ -121,7 +121,6 @@
   import { mapGetters } from 'vuex'
   import { bus } from '../main'
   import * as constants from './base64constants'
-
   export default {
     name: 'PropertyBlock',
     props: {
@@ -372,17 +371,31 @@
         // console.log('getting images')
         const self = this
         if (this.propertyData) {
-          if (this.propertyData.latitude && this.propertyData.longitude) {
-            const googlePicture = 'https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + this.propertyData.latitude + ',' + this.propertyData.longitude + '&radius=100&return_error_code=true&source=outdoor&key=' + this.$mapsKey
-            let url = googlePicture
-            // check if it's listhub property, if true, switch image url
-            if (this.propertyData.listingkey && this.propertyData.photoscount) {
-              if (this.propertyData.photoscount > 0) {
-                url = 'https://listhub-property-images.s3.amazonaws.com/' + this.propertyData.listingkey + '_1.jpg'
-              }
+          const googlePicture = 'https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + this.propertyData.latitude + ',' + this.propertyData.longitude + '&radius=100&return_error_code=true&source=outdoor&key=' + this.$mapsKey
+          let url = googlePicture
+          // check if it's listhub property, if true, switch image url
+          if (this.propertyData.listingkey && this.propertyData.photoscount) {
+            if (this.propertyData.photoscount > 0) {
+              url = 'https://listhub-property-images.s3.amazonaws.com/' + this.propertyData.listingkey + '_1.jpg'
             }
-            // console.log(url)
-            fetch(url, {
+          }
+          // console.log(url)
+          fetch(url, {
+            method: 'GET',
+            headers: {
+            },
+          }).then(function (response) {
+            // console.log(response)
+            if (!response.ok) {
+              throw Error(response.status)
+            }
+            return response.blob
+          }).then(function (blob) {
+            self.image = url
+            self.validImage = true
+          }).catch((err) => {
+            // double check google map api
+            fetch(googlePicture, {
               method: 'GET',
               headers: {
               },
@@ -393,32 +406,16 @@
               }
               return response.blob
             }).then(function (blob) {
-              self.image = url
+              self.image = googlePicture
               self.validImage = true
             }).catch((err) => {
               // double check google map api
-              fetch(googlePicture, {
-                method: 'GET',
-                headers: {
-                },
-              }).then(function (response) {
-                // console.log(response)
-                if (!response.ok) {
-                  throw Error(response.status)
-                }
-                return response.blob
-              }).then(function (blob) {
-                self.image = googlePicture
-                self.validImage = true
-              }).catch((err) => {
-                // double check google map api
-                self.validImage = true
-                self.image = '/site_images/listing_default_image.png'
-                console.log('[ERROR] Google image API failed =>', err)
-              })
-              console.log('[ERROR] Google image API/listhub image failed =>', err)
+              self.validImage = true
+              self.image = '/site_images/listing_default_image.png'
+              console.log('[ERROR] Google image API failed =>', err)
             })
-          }
+            console.log('[ERROR] Google image API/listhub image failed =>', err)
+          })
         }
       },
       capitalize(string) {

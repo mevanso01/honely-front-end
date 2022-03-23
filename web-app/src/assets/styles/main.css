@@ -230,6 +230,9 @@ CONTAINERS
 .page {
     position: relative;
 }
+.placeholder {
+    min-height: 1000px;
+}
 /* HEADER ********************** */
 .header {
     background: #ffffff;

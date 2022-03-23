@@ -25,6 +25,11 @@ const router = new Router({
           // meta: { requiresAuth: true },
         },
         {
+          path: '/claimlead',
+          name: 'Claim Lead',
+          component: () => import('@/views/claimlead/Index.vue'),         
+        },
+        {
           path: '/buying',
           name: 'Buying Landing Page',
           component: () => import('@/views/landing-pages/BuyingLandingPage.vue'),         

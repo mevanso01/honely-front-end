@@ -819,28 +819,26 @@
       checkImage () {
         const self = this
         if (this.property) {
-          if (this.property.address.latitude && this.property.address.longitude) {
-            const url = 'https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + this.property.address.latitude + ',' + this.property.address.longitude + '&radius=100&return_error_code=true&source=outdoor&key=' + this.$mapsKey
-            // console.log(url)
-            fetch(url, {
-              method: 'GET',
-              headers: {
-              },
-            }).then(function (response) {
-              // console.log(response)
-              if (!response.ok) {
-                throw Error(response.status)
-              }
-              return response.blob
-            }).then(function (blob) {
-              self.image = url
-              self.validImage = true
-            }).catch((err) => {
-              console.log('[ERROR] Google image API failed =>', err)
-              self.validImage = true
-              self.image = '/site_images/listing_default_image.png'
-            })
-          }
+          const url = 'https://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + this.property.address.latitude + ',' + this.property.address.longitude + '&radius=100&return_error_code=true&source=outdoor&key=' + this.$mapsKey
+          // console.log(url)
+          fetch(url, {
+            method: 'GET',
+            headers: {
+            },
+          }).then(function (response) {
+            // console.log(response)
+            if (!response.ok) {
+              throw Error(response.status)
+            }
+            return response.blob
+          }).then(function (blob) {
+            self.image = url
+            self.validImage = true
+          }).catch((err) => {
+            console.log('[ERROR] Google image API failed =>', err)
+            self.validImage = true
+            self.image = '/site_images/listing_default_image.png'
+          })
         }
       },
       initMap () {

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <!-- eslint-disable -->
       <div class="leads-section">
         <div class="section-heading">My Honely Leads</div>
@@ -17,50 +17,56 @@
         <div v-else>
         <!-- site-leads -->
         <div v-if="isAgent" class="leads-container">
-          <div class="leads-section-title theme1">
-            <div>Leads from 
+          <div class="leads-section-title theme3">
+            <div>Claimed Leads from 
               <span class="leads-section-title-bold">Honely</span>
               (Agent/Broker)
             </div>
-            <span v-if="site_leads_agent && selectedA.length > 0 && $vuetify.breakpoint.smAndDown && !acknowledgedA" class="leads-section-title-download2" @click="acknowledgeLeads(agent)">Claim leads</span>
-            <span v-if="$vuetify.breakpoint.smAndDown && acknowledgedA" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <span v-if="site_leads_agent && selectedA.length > 0 && $vuetify.breakpoint.mdAndUp && !acknowledgedA" class="leads-section-title-download2" @click="acknowledgeLeads(agent)">Claim Leads</span>
-            <span v-if="$vuetify.breakpoint.mdAndUp && acknowledgedA" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <!-- <span v-if="site_leads_agent && site_leads_agent.length > 0" class="leads-section-title-download" title="Export to CSV file" @click="generateCsv('SITE')"><i class="fas fa-download"></i></span> -->
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_agent && site_leads_agent.length > 0">Click on lead to remove from list</span>
           </div>
-          <!-- <div v-if="site_leads && site_leads.length > 0" class="leads-data-container">
-            <div v-for="lead in site_leads" class="lead-block">
-              <div class="lead-name">
-                {{ lead.first_name }} {{ lead.last_name }}
-              </div>
-              <div class="lead-contact">
-                <p><i class="fas fa-envelope-square"></i> {{ lead.user_email }}</p>
-                <p><i class="fas fa-phone-square-alt"></i> {{ lead.phone_number }}</p>
-              </div>
-              <div class="lead-info">
-                <i class="fas fa-map-marker-alt"></i> <span>{{ lead.searched_address }}</span>
-              </div>
-            </div>
-          </div>
-          <div v-else class="leads-data-container">
-            <p class="leads-data-msg">There is no leads available for your account.</p>
-          </div> -->
           <div v-if="leadsLoaded && site_leads_agent && site_leads_agent.length > 0" class="leads-table">
             <v-data-table
               v-model="selectedA"
               :headers="headers2"
-              :items="unacknowledgedTier2Tier3LeadsA"
+              :items="site_leads_agent"
               item-key="lead_id"
               :items-per-page="5"
-              class="elevation-1"
+              class="datarow"
+              @click:row="cancelLead($event)"
             >
-            <!-- <template v-slot:top>
-              <v-switch
-                v-model="singleSelectA"
-                label="Single select"
-                class="pa-3"
-              ></v-switch>
-            </template> -->
+            </v-data-table>
+          </div>
+          <div v-else-if="!leadsLoaded">
+            <v-data-table
+              item-key="lead_id"
+              class="elevation-1"
+              loading
+              loading-text="Loading... Please wait"
+            >
+            </v-data-table>
+          </div>
+          <div v-else class="leads-table">
+            <p class="leads-data-msg">There are no leads available for your account.</p>
+          </div>
+        </div>
+        <div v-if="isAgent" class="leads-container">
+          <div class="leads-section-title theme1">
+            <div>Unclaimed Leads from 
+              <span class="leads-section-title-bold">Honely</span>
+              (Agent/Broker)
+            </div>
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_agent_unack && site_leads_agent_unack.length > 0">Click on lead to claim it</span>
+          </div>
+          <div v-if="leadsLoaded && site_leads_agent_unack && site_leads_agent_unack.length > 0" class="leads-table">
+            <v-data-table
+              v-model="selectedA"
+              :headers="headers2"
+              :items="site_leads_agent_unack"
+              item-key="lead_id"
+              :items-per-page="5"
+              class="datarow"
+              @click:row="claimLead($event)"
+            >
             </v-data-table>
           </div>
           <div v-else-if="!leadsLoaded">
@@ -80,50 +86,56 @@
 
         <!-- site-leads -->
         <div v-if="isLender" class="leads-container">
-          <div class="leads-section-title theme1">
-            <div>Leads from 
+          <div class="leads-section-title theme3">
+            <div>Claimed Leads from 
               <span class="leads-section-title-bold">Honely</span>
               (Lender)
             </div>
-            <span v-if="site_leads_lender && selectedL.length > 0 && $vuetify.breakpoint.smAndDown && !acknowledgedL" class="leads-section-title-download2" @click="acknowledgeLeads(lender)">Claim leads</span>
-            <span v-if="$vuetify.breakpoint.smAndDown && acknowledgedL" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <span v-if="site_leads_lender && selectedL.length > 0 && $vuetify.breakpoint.mdAndUp && !acknowledgedL" class="leads-section-title-download2" @click="acknowledgeLeads(lender)">Claim Leads</span>
-            <span v-if="$vuetify.breakpoint.mdAndUp && acknowledgedL" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <!-- <span v-if="site_leads_lender && site_leads_lender.length > 0" class="leads-section-title-download" title="Export to CSV file" @click="generateCsv('SITE')"><i class="fas fa-download"></i></span> -->
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_lender && site_leads_lender.length > 0">Click on lead to remove from list</span>
           </div>
-          <!-- <div v-if="site_leads && site_leads.length > 0" class="leads-data-container">
-            <div v-for="lead in site_leads" class="lead-block">
-              <div class="lead-name">
-                {{ lead.first_name }} {{ lead.last_name }}
-              </div>
-              <div class="lead-contact">
-                <p><i class="fas fa-envelope-square"></i> {{ lead.user_email }}</p>
-                <p><i class="fas fa-phone-square-alt"></i> {{ lead.phone_number }}</p>
-              </div>
-              <div class="lead-info">
-                <i class="fas fa-map-marker-alt"></i> <span>{{ lead.searched_address }}</span>
-              </div>
-            </div>
-          </div>
-          <div v-else class="leads-data-container">
-            <p class="leads-data-msg">There is no leads available for your account.</p>
-          </div> -->
           <div v-if="leadsLoaded && site_leads_lender && site_leads_lender.length > 0" class="leads-table">
             <v-data-table
               v-model="selectedL"
               :headers="headers2"
-              :items="unacknowledgedTier2Tier3LeadsL"
+              :items="site_leads_lender"
               item-key="lead_id"
               :items-per-page="5"
-              class="elevation-1"
+              class="datarow"
+              @click:row="cancelLead($event)"
             >
-            <!-- <template v-slot:top>
-              <v-switch
-                v-model="singleSelectL"
-                label="Single select"
-                class="pa-3"
-              ></v-switch>
-            </template> -->
+            </v-data-table>
+          </div>
+          <div v-else-if="!leadsLoaded">
+            <v-data-table
+              item-key="lead_id"
+              class="elevation-1"
+              loading
+              loading-text="Loading... Please wait"
+            >
+            </v-data-table>
+          </div>
+          <div v-else class="leads-table">
+            <p class="leads-data-msg">There are no leads available for your account.</p>
+          </div>
+        </div>
+        <div v-if="isLender" class="leads-container">
+          <div class="leads-section-title theme1">
+            <div>Unclaimed Leads from 
+              <span class="leads-section-title-bold">Honely</span>
+              (Lender)
+            </div>
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_lender_unack && site_leads_lender_unack.length > 0">Click on lead to claim it</span>
+          </div>
+          <div v-if="leadsLoaded && site_leads_lender_unack && site_leads_lender_unack.length > 0" class="leads-table">
+            <v-data-table
+              v-model="selectedL"
+              :headers="headers2"
+              :items="site_leads_lender_unack"
+              item-key="lead_id"
+              :items-per-page="5"
+              class="datarow"
+              @click:row="claimLead($event)"
+            >
             </v-data-table>
           </div>
           <div v-else-if="!leadsLoaded">
@@ -143,50 +155,56 @@
 
         <!-- site-leads -->
         <div v-if="isGeneralContractor" class="leads-container">
-          <div class="leads-section-title theme1">
-            <div>Leads from 
+          <div class="leads-section-title theme3">
+            <div>Claimed Leads from 
               <span class="leads-section-title-bold">Honely</span>
               (General Contractor)
             </div>
-            <span v-if="site_leads_gc && selectedGC.length > 0 && $vuetify.breakpoint.smAndDown && !acknowledgedGC" class="leads-section-title-download2" @click="acknowledgeLeads(gc)">Claim leads</span>
-            <span v-if="$vuetify.breakpoint.smAndDown && acknowledgedGC" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <span v-if="site_leads_gc && selectedGC.length > 0 && $vuetify.breakpoint.mdAndUp && !acknowledgedGC" class="leads-section-title-download2" @click="acknowledgeLeads(gc)">Claim Leads</span>
-            <span v-if="$vuetify.breakpoint.mdAndUp && acknowledgedGC" class="acknowledged-tick">Claimed<i class="fas fa-check"></i></span>
-            <!-- <span v-if="site_leads_gc && site_leads_gc.length > 0" class="leads-section-title-download" title="Export to CSV file" @click="generateCsv('SITE')"><i class="fas fa-download"></i></span> -->
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_gc && site_leads_gc.length > 0">Click on lead to remove from list</span>
           </div>
-          <!-- <div v-if="site_leads && site_leads.length > 0" class="leads-data-container">
-            <div v-for="lead in site_leads" class="lead-block">
-              <div class="lead-name">
-                {{ lead.first_name }} {{ lead.last_name }}
-              </div>
-              <div class="lead-contact">
-                <p><i class="fas fa-envelope-square"></i> {{ lead.user_email }}</p>
-                <p><i class="fas fa-phone-square-alt"></i> {{ lead.phone_number }}</p>
-              </div>
-              <div class="lead-info">
-                <i class="fas fa-map-marker-alt"></i> <span>{{ lead.searched_address }}</span>
-              </div>
-            </div>
-          </div>
-          <div v-else class="leads-data-container">
-            <p class="leads-data-msg">There is no leads available for your account.</p>
-          </div> -->
           <div v-if="leadsLoaded && site_leads_gc && site_leads_gc.length > 0" class="leads-table">
             <v-data-table
               v-model="selectedGC"
               :headers="headers2"
-              :items="unacknowledgedTier2Tier3LeadsGC"
+              :items="site_leads_gc"
               item-key="lead_id"
               :items-per-page="5"
-              class="elevation-1"
+              class="datarow"
+              @click:row="cancelLead($event)"
             >
-            <!-- <template v-slot:top>
-              <v-switch
-                v-model="singleSelectGC"
-                label="Single select"
-                class="pa-3"
-              ></v-switch>
-            </template> -->
+            </v-data-table>
+          </div>
+          <div v-else-if="!leadsLoaded">
+            <v-data-table
+              item-key="lead_id"
+              class="elevation-1"
+              loading
+              loading-text="Loading... Please wait"
+            >
+            </v-data-table>
+          </div>
+          <div v-else class="leads-table">
+            <p class="leads-data-msg">There are no leads available for your account.</p>
+          </div>
+        </div>
+        <div v-if="isGeneralContractor" class="leads-container">
+          <div class="leads-section-title theme1">
+            <div>Unclaimed Leads from 
+              <span class="leads-section-title-bold">Honely</span>
+              (General Contractor)
+            </div>
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_gc_unack && site_leads_gc_unack.length > 0">Click on lead to claim it</span>
+          </div>
+          <div v-if="leadsLoaded && site_leads_gc_unack && site_leads_gc_unack.length > 0" class="leads-table">
+            <v-data-table
+              v-model="selectedGC"
+              :headers="headers2"
+              :items="site_leads_gc_unack"
+              item-key="lead_id"
+              :items-per-page="5"
+              class="datarow"
+              @click:row="claimLead($event)"
+            >
             </v-data-table>
           </div>
           <div v-else-if="!leadsLoaded">
@@ -210,6 +228,7 @@
             <div>Leads from
               <span class="leads-section-title-bold">Future Value</span>
             </div>
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && button_leads && button_leads.length > 0">Click on lead to remove from list</span>
             <!-- <span v-if="button_leads && button_leads.length > 0" class="leads-section-title-download" title="Export to CSV file" @click="generateCsv('BUTTON')"><i class="fas fa-download"></i></span> -->
           </div>
           <!-- <div v-if="button_leads && button_leads.length > 0" class="leads-data-container">
@@ -231,10 +250,12 @@
           </div> -->
           <div v-if="leadsLoaded && button_leads && button_leads.length > 0" class="leads-table">
             <v-data-table
-              :headers="headers"
+              :headers="headers2"
               :items="button_leads"
+              item-key="lead_id"
               :items-per-page="5"
-              class="elevation-1"
+              class="datarow"
+              @click:row="cancelLead($event)"
             ></v-data-table>
           </div>
           <div v-else-if="!leadsLoaded">
@@ -254,7 +275,13 @@
       </div>
       </div>
       <!-- eslint-enable -->
-  </v-container>
+      <leads-dashboard-action-confirmation
+        v-if="askConfirmation"
+        :lead_id="lead_id"
+        :confirmation_id="confirmation_id"
+        @restorePropDefaults="restorePropDefaults"
+    />
+  </div>
 </template>
 <script>
   // import { StripeCheckout } from '@vue-stripe/vue-stripe'
@@ -267,9 +294,13 @@
     components: {
       // LoginOverlay: () => import('@/components/login_overlay/LoginOverlay'),
       // StripeCheckout,
+      LeadsDashboardActionConfirmation: () => import('@/components/base/LeadsDashboardActionConfirmation'),
     },
     data () {
       return {
+        confirmation_id: null,
+        lead_id: null,
+        askConfirmation: false,
         isAgent: false,
         isLender: false,
         isGeneralContractor: false,
@@ -288,36 +319,6 @@
         selectedL: [],
         selectedGC: [],
         customerId: 'cus_Kpcon4obPmqUC8',
-        zipSlotRecords: [
-          {
-            zipcode: '00000',
-            slotsAvailable: 3,
-          },
-          {
-            zipcode: '00001',
-            slotsAvailable: 3,
-          },
-          {
-            zipcode: '00002',
-            slotsAvailable: 3,
-          },
-          {
-            zipcode: '00003',
-            slotsAvailable: 3,
-          },
-          {
-            zipcode: '00004',
-            slotsAvailable: 3,
-          },
-          {
-            zipcode: '00005',
-            slotsAvailable: 3,
-          },
-        ],
-        zipCart: [],
-        agentOwnedZipcodes: [],
-        zipPurchasePower: 2,
-        urlPrompt: '',
         headers: [
           { text: 'Name', value: 'first_name' },
           // { text: 'Last Name', value: 'last_name' },
@@ -326,16 +327,17 @@
           { text: 'Searched Address', value: 'searched_address' },
         ],
         headers2: [
-          { text: 'First Name', value: 'first_name' },
-          { text: 'Last Name', value: 'last_name' },
-          { text: 'Email', value: 'user_email' },
+          { text: 'Name', value: 'name' },
+          { text: 'Email', value: 'email' },
           { text: 'Phone Number', value: 'phone_number' },
           { text: 'Searched Address', value: 'searched_address' },
-          { text: 'Received at', value: 'time_stamp' },
         ],
         site_leads_agent: [],
         site_leads_lender: [],
         site_leads_gc: [],
+        site_leads_agent_unack: [],
+        site_leads_lender_unack: [],
+        site_leads_gc_unack: [],
         button_leads: [],
         agent_id: null,
         loading: true,
@@ -344,31 +346,11 @@
         successURL: 'https://d3vysvze1cydzh.cloudfront.net/paymentSuccess',
         cancelURL: 'https://d3vysvze1cydzh.cloudfront.net/',
         tab: 'tab-3',
-        showButtonSubscribeSection: false,
-        showButtonSubscriptionDetails: false,
-        showButtonUnsubscribeBtn: false,
-        btnSubscriptionStartDate: null,
-        btnSubscriptionEndDate: null,
-        btnSubscriptionRenewalDate: null,
-        btnSubscriptionId: null,
-        homeUrl: null,
-        enteredHomeUrl: '',
-        trialUsed: false,
         userType: null,
-        leadSlotSearchInput: '',
       }
     },
     computed: {
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
-      unacknowledgedTier2Tier3LeadsA () {
-        return this.site_leads_agent.map(x => ({ ...x, isSelectable: ((x.tier === 'Honely Green' || x.tier === 'Honely Red') && !x.acknowledged) }))
-      },
-      unacknowledgedTier2Tier3LeadsL () {
-        return this.site_leads_lender.map(x => ({ ...x, isSelectable: ((x.tier === 'Honely Green' || x.tier === 'Honely Red') && !x.acknowledged) }))
-      },
-      unacknowledgedTier2Tier3LeadsGC () {
-        return this.site_leads_gc.map(x => ({ ...x, isSelectable: ((x.tier === 'Honely Green' || x.tier === 'Honely Red') && !x.acknowledged) }))
-      },
     },
     mounted () {
       axios.get('https://api.honely.com/lookup-test/agent_profile?agent_email=' + this.cognitoUser.attributes.email)
@@ -395,6 +377,19 @@
         })
     },
     methods: {
+      restorePropDefaults () {
+        this.askConfirmation = false
+        this.confirmation_id = null
+        this.lead_id = null
+      },
+      claimLead (item) {
+        this.confirmation_id = item.confirmation_id
+        this.askConfirmation = true
+      },
+      cancelLead (item) {
+        this.lead_id = item.lead_id
+        this.askConfirmation = true
+      },
       acknowledgeLeads (spType) {
         var tier2 = []
         var tier3 = []
@@ -463,56 +458,18 @@
           })
       },
       fetchLeadsList () {
-        axios.get('https://api.honely.com/lookup-test/fetch_leads?agent_id=' + this.agent_id)
+        // https://api.honely.com/lookup-test/leads/HYQL5126
+        axios.get('https://api.honely.com/lookup-test/leads/' + this.agent_id)
           .then((response) => {
             // console.log(response.data)
             this.loading = false
-            this.site_leads_agent = response.data.site_leads.agent
-            if (this.site_leads_agent) {
-              for (let x = 0; x < this.site_leads_agent.length; x++) {
-                this.site_leads_agent[x].time_stamp = this.site_leads_agent[x].time_stamp.substring(0, 19)
-                if (this.site_leads_agent[x].tier === '1') {
-                  this.site_leads_agent[x].tier = 'Honely Orange'
-                }
-                if (this.site_leads_agent[x].tier === '2') {
-                  this.site_leads_agent[x].tier = 'Honely Green'
-                }
-                if (this.site_leads_agent[x].tier === '3') {
-                  this.site_leads_agent[x].tier = 'Honely Red'
-                }
-              }
-            }
-            this.site_leads_lender = response.data.site_leads.lender
-            if (this.site_leads_lender) {
-              for (let x = 0; x < this.site_leads_lender.length; x++) {
-                this.site_leads_lender[x].time_stamp = this.site_leads_lender[x].time_stamp.substring(0, 19)
-                if (this.site_leads_lender[x].tier === '1') {
-                  this.site_leads_lender[x].tier = 'Honely Orange'
-                }
-                if (this.site_leads_lender[x].tier === '2') {
-                  this.site_leads_lender[x].tier = 'Honely Green'
-                }
-                if (this.site_leads_lender[x].tier === '3') {
-                  this.site_leads_lender[x].tier = 'Honely Red'
-                }
-              }
-            }
-            this.site_leads_gc = response.data.site_leads.gc
-            if (this.site_leads_gc) {
-              for (let x = 0; x < this.site_leads_gc.length; x++) {
-                this.site_leads_gc[x].time_stamp = this.site_leads_gc[x].time_stamp.substring(0, 19)
-                if (this.site_leads_gc[x].tier === '1') {
-                  this.site_leads_gc[x].tier = 'Honely Orange'
-                }
-                if (this.site_leads_gc[x].tier === '2') {
-                  this.site_leads_gc[x].tier = 'Honely Green'
-                }
-                if (this.site_leads_gc[x].tier === '3') {
-                  this.site_leads_gc[x].tier = 'Honely Red'
-                }
-              }
-            }
-            this.button_leads = response.data.button_leads
+            this.site_leads_agent = response.data.leads.site.realtors.confirmed
+            this.site_leads_lender = response.data.leads.site.lenders.confirmed
+            this.site_leads_gc = response.data.leads.site.gcs.confirmed
+            this.site_leads_agent_unack = response.data.leads.site.realtors.progress
+            this.site_leads_lender_unack = response.data.leads.site.lenders.progress
+            this.site_leads_gc_unack = response.data.leads.site.gcs.progress
+            this.button_leads = [...response.data.leads.button.realtors, ...response.data.leads.button.lenders, ...response.data.leads.button.gcs]
             this.leadsLoaded = true
           })
           .catch(() => {
@@ -530,3 +487,8 @@
     },
   }
 </script>
+<style>
+.datarow tbody:hover{
+  cursor: pointer;
+}
+</style>

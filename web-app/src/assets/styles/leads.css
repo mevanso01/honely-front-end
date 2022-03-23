@@ -1,12 +1,12 @@
 .leads-subscription-container {
+    width: 95%;
     max-width: 1200px;
-    padding: 3.5rem 0;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 3rem 0;
+    margin: 0 auto;
 }
 .leads-subscription-container .flex-wrapper .flex-col12 h1 {
     font-family: "Poppins", sans-serif;
-    font-size: 32px;
+    font-size: 28px;
     line-height: 1.25;
 }
 .leads-subscription-container .leads-subs-tabs .v-input--selection-controls__input .v-icon {
@@ -330,7 +330,9 @@ p.btn-subscription-details {
 .suggestions-field4 input[type="text"] {
     border: unset;
 }
-
+.leads-table input:read-only {
+    border: none !important;
+}
 /* mobile styles */
 @media only screen and (max-width: 1000px) {
     .leads-subs-zip {
@@ -398,6 +400,7 @@ p.btn-subscription-details {
 }
 
 .leads-section {
+    width: 95%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 0;
@@ -459,6 +462,9 @@ p.btn-subscription-details {
   .leads-section-title.theme1 {
     background: #5a6778;
   }
+  .leads-section-title.theme3 {
+    background: rgba(90, 166, 80, 0.9);
+  }
   .leads-section-title.theme2 {
     background: #ff7d1f;
   }
@@ -487,7 +493,8 @@ p.btn-subscription-details {
     margin-right: 5px;
   }
   p.leads-data-msg {
-      margin-top: 1rem;
+    margin: 0;
+    padding: 1rem;
   }
   /* mobile styles */
   @media only screen and (max-width: 1265px) {
@@ -496,7 +503,7 @@ p.btn-subscription-details {
     }
   }
   @media only screen and (max-width: 730px) {
-    .leads-section {
+    .leads-section, .leads-subscription-container {
       padding: 1rem 0;
     }
     .lead-block {
@@ -505,11 +512,21 @@ p.btn-subscription-details {
     }
   }
   @media only screen and (max-width: 500px) {
+    .section-heading, .leads-subscription-container .flex-wrapper .flex-col12 h1 {
+        font-size: 25px;
+        padding-bottom: 1rem;
+    }
+    .leads-section-title {
+        font-size: 18px;
+    }
     .leads-section h1 {
       font-size: 22px;
     }
     .leads-section-title span.leads-section-title-download2 {
       margin-left: 0%;
       font-size: 10px;
+    }
+    .leads-subs-tabs {
+        margin-top: 1rem;
     }
   }

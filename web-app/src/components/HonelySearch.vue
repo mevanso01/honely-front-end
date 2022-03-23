@@ -48,6 +48,20 @@
           </div>
         </li>
       </ul>
+      <ul v-else-if="level === 'city'">
+        <li
+          v-for="result in results"
+          @click="directSearch(result)"
+        >
+          <div class="search-result-col">
+            <span class="mdi mdi-map-marker"></span>
+            <span class="search-result-street"> {{ (splitAddress(result)).pre }} </span>
+          </div>
+          <div class="search-result-col">
+            <span class="search-result-state"> {{ (splitAddress(result)).state }} </span>
+          </div>
+        </li>
+      </ul>
     </div>
      <contact-agent-form
         :searchQuery="searchQuery"
@@ -151,7 +165,12 @@
         var addr = {}
         if (addrConstituents.length === 1) {
           zip = addrConstituents[0]
-        } else {
+        } else if (isNaN(addrConstituents[addrConstituents.length - 1])) {
+          state = addrConstituents[addrConstituents.length - 1]
+          pre = addrConstituents.slice(0, addrConstituents.length - 1).join(' ')
+          pre = pre.slice(0, pre.length-1)
+        }
+        else {
           zip = addrConstituents[addrConstituents.length - 1]
           state = addrConstituents[addrConstituents.length - 2]
           pre = addrConstituents.slice(0, addrConstituents.length - 2).join(' ')
@@ -163,7 +182,7 @@
       },
       directSearch(value) {
         this.errorMessage = ''
-        if (this.listings) {
+        if (this.listings || isNaN(value.substring(value.length - 5, value.length))) {
           // console.log('search from listing page')
           this.$router.push({ name: 'Listings', query: { address: value, offset: 0 } })
             .then(() => {

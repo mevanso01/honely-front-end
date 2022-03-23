@@ -13,7 +13,7 @@
     "@vue-stripe/vue-stripe": "^4.2.5",
     "apexcharts": "^3.33.1",
     "aws-amplify": "^4.3.1",
-    "aws-sdk": "^2.1078.0",
+    "aws-sdk": "^2.1096.0",
     "braintree-web-drop-in": "^1.31.2",
     "core-js": "^3.6.5",
     "echarts": "^5.2.1",

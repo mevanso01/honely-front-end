@@ -1,0 +1,46 @@
+.popup-card {
+    background-color: white;
+    padding-top: 1.5rem;
+    overflow: hidden;
+}
+.popup-header-wrapper {
+    display: flex;
+    padding: 0 25px;
+    justify-content: space-between;
+}
+.popup-title-wrapper {
+    width: 90%;
+    text-align: center;
+}
+.popup-title-wrapper p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+.popup-title-wrapper .popup-heading {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1d1b;
+}
+.popup-title-wrapper .popup-heading span {
+    color: #24cb43;
+    font-weight: 600;
+}
+.popup-header-wrapper .btn-close {
+    padding: 0 5px;
+}
+.popup-header-wrapper .btn-close i {
+    font-size: 20px;
+    cursor: pointer;
+}
+.popup-message {
+    padding: 1rem 25px;
+}
+.popup-message p {
+    margin-bottom: 1rem;
+}
+.popup-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px 20px;
+}
