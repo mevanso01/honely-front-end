@@ -665,77 +665,16 @@
           if (this.interestedZipcode) {
             leadZipCodeList.push(this.interestedZipcode)
             const paramsTier2 = {
-              first_name: this.firstName,
-              last_name: this.lastName,
-              user_email: this.email,
+              name: this.firstName,
+              email: this.email,
               phone_number: fullPhone,
-              address: this.interestedZipcode,
+              search_address: this.interestedZipcode,
               zip_code: this.interestedZipcode,
-              message: 'BUYING',
-              user_types: ["AGENT/BROKER","LENDER"],
-              tier: '2.1',
-              link_id: String(Date.now()),
+              lead_type: 'BUYING,,,',
+              lead_category: 'AGENT/BROKER,LENDER,',
+              came_from: "SITE"
             }
-            axios.post('https://api.honely.com/lookup-test/bad_word_check', paramsTier2)
-            axios.get('https://api.honely.com/lookup-test/is_open_window?zip_code=' + this.interestedZipcode)
-            .then((response) => {
-              console.log ('vx: content for the queue', paramsTier2)
-              var AWS = require('aws-sdk')
-              AWS.config.update({
-                accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-                secretAccessKey: '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',
-                region: "us-east-1",
-              })
-              // Set the region
-
-              // Create an SQS service object
-              var sqs = new AWS.SQS({apiVersion: '2012-11-05'})
-
-              var params = {
-                // Remove DelaySeconds parameter and value for FIFO queues
-              DelaySeconds: 1,
-              MessageBody: JSON.stringify(paramsTier2),
-              QueueUrl: response.data.target_url
-              }
-
-              sqs.sendMessage(params, function(err, data) {
-              if (err) {
-                console.log("Error", err)
-              } else {
-                console.log("Success", data.MessageId)
-              }
-              })
-              // if (response.data.is_open_window) {
-              //   axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
-              // } else {
-              //   console.log ('vx: content for the queue', paramsTier2)
-              //   var AWS = require('aws-sdk')
-              //   AWS.config.update({
-              //     accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-              //     secretAccessKey: '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',
-              //     region: "us-east-1",
-              //   })
-              //   // Set the region
-
-              //   // Create an SQS service object
-              //   var sqs = new AWS.SQS({apiVersion: '2012-11-05'})
-
-              //   var params = {
-              //     // Remove DelaySeconds parameter and value for FIFO queues
-              //   DelaySeconds: 1,
-              //   MessageBody: JSON.stringify(paramsTier2),
-              //   QueueUrl: response.data.target_url
-              //   }
-
-              //   sqs.sendMessage(params, function(err, data) {
-              //   if (err) {
-              //     console.log("Error", err)
-              //   } else {
-              //     console.log("Success", data.MessageId)
-              //   }
-              //   })
-              // }
-            })
+            axios.post('https://api.honely.com/lookup-test/lead', paramsTier2)
           }
           if (this.homeZipCode) {
             if (!leadZipCodeList.includes(this.homeZipCode)) {
@@ -748,94 +687,45 @@
               // tier2Targets.push('AGENT/BROKER')
               // tier2Targets.push('GENERAL CONTRACTOR')
               endUserTypes.push('SELLING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.homeOwnerType.includes('Buyer') && !this.homeOwnerType.includes('Seller')) {
               // tier2Targets.push('AGENT/BROKER')
               endUserTypes.push('BUYING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.homeOwnerType.includes('Refinancer')) {
               // tier2Targets.push('LENDER')
               endUserTypes.push('REFINANCING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.homeOwnerType.includes('Buyer') || this.homeOwnerType.includes('Seller') || this.userType === 'Just Browsing') {
               tier2Targets.push('AGENT/BROKER')
+            } else {
+              tier2Targets.push('')
             }
             if (this.homeOwnerType.includes('Buyer') || this.homeOwnerType.includes('Refinancer') || this.userType === 'Just Browsing') {
               tier2Targets.push('LENDER')
+            } else {
+              tier2Targets.push('')
             }
+            tier2Targets.push('')
             messageParam = endUserTypes.join(',')
+            const lead_category = tier2Targets.join(',')
             const paramsTier22 = {
-              first_name: this.firstName,
-              last_name: this.lastName,
-              user_email: this.email,
+              name: this.firstName,
+              email: this.email,
               phone_number: fullPhone,
-              address: this.homeZipCode,
+              search_address: this.homeZipCode,
               zip_code: this.homeZipCode,
-              message: '',
-              user_types: tier2Targets,
-              tier: '2.1',
-              link_id: String(Date.now()),
+              lead_type: messageParam,
+              lead_category: lead_category,
+              came_from: "SITE"
             }
-            axios.post('https://api.honely.com/lookup-test/bad_word_check', paramsTier22)
-            axios.get('https://api.honely.com/lookup-test/is_open_window?zip_code=' + this.homeZipCode)
-            .then((response) => {
-              console.log ('vx: content for the queue', paramsTier22)
-              var AWS = require('aws-sdk')
-              AWS.config.update({
-                accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-                secretAccessKey: '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',
-                region: "us-east-1",
-              })
-              // Set the region
-
-              // Create an SQS service object
-              var sqs = new AWS.SQS({apiVersion: '2012-11-05'})
-
-              var params = {
-                // Remove DelaySeconds parameter and value for FIFO queues
-              DelaySeconds: 1,
-              MessageBody: JSON.stringify(paramsTier22),
-              QueueUrl: response.data.target_url
-              }
-
-              sqs.sendMessage(params, function(err, data) {
-              if (err) {
-                console.log("Error", err)
-              } else {
-                console.log("Success", data.MessageId)
-              }
-              })
-              // if (response.data.is_open_window) {
-              //   axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier22)
-              // } else {
-              //   console.log ('vx: content for the queue', paramsTier22)
-              //   var AWS = require('aws-sdk')
-              //   AWS.config.update({
-              //     accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-              //     secretAccessKey: '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',
-              //     region: "us-east-1",
-              //   })
-              //   // Set the region
-
-              //   // Create an SQS service object
-              //   var sqs = new AWS.SQS({apiVersion: '2012-11-05'})
-
-              //   var params = {
-              //     // Remove DelaySeconds parameter and value for FIFO queues
-              //   DelaySeconds: 1,
-              //   MessageBody: JSON.stringify(paramsTier22),
-              //   QueueUrl: response.data.target_url
-              //   }
-
-              //   sqs.sendMessage(params, function(err, data) {
-              //   if (err) {
-              //     console.log("Error", err)
-              //   } else {
-              //     console.log("Success", data.MessageId)
-              //   }
-              //   })
-              // }
-            })
+            axios.post('https://api.honely.com/lookup-test/lead', paramsTier22)
           }
           if (leadZipCodeList.length > 0) {
             this.$store.dispatch('auth/setLeadZipCodeList', leadZipCodeList)

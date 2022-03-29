@@ -583,7 +583,7 @@
       // console.log(this.forecast)
       // console.log(this.propertyZipData)
       if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-        axios.get('https://api.honely.com/lookup/user_profile', {
+        axios.get('https://api.honely.com/lookup-test/user_profile', {
           params: {
             email: this.$store.getters['auth/cognitoUser'].attributes.email,
           },

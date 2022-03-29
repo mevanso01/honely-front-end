@@ -1,6 +1,5 @@
 <template>
   <!-- eslint-disable -->
-  <!-- vx: If the contents of this file are modified, the pdf version in s3 bucket needs to be updated too.. -->
   <div class="section section-wrapper placeholder">
     <div class="static-body feature-text text-exsmall">
       <p id="claim-lead-message">Please wait while the lead is being claimed...</p>

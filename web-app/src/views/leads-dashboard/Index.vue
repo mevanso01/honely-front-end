@@ -15,6 +15,38 @@
           <h2>Only Service Providers have access to this page</h2>
         </div>
         <div v-else>
+        <div class="leads-container">
+          <div class="leads-section-title theme4">
+            <div>Leads from 
+              <span class="leads-section-title-bold">Smart Search</span>
+              page
+            </div>
+            <span style="float: right; font-size:16px;" v-if="leadsLoaded && site_leads_forecast && site_leads_forecast.length > 0">Click on lead to remove from list</span>
+          </div>
+          <div v-if="leadsLoaded && site_leads_forecast && site_leads_forecast.length > 0" class="leads-table">
+            <v-data-table
+              :headers="headers1"
+              :items="site_leads_forecast"
+              item-key="lead_id"
+              :items-per-page="5"
+              class="datarow"
+              @click:row="cancelLead($event)"
+            >
+            </v-data-table>
+          </div>
+          <div v-else-if="!leadsLoaded">
+            <v-data-table
+              item-key="lead_id"
+              class="elevation-1"
+              loading
+              loading-text="Loading... Please wait"
+            >
+            </v-data-table>
+          </div>
+          <div v-else class="leads-table">
+            <p class="leads-data-msg">There are no leads available for your account.</p>
+          </div>
+        </div>
         <!-- site-leads -->
         <div v-if="isAgent" class="leads-container">
           <div class="leads-section-title theme3">
@@ -319,12 +351,12 @@
         selectedL: [],
         selectedGC: [],
         customerId: 'cus_Kpcon4obPmqUC8',
-        headers: [
-          { text: 'Name', value: 'first_name' },
-          // { text: 'Last Name', value: 'last_name' },
-          { text: 'Email', value: 'user_email' },
+        headers1: [
+          { text: 'Name', value: 'name' },
+          { text: 'Email', value: 'email' },
           { text: 'Phone Number', value: 'phone_number' },
           { text: 'Searched Address', value: 'searched_address' },
+          { text: 'Message', value: 'message' },
         ],
         headers2: [
           { text: 'Name', value: 'name' },
@@ -332,6 +364,7 @@
           { text: 'Phone Number', value: 'phone_number' },
           { text: 'Searched Address', value: 'searched_address' },
         ],
+        site_leads_forecast: [],
         site_leads_agent: [],
         site_leads_lender: [],
         site_leads_gc: [],
@@ -463,6 +496,7 @@
           .then((response) => {
             // console.log(response.data)
             this.loading = false
+            this.site_leads_forecast = [...response.data.leads.forecast.realtors, ...response.data.leads.forecast.lenders, ...response.data.leads.forecast.gcs]
             this.site_leads_agent = response.data.leads.site.realtors.confirmed
             this.site_leads_lender = response.data.leads.site.lenders.confirmed
             this.site_leads_gc = response.data.leads.site.gcs.confirmed

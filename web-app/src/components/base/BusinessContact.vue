@@ -56,7 +56,7 @@
         {
           icon: 'mdi-map-marker-outline',
           title: 'Address',
-          text: '150 East Palmetto Park Road, Suite 800<br>Boca Raton, Florida 33432',
+          text: '2500 N Military Trl, Suite 455<br>Boca Raton, Florida 33431',
         },
         {
           icon: 'mdi-cellphone',

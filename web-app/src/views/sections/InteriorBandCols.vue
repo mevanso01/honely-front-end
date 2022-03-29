@@ -168,7 +168,7 @@
     mounted () {
       if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
         // get current user
-        axios.get('https://api.honely.com/lookup/user_profile', {
+        axios.get('https://api.honely.com/lookup-test/user_profile', {
           params: {
             email: this.$store.getters['auth/cognitoUser'].attributes.email,
           },

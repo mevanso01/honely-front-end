@@ -53,11 +53,13 @@
     </div> -->
 
     <!-- service providers -->
-    <!-- <div class="forecast-services-wrapper">
+    <div class="forecast-services-wrapper" v-if="forecast.property_forecast && forecast.property_forecast.property_id">
       <services
         :service-providers="serviceProviders"
+        :forecast="forecast"
+        :user="user"
       />
-    </div> -->
+    </div>
     <!-- /service providers -->
 
     <!-- report-form -->
@@ -318,7 +320,7 @@
           } else {
             this.controllers = 1
           }
-
+          // this.getServiceProviders()
           // check lead form
           if (this.address) {
             this.leadFormFlag = this.leadFormNeeded(this.address)

@@ -119,7 +119,7 @@
           // console.log("vx: login path: " + this.$route.path)
           if (this.$route.path) {
             // if is one of the following paths, reload the page
-            if (this.$route.path === '/subscribe' || this.$route.path.startsWith('/forecast')) {
+            if (this.$route.path === '/subscribe' || this.$route.path === '/leadmoderation'  || this.$route.path.startsWith('/forecast')) {
               // console.log('vx: this.$route.path', this.$route.path)
               this.$router.go()
             }
@@ -178,7 +178,7 @@
       },
       getUserProfile () {
         if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-          axios.get('https://api.honely.com/lookup/user_profile', {
+          axios.get('https://api.honely.com/lookup-test/user_profile', {
             params: {
               email: this.$store.getters['auth/cognitoUser'].attributes.email,
             },

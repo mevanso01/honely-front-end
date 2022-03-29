@@ -242,7 +242,7 @@
           })
       },
       async resendVerificationCode () {
-        axios.get('https://api.honely.com/lookup/email_verification_service?email='+this.email)
+        axios.get('https://api.honely.com/lookup-test/email_verification_service?email='+this.email)
         .then(async () => {
           this.authError='Too much time has elapsed. Please sign up again.'
         }).catch(async ()=>{

@@ -465,6 +465,9 @@ p.btn-subscription-details {
   .leads-section-title.theme3 {
     background: rgba(90, 166, 80, 0.9);
   }
+  .leads-section-title.theme4 {
+    background: #06A550;
+  }
   .leads-section-title.theme2 {
     background: #ff7d1f;
   }

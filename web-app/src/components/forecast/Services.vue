@@ -10,6 +10,8 @@
       <service-provider-block
         v-for="(agent, i) in agents"
         :provider="agent"
+        :user="user"
+        :forecast="forecast"
         :key="i"
       />
     </div>
@@ -17,6 +19,20 @@
       <p>No service providers available in this area</p>
     </div>
     <!-- /service-providers-container -->
+    <!-- <div v-if="lenders" class="service-providers-container" :class="getAlignClass">
+      <service-provider-block
+        v-for="(lender, i) in lenders"
+        :provider="lender"
+        :key="i"
+      />
+    </div>
+    <div v-if="generalContractors" class="service-providers-container" :class="getAlignClass">
+      <service-provider-block
+        v-for="(generalContractor, i) in generalContractors"
+        :provider="generalContractor"
+        :key="i"
+      />
+    </div> -->
   </div>
   <!-- eslint-enable -->
 </template>
@@ -29,6 +45,8 @@
     },
     props: {
       serviceProviders: Object,
+      forecast: Object,
+      user: Object,
     },
     data () {
       return {

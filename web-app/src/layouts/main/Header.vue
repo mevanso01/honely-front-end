@@ -31,9 +31,12 @@
           </ul>
         </div>
         <!-- /header-menu-container -->
-
+        
         <!-- header-action-menu -->
         <div class="header-action-menu-container">
+          <div class="header-welcome-message-container" v-if="isCognitoUserLoggedIn && userProfile">
+            <span>Welcome, {{ userProfile.first_name }} {{ userProfile.last_name }}</span>
+          </div>
           <div v-if="!($route.name === 'Buying Landing Page' || $route.name === 'Selling Landing Page' || $route.name === 'Refinancing Landing Page' || $route.name === 'Investing Landing Page')">
             <button
               v-if="!isCognitoUserLoggedIn"

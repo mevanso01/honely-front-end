@@ -30,6 +30,11 @@ const router = new Router({
           component: () => import('@/views/claimlead/Index.vue'),         
         },
         {
+          path: '/leadmoderation',
+          name: 'Lead Moderation',
+          component: () => import('@/views/leadmoderation/Index.vue'),         
+        },
+        {
           path: '/buying',
           name: 'Buying Landing Page',
           component: () => import('@/views/landing-pages/BuyingLandingPage.vue'),         

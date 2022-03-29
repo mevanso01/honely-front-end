@@ -269,7 +269,14 @@ img.header-logo {
     width: 140px;
 }
 .header-menu-container {
-    width: 77%;
+    width: 62%;
+}
+.header-welcome-message-container {
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 5px;
 }
 #btn-mobile-menu {
     display: none;
@@ -309,8 +316,10 @@ img.header-logo {
 }
 .header-action-menu-container {
     position: relative;
-    width: 10%;
+    width: 20%;
     text-align: right;
+    display: flex;
+    align-items: center;
 }
 .header-action-menu-container #btn_login {
     background: #24cb43;
@@ -1033,11 +1042,19 @@ MOBILE
     }
     .header-menu-container {
         text-align: right;
+        width: 0;
+    }
+    .header-welcome-message-container {
+        font-size: 14px;
+        width: 70%;
+        margin-right: 5px;
     }
     .header-action-menu-container {
         display: flex;
         margin-left: 5px;
-        width: unset;
+        width: 70%;
+        justify-content: end;
+        align-items: center;
     }
     img.header-logo {
         width: 120px;

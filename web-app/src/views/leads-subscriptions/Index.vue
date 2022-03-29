@@ -1776,6 +1776,7 @@
     },
     data () {
       return {
+        // dummyEmail: '',
         agent: 'AGENT/BROKER',
         lender: 'LENDER',
         gc: 'GENERAL CONTRACTOR',
@@ -2441,15 +2442,15 @@
         // var n = 0
         if (userType === this.agent) {
           //   n = 1
-          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartA[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartA[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerA + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name
+          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartA[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartA[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerA + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name + '&sub_type=zip'
         }
         if (userType === this.lender) {
           //   n = 2
-          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartL[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartL[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerL + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name
+          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartL[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartL[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerL + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name + '&sub_type=zip'
         }
         if (userType === this.gc) {
           //   n = 3
-          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartGC[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartGC[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerGC + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name
+          this.successURL = 'https://www.honely.com/slotPaymentSuccess?agentId=' + this.agent_id + '&priceID=' + this.lineItems[0].price + '&agentType=' + userType + '&zipCode=' + this.zipCartGC[0] + '&subscriptionType=' + freeOrPaid + '&services_list=' + this.services_list + '&interested_zip_codes=' + this.zipCartGC[0] + '&agent_email=' + this.agent_email + '&purchasePower=' + this.zipPurchasePowerGC + '&first_name=' + this.agent_first_name + '&last_name=' + this.agent_last_name + '&sub_type=zip'
         }
         console.log('vx: this.successURL', this.successURL) // vx: dragonite
         // console.log('vx: lineItems', this.lineItems)

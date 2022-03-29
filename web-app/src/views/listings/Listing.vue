@@ -770,7 +770,7 @@
       },
       getUserProfile () {
         if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-          axios.get('https://api.honely.com/lookup/user_profile', {
+          axios.get('https://api.honely.com/lookup-test/user_profile', {
             params: {
               email: this.$store.getters['auth/cognitoUser'].attributes.email,
             },
@@ -794,7 +794,8 @@
               user_id: userId,
             },
           }).then((response) => {
-            console.log(response.data)
+            const self = this
+            // console.log(response.data)
             this.property = response.data
             if (!this.property_id) {
               this.property_id = this.property.property_id
@@ -806,7 +807,7 @@
             this.getRelatedListings()
             // load map
             Scriptjs('https://maps.googleapis.com/maps/api/js?key=' + this.$mapsKey, () => {
-              this.initMap()
+              self.initMap()
             })
           }).catch((error) => {
             console.log('[ERROR] Failed to fetch listing data......')
@@ -847,13 +848,14 @@
             lat: parseFloat(this.property.address.latitude),
             lng: parseFloat(this.property.address.longitude),
           },
+          zoom: 15,
         })
         const me = this
         google.maps.event.addListener(me.map, 'zoom_changed', function () {
           google.maps.event.addListener(me.map, 'bounds_changed', function (event) {
-            if (this.getZoom() > 15) {
-              this.setZoom(15)
-              this.initialZoom = false
+            if (me.map.zoom > 15) {
+              me.map.setZoom(15)
+              me.map.initialZoom = false
             }
           })
         })

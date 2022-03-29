@@ -5,18 +5,18 @@
       <div v-bind="attrs" v-on="on">
         <template>
           <!-- Agent Card UI -->
-          <div v-if="agent && agent!=null">
+          <!-- <div v-if="agent && agent!=null">
             <agent-card
              :agent="agent"
             >
             </agent-card>
-          </div>
-          <div v-else>
-            <!-- <button class="contact-agent-button" @click.prevent="">
+          </div> -->
+          <!-- <div v-else>
+            <button class="contact-agent-button" @click.prevent="">
               <i class="mdi mdi-account-wrench" aria-hidden="true"/>
                 {{getCardTitle()}}
-           </button> -->
-          </div>
+           </button>
+          </div> -->
          </template>
       </div>
     </template>
@@ -24,11 +24,14 @@
     <template #default="dialog">
       <div class="contact-agent-form-card">        
         <div class="dialog-header-wrapper">
-          <div class="dialog-title-wrapper">
+          <div class="dialog-title-wrapper" v-if="!agent">
             <p class="dialog-heading">Get the <span>Future Value</span> of this Property!</p>
             <p class="amount-txt" v-if="estimatedValueLoaded && estimatedValue">${{ formatValue(estimatedValue) }}</p>
             <p v-if="estimatedValueLoaded && estimatedValue">Current Value Estimate for:</p>
             <p v-if="estimatedValueLoaded && estimatedValue">{{ address }}</p>
+          </div>
+          <div class="dialog-title-wrapper" v-if="agent">
+            <p class="dialog-heading">Contact Realtor</p>
           </div>
           <div class="btn-close" @click="toggleDialog">
             <i class="fa fa-times"/>
@@ -49,7 +52,7 @@
               class="contact-agent-form-control"
               v-model="firstName"
               :maxlength="30"              
-              placeholder="e.g Jonathan Shah"
+              placeholder="e.g John Doe"
              ></v-text-field>
           </div>                 
           <label>Email</label>
@@ -84,14 +87,23 @@
             ></v-text-field>
           </div>          
           <label v-if="agent">Message</label>
-          <div v-if="agent" class="input-container partner-mt-2">
-            <textarea
+          <div v-if="agent" class="input-container mt-2">
+            <!-- <textarea
               rows="5"
               type="text"                            
               placeholder=""
               class="form-control form-control-lg name"              
               v-model="message"
-            ></textarea>
+            ></textarea> -->
+            <v-text-field
+              height="100"
+              outlined
+              shaped
+              dense
+              label=""
+              class="contact-agent-form-control"
+              v-model="message"
+            ></v-text-field>
           </div>
           
           <div v-if="!($route.name === 'Buying Landing Page' || $route.name === 'Selling Landing Page' || $route.name === 'Refinancing Landing Page' || $route.name === 'Investing Landing Page')">
@@ -105,16 +117,18 @@
           </div>
           </div>
           <p v-if="leadFormErrorMessage" style="color: red; margin-bottom: 0px;">{{ leadFormErrorMessage }}</p>
+          <p v-if="successMessage" style="color: green; margin-bottom: 0px;">{{ successMessage }}</p>
           <div class="d-flex flex-column justify-center mt-5">
             <div class="d-flex justify-center">
               <v-btn
                 v-if="!leadGenerating"
-                @click="agent ? submitLead(agent.agent_id, agent.agent_email, searchedAddress, searchedZipcode, agent.user_type) : submitRandomLead()"
+                @click="submitRandomLead()"
                 :disabled="valid"
                 color= "#06A550"
                 class="btn-submit px-10 py-5"
               >
-                Get Free Forecast Report
+                <span v-if="!agent">Get Free Forecast Report</span>
+                <span v-if="agent">Submit</span>
               </v-btn>
               <div
                 id="leadGeneratingLoadingSpinner"
@@ -125,7 +139,7 @@
             </div>
             <div class="d-flex justify-center mt-5 mb-5">              
               <div
-                v-if="!leadGenerating"
+                v-if="!leadGenerating && !agent"
                 class="px-15 py-4 btn-login"
                 :disabled="valid"   
                 @click="loginDialog"             
@@ -174,6 +188,7 @@
       console.log('vx: yearForecast', this.yearForecast)
       console.log('vx: searchQuery', this.searchQuery)
       if (this.user && this.user.first_name) this.firstName = this.user.first_name
+      if (this.user && this.user.last_name) this.firstName = this.firstName + ' ' + this.user.last_name
       if (this.user && this.user.email) this.email = this.user.email
       if (this.user && this.user.phone) this.phone = this.user.phone
       const leadDetails = this.$store.getters['auth/selectedHomeOwnerTypes']
@@ -187,9 +202,12 @@
         this.purposes.refinancing.value = leadDetails.isRefinancing
         this.purposes.browsing.value = leadDetails.isJustBrowsing
       }
-      this.getEstimatedValue()
+      if (!this.agent) {
+        this.getEstimatedValue()
+      }
     },
     data: () => ({
+      successMessage: '',
       leadGenerating: false,
       address: null,
       estimatedValue: null,
@@ -280,15 +298,6 @@
             console.log(error)
           })
       },
-      getCardTitle () {
-        var cardTitle = 'Access a Full Forecast Report Now!'
-        // if (this.yearForecast !== 1) cardTitle += 's'
-        // cardTitle += ' Forecast'
-        if (this.agent) {
-          cardTitle = 'Contact Service Provider'
-        }
-        return cardTitle
-      },
       submitLead (agentId, email, currAddress, zipcode, userType, agentPhoneNumber) {
         // console.log(agentId, email, currAddress, zipcode, userType)
         if (!this.firstName || !this.lastName || !this.email || !this.phone || (!this.isBuying && !this.isSelling && !this.isRefinancing && !this.isJustBrowsing)) {
@@ -348,6 +357,11 @@
           setTimeout(() => {
             this.leadFormErrorMessage = ''
           }, 2000)
+        } else if (this.agent && !this.message) {
+          this.leadFormErrorMessage = 'Please enter all the fields!'
+          setTimeout(() => {
+            this.leadFormErrorMessage = ''
+          }, 2000)
         } else {
           gtag('event', 'conversion', {'send_to': 'AW-10805687182/RY9SCNrA06UDEI7nxqAo',
             'value': 1.0,
@@ -390,10 +404,15 @@
           // }
           if (this.$route.name === 'Buying Landing Page' || this.$route.name === 'Investing Landing Page' || this.isBuying || this.$route.name === 'Selling Landing Page' || this.isSelling || this.isJustBrowsing) {
             tier2Targets.push('AGENT/BROKER')
+          } else {
+            tier2Targets.push('')
           }
           if (this.$route.name === 'Buying Landing Page' || this.$route.name === 'Investing Landing Page' || this.isBuying || this.$route.name === 'Refinancing Landing Page' || this.isRefinancing) {
             tier2Targets.push('LENDER')
+          } else {
+            tier2Targets.push('')
           }
+          tier2Targets.push('')
           var addressParam = null
           var zipCodeParam = null
           if (this.forecast) {
@@ -408,133 +427,93 @@
           var endUserTypes = []
           if (this.$route.name === 'Buying Landing Page' || this.$route.name === 'Selling Landing Page' || this.$route.name === 'Refinancing Landing Page' || this.$route.name === 'Investing Landing Page') {
             if (this.$route.name === 'Buying Landing Page') endUserTypes.push('BUYING')
+            else endUserTypes.push('')
             if (this.$route.name === 'Selling Landing Page') endUserTypes.push('SELLING')
+            else endUserTypes.push('')
             if (this.$route.name === 'Refinancing Landing Page') endUserTypes.push('REFINANCER')
+            else endUserTypes.push('')
             if (this.$route.name === 'Investing Landing Page') endUserTypes.push('BUYING')
+            else endUserTypes.push('')
           } else {
             if (this.isBuying) {
               endUserTypes.push('BUYING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.isSelling) {
               endUserTypes.push('SELLING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.isRefinancing) {
               endUserTypes.push('REFINANCING')
+            } else {
+              endUserTypes.push('')
             }
             if (this.isJustBrowsing) {
               endUserTypes.push('JUST BROWSING')
+            } else {
+              endUserTypes.push('')
             }
           }
-          messageParam = endUserTypes.join(',')
-          const paramsTier2 = {
-            first_name: this.firstName,
-            last_name: this.lastName,
-            user_email: this.email,
-            phone_number: this.phone,
-            address: addressParam,
-            zip_code: zipCodeParam,
-            message: messageParam,
-            user_types: tier2Targets,
-            tier: '2.1',
-            link_id: String(Date.now()),
+          //set phone param
+          var phoneParam = ""
+          if (this.phone) {
+            phoneParam = "+1" + this.phone
           }
-          axios.post('https://api.honely.com/lookup-test/bad_word_check', paramsTier2)
-          axios.get('https://api.honely.com/lookup-test/is_open_window?zip_code=' + zipCodeParam)
-            .then((response) => {
-              console.log('vx: content for the queue', paramsTier2)
-              var AWS = require('aws-sdk')
-              AWS.config.update({
-                accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-                secretAccessKey: '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',
-                region: 'us-east-1',
-              })
-              // Set the region
-              // Create an SQS service object
-              var sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
-              var params = {
-                // Remove DelaySeconds parameter and value for FIFO queues
-                DelaySeconds: 1,
-                MessageBody: JSON.stringify(paramsTier2),
-                QueueUrl: response.data.target_url,
-              }
-              const searchAddr = this.searchQuery
-              sqs.sendMessage(params, function (err, data) {
-                if (err) {
-                  console.log('Error', err)
-                  // if (searchAddr) {
-                  //   this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-                  // }
+          messageParam = endUserTypes.join(',')
+          //convert tier2Targets -> lead_category
+          const lead_category = tier2Targets.join(',')
+          var paramsTier2 = null
+          if (!this.agent) {
+            paramsTier2 = {
+              name: this.firstName,
+              email: this.email,
+              phone_number: phoneParam,
+              search_address: addressParam,
+              zip_code: zipCodeParam,
+              lead_category: lead_category,
+              lead_type: messageParam,
+              came_from: "SITE"
+            }
+          }
+          if (this.agent) {
+            paramsTier2 = {
+              name: this.firstName,
+              email: this.email,
+              phone_number: phoneParam,
+              search_address: addressParam,
+              zip_code: zipCodeParam,
+              lead_category: lead_category,
+              lead_type: messageParam,
+              came_from: "FORECAST",
+              agent_id: this.agent.agent_id,
+              message: this.message
+            }
+          }
+          // console.log('vx: paramsTier2', paramsTier2)
+          axios.post('https://api.honely.com/lookup-test/lead', paramsTier2)
+          .then(() => {
+            if (this.searchQuery) {
+              if (this.$route.path.startsWith('/forecast')) {
+                if (this.agent) {
+                  this.successMessage = 'Submitted Successfully'
+                  setTimeout(() => {
+                    this.successMessage = ''
+                    // this.dialog = !this.dialog
+                    this.toggleDialog()
+                  }, 2000);
                 } else {
-                  console.log('Success', data.MessageId)
-                  // if (searchAddr) {
-                  //   this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-                  // }
+                  this.dialog = !this.dialog
                 }
-              })
-              setTimeout(() => {
-                if (searchAddr) {
-                  if (this.$route.path.startsWith('/forecast')) {
-                    this.dialog = !this.dialog
-                  } else {
-                    this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-                  }
-                }
-              }, 2000)
-              // if (response.data.is_open_window) {
-              //   axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
-              //     .then(() => {
-              //       if (this.searchQuery) {
-              //         this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-              //       }
-              //     })
-              //     .catch((error) => {
-              //       if (error.response.status === 404) {
-              //         this.dialog = false
-              //         if (this.searchQuery) {
-              //           this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-              //         }
-              //       } else {
-              //         this.leadFormErrorMessage = 'Something went wrong. Please refresh the page and try again.'
-              //       }
-              //     })
-              // } else {
-              //   console.log('vx: content for the queue', paramsTier2)
-              //   var AWS = require('aws-sdk')
-              //   AWS.config.update({
-              //     accessKeyId: 'AKIAQUKOD44IIRAEIOOS',
-              //     secretAccessKey: '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',
-              //     region: 'us-east-1',
-              //   })
-              //   // Set the region
-              //   // Create an SQS service object
-              //   var sqs = new AWS.SQS({ apiVersion: '2012-11-05' })
-              //   var params = {
-              //     // Remove DelaySeconds parameter and value for FIFO queues
-              //     DelaySeconds: 1,
-              //     MessageBody: JSON.stringify(paramsTier2),
-              //     QueueUrl: response.data.target_url,
-              //   }
-              //   const searchAddr = this.searchQuery
-              //   sqs.sendMessage(params, function (err, data) {
-              //     if (err) {
-              //       console.log('Error', err)
-              //       // if (searchAddr) {
-              //       //   this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-              //       // }
-              //     } else {
-              //       console.log('Success', data.MessageId)
-              //       // if (searchAddr) {
-              //       //   this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-              //       // }
-              //     }
-              //   })
-              //   setTimeout(() => {
-              //     if (searchAddr) {
-              //       this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
-              //     }
-              //   }, 2000)
-              // }
-            })
+              } else {
+                this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
+              }
+            }
+          })
+          .catch(() => {
+            this.leadFormErrorMessage = 'Something went wrong. Please refresh the page and try again.'
+          })
         }
       },
       toggleDialog () {
@@ -546,7 +525,12 @@
           else if (this.$route.name === 'Investing Landing Page') window.location.href = '/investing'
           return
         }
-        window.location.href = '/'
+        if (!this.agent) {
+          window.location.href = '/'
+        }
+        if (this.agent) {
+          this.$emit('setLeadForm', false)
+        }
         this.dialog = !this.dialog
       },
       validate () {
