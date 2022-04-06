@@ -20,6 +20,7 @@
         <ul class="footer-links">
           <li
               v-for="(item, i) in policyLinks"
+              v-if="item.text !== 'AUP'"
             >
               <router-link
                 :id="'footer-link-' + i"
@@ -29,6 +30,7 @@
                 {{ item.text }}
               </router-link>
             </li>
+            <li><a href="/aup.pdf">AUP</a></li>
         </ul>
       </div>
       <div class="footer-col-social">

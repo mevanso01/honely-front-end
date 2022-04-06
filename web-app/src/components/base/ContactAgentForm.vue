@@ -281,7 +281,7 @@
         }
       },
       getEstimatedValue () {
-        axios.get('https://api.honely.com/lookup/forecast', {
+        axios.get('https://api.honely.com/searches/forecast', {
           params: {
             address: this.searchQuery,
           },

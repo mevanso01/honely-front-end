@@ -19,7 +19,20 @@
     <!-- forecast-tabs -->
 
     <!-- forecast-neighborhood-data -->
-    <div class="forecast-neighborhood-data">
+    <div class="honely-property-position-relative">
+      <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+        </div>
+      </div>
+    <div class="forecast-neighborhood-data" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
       <!-- forecast-neighborhood-leftcol -->
       <div class="forecast-neighborhood-left">
         <!-- forecast-neighborhood-home-value -->
@@ -279,21 +292,25 @@
       </div>
       <!-- /forecast-neighborhood-right -->
     </div>
+    </div>
     <!-- /forecast-neighborhood-data -->
   </div>
   <!-- eslint-enable -->
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
     name: 'Neighborhood',
     components: {
     },
     props: {
       forecast: Object,
+      subscriptionFlag: Boolean,
     },
     data () {
       return {
+        // blocked: true,
         neighborhoodData: null,
         surroundingZipData: null,
         stateData: null,
@@ -307,6 +324,7 @@
       }
     },
     computed: {
+      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       isProperty () {
         if (this.forecast && this.forecast.property_forecast) {
           return true
@@ -596,6 +614,9 @@
       }
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       displayForecastData (time) {
         // console.log('[DEV] Displaying neighborhood data for time: ' + time)
         if (time >= 0) {

@@ -1,0 +1,52 @@
+.user-sub-body {
+    padding: 10px; 
+}
+.user-sub-feature-list {
+    padding: 10px;
+}
+.user-sub-main-title {
+    margin: 0 10px;
+}
+.user-sub-subscription-details {
+    padding: 20px 10px 10px;
+}
+.user-sub-color-primary {
+    color:#24cb43
+}
+.user-sub-color-secondary {
+    color:white
+}
+.user-sub-list-normal{
+    list-style: circle;
+    padding: 5px 10px 0px 10px;
+}
+.user-sub-list-tick ul{
+    padding-left: 10px;
+}
+.user-sub-list-normal li{
+    /* margin-top: 15px; */
+    margin-left: 30px;
+}
+.user-sub-list-tick ul li{
+    margin-bottom: 10px;
+}
+.user-sub-tick {
+    color: #24cb43;
+    margin: 5px 10px 5px 0px;
+}
+.user-sub-info-icon {
+    margin: 0 5px;
+    color: #24cb43;
+}
+.user-sub-features-heading-box {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    padding: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.80);
+}
+.user-sub-features-box {
+    border: 1px solid black;
+}

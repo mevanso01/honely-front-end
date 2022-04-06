@@ -11,7 +11,7 @@
         <!-- /header-logo -->
 
         <!-- header-menu-container -->
-        <div class="header-menu-container">
+        <div :class="isCognitoUserLoggedIn?'header-menu-container-logged-in':'header-menu-container'">
           <ul class="header-menu" id="header-menu">
             <li id="btn-mobile-menu-close">
               <span class="mdi mdi-close" @click="toggleMobileMenu"></span>
@@ -33,7 +33,7 @@
         <!-- /header-menu-container -->
         
         <!-- header-action-menu -->
-        <div class="header-action-menu-container">
+        <div :class="isCognitoUserLoggedIn?'header-action-menu-container-logged-in':'header-action-menu-container'">
           <div class="header-welcome-message-container" v-if="isCognitoUserLoggedIn && userProfile">
             <span>Welcome, {{ userProfile.first_name }} {{ userProfile.last_name }}</span>
           </div>
@@ -128,6 +128,11 @@
           link: '/insights',
           label: 'insights',
         },
+        {
+          text: 'Newsroom',
+          link: '/newsroom',
+          label: 'newsroom',
+        },
         // {
         //   text: 'Subscribe',
         //   link: '/subscribe',
@@ -169,6 +174,11 @@
           text: 'Saved Searches',
           label: 'saved-searches',
         },
+        {
+          link: '/smart-data-subscription',
+          text: 'Honely Subscription',
+          label: 'smart-data-subscription',
+        },
         /* {
           link: '/my-listings',
           text: 'My Listings',
@@ -197,10 +207,10 @@
         label: 'logout',
       },
       showLogin: false,
-      userProfile: null,
+      // userProfile: null,
     }),
     computed: {
-      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser'], 'userProfile'),
+      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser', 'userProfile']),
       isWidePage () {
         if (this.$route.name === 'Listings') {
           return true
@@ -235,6 +245,8 @@
           active = 'forecast'
         } else if (this.$route.name === 'Insights') {
           active = 'insights'
+        } else if (this.$route.name === 'Newsroom') {
+          active = 'newsroom'
         } else if (this.$route.name === 'Partner With Us') {
           active = 'partner'
         } else if (this.$route.name === 'Account') {
@@ -302,7 +314,7 @@
         }
       })
       // get user profile
-      if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+      if (this.$store.getters['auth/isCognitoUserLoggedIn'] && this.userProfile == null) {
         this.getUserProfile()
       }
     },
@@ -314,7 +326,8 @@
           },
         }).then((response) => {
           // console.log(response.data)
-          this.userProfile = response.data
+          // this.userProfile = response.data
+          this.$store.dispatch('auth/setUserProfile', response.data)
         })
       },
       toggleUserMenu () {

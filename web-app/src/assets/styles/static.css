@@ -17,6 +17,9 @@
 .pg-static-banner.faq {
   background-image: url("~@/assets/site_images/backgrounds/banner-faq.jpg");
 }
+.pg-static-banner.newsroom {
+  background-image: url("~@/assets/site_images/backgrounds/newspapers-g54e3bc794_1920.jpg");
+}
 .pg-static-banner.disclaimer, .pg-static-banner.licensing, .pg-static-banner.terms {
   background-image: url("~@/assets/site_images/backgrounds/banner-disclaimer.jpg");
 }

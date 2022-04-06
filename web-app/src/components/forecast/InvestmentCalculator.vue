@@ -17,7 +17,20 @@
       <!-- <v-tab>Debt-to-Income Ratio</v-tab> -->
       <v-tab-item :key="1"
       >
-        <div class="flex-wrapper">
+        <div class="honely-property-position-relative">
+          <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary">Subscribe</button>
+        </div>
+      </div>
+        <div class="flex-wrapper" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
           <div class="flex-col-md-6">
             <label class="text-0">Home Value</label>
             <input id="homeValue" type="text" :placeholder="getHonelyEstimate" @keyup="getBuyerScore">
@@ -48,10 +61,24 @@
             </div>
           </div>
         </div>
+        </div>
       </v-tab-item>
       <v-tab-item :key="2"
       >
-        <div class="flex-wrapper">
+        <div class="honely-property-position-relative">
+        <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+        </div>
+      </div>
+        <div class="flex-wrapper" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''">
           <div class="flex-col-md-4">
             <span class="warning-text">Monthly Expenses</span>
             <label class="text-0">Mortgage</label>
@@ -103,6 +130,7 @@
               </v-btn>
             </div>
           </div>
+        </div>
         </div>
       </v-tab-item>
       <!-- <v-tab-item :key="3"
@@ -173,6 +201,7 @@
   import VueApexCharts from 'vue-apexcharts'
   import VueNumberFormat from 'vue-number-format'
   import { REQUIRED_ONLY_FLOAT } from '@/utils/validators'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'InvestmentCalculator',
@@ -182,9 +211,11 @@
     },
     props: {
       forecast: Object,
+      subscriptionFlag: Boolean,
     },
     data () {
       return {
+        // blocked: true,
         homeValue: 0,
         downPayment: 0,
         loan: 10,
@@ -235,6 +266,7 @@
       }
     },
     computed: {
+      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       getHonelyEstimate () {
         let estimate = null
         if (this.forecast && this.forecast.property_forecast) {
@@ -250,6 +282,9 @@
     mounted () {
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       displayForecastData (index, year) {
         if (index >= 0) {
           this.activeTimeframe = index

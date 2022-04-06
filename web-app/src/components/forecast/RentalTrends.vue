@@ -9,7 +9,20 @@
     <!-- /forecast-heading-wrapper -->
     
     <!-- forecast-rental-container -->
-    <div class="forecast-rental-container">
+    <div class="honely-property-position-relative">
+      <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+        </div>
+      </div>
+    <div class="forecast-rental-container" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
       <div class="forecat-rental-data forecast-wrapper">
         <div class="forecast-wrapper-heading">
           Stats
@@ -74,12 +87,14 @@
         </div>
       </div>
     </div>
+    </div>
     <!-- /forecast-rental-container -->
   </div>
   <!-- eslint-enable -->
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
     name: 'RentalTrends',
     components: {
@@ -87,15 +102,18 @@
     props: {
       forecast: Object,
       rentalTrends: Object,
+      subscriptionFlag: Boolean,
     },
     data () {
       return {
+        // blocked: true,
         rentalZip: null,
         rentalMetro: null,
         rentalState: null,
       }
     },
     computed: {
+      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       isProperty () {
         if (this.forecast && this.forecast.property_forecast) {
           return true
@@ -268,6 +286,9 @@
       }
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       capitalize (string) {
         if (string) {
           let result = ''

@@ -383,7 +383,7 @@
             <div class="list-agent-info">
               <p class="list-agent-name">{{ getListhubData(true, this.getListAgent.list_agent_full_name) }}</p>
               <p class="list-agent-company">{{ getListhubData(true, this.getListAgent.list_office_name) }}</p>
-              <p class="list-agent-phone">{{ getListhubData(true, this.getListAgent.list_office_phone) }}</p>
+              <p class="list-agent-phone">{{ Math.trunc(getListhubData(true, this.getListAgent.list_office_phone)) }}</p>
             </div>
           </div>
         </div>
@@ -917,7 +917,7 @@
       },
       getForecast () {
         if (this.property_id) {
-          axios.get('https://api.honely.com/lookup/forecast', {
+          axios.get('https://api.honely.com/searches/forecast', {
             params: {
               property_id: this.property_id,
             },

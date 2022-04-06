@@ -5,7 +5,7 @@
     <div class="forecast-form-container">
       <!-- form-title-section -->
       <div class="forecast-form-title-bar">
-        <span>Property Report</span>
+        <span>Property Report <span v-if="freeReportsLeft > 0" style="font-size: 11px">(You have {{ freeReportsLeft }} free report downloads/shares remaining after which you will be charged $0.99 per report share/download)</span><span v-else style="font-size: 11px">($0.99 per report share/download. Will be charged at the end of current subscription pay cycle)</span></span>
         <i class="fa fa-times-thin fa-2x" aria-hidden="true" @click="doCloseForm"></i>
       </div>
       <!-- /form-title-section -->
@@ -590,8 +590,10 @@
       schools: Array,
       optionLists: Object,
       rentalTrends: Object,
+      report_counter: Number,
     },
     data: () => ({
+      freeReportsLeft: null,
       mapsKey: 'AIzaSyClIFG-ONBwyXrn4_kaA4yMYHGpZD5EEko',
       initialRate: 1,
       loading: false,
@@ -1712,6 +1714,7 @@
     },
     mounted () {
       this.doInitialEstimate()
+      this.freeReportsLeft = 10 - this.report_counter
     },
     methods: {
       doDev () {
@@ -1737,6 +1740,7 @@
         document.getElementById('share-emails-temp').value = ''
         document.getElementById('share-emails').value = ''
         document.getElementById('share-message').value = ''
+        location.reload()
       },
       doShowBrokerageLogo () {
         const brokerageSelect = document.getElementById('brokerage-logo')
@@ -2869,6 +2873,7 @@
           const templateProd = 'template_honely_basic.html'
 
           const body = {
+            user_id: this.user.user_id,
             template: templateProd,
             DATE: {
               type: 'text',
@@ -3303,6 +3308,7 @@
             self.hideLoder()
             self.enableSubmitButton()
             console.log('[INFO] Finished generating PDF report......')
+            self.freeReportsLeft--
           }).catch((err) => {
             // self.loading = false
             self.hideLoder()

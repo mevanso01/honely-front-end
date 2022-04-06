@@ -30,6 +30,11 @@ const router = new Router({
           component: () => import('@/views/claimlead/Index.vue'),         
         },
         {
+          path: '/newsroom',
+          name: 'Newsroom',
+          component: () => import('@/views/newsroom/Index.vue'),         
+        },
+        {
           path: '/leadmoderation',
           name: 'Lead Moderation',
           component: () => import('@/views/leadmoderation/Index.vue'),         
@@ -72,6 +77,11 @@ const router = new Router({
           path: 'account',
           name: 'Account',
           component: () => import('@/views/account/Index.vue'),
+        },
+        {
+          path: 'smart-data-subscription',
+          name: 'Forecast Data Subscription',
+          component: () => import('@/views/forecast-data-subscription/Index.vue'),
         },
         {
           path: 'leads-subscriptions',

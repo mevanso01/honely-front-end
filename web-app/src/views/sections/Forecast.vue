@@ -4,36 +4,6 @@
     <page-loader :loading="loading" />
     <!-- forecast-carousel-wrapper -->
     <div v-if="forecast" class="forecast-carousel-wrapper">
-      <div class="forecast-carousel-content">
-        <div v-if="isProperty" class="carousel-item bg-white active">
-          <honely-forecast
-            :forecast="forecast"
-            :property="property"
-            :property-zip-data="propertyZipData"
-          />
-        </div>
-        <div v-if="forecast" class="carousel-item bg-default" :class="{active : !isProperty}">
-          <neighborhood
-            :forecast="forecast"
-          />
-        </div>
-        <div v-if="isProperty" class="carousel-item bg-white">
-          <rental-trends
-            :forecast="forecast"
-            :rental-trends="rentalTrendData"
-          />
-        </div>
-        <div v-if="isProperty" class="carousel-item bg-white">
-          <buyer-score
-            :forecast="forecast"
-          />
-        </div>
-        <div v-if="isProperty" class="carousel-item bg-white">
-          <investment-calculator
-            :forecast="forecast"
-          />
-        </div>
-      </div>
       <div class="forecast-carousel-controller">
         <ul v-if="controllers > 1" class="carousel-controller">
           <li
@@ -46,6 +16,41 @@
           </li>
         </ul>
       </div>
+      <div class="forecast-carousel-content">
+        <div v-if="isProperty" class="carousel-item bg-white active">
+          <honely-forecast
+            :forecast="forecast"
+            :property="property"
+            :property-zip-data="propertyZipData"
+            :subscriptionFlag="subscriptionFlag"
+          />
+        </div>
+        <div v-if="forecast" class="carousel-item bg-default" :class="{active : !isProperty}">
+          <neighborhood
+            :forecast="forecast"
+            :subscriptionFlag="subscriptionFlag"
+          />
+        </div>
+        <div v-if="isProperty" class="carousel-item bg-white">
+          <rental-trends
+            :forecast="forecast"
+            :rental-trends="rentalTrendData"
+            :subscriptionFlag="subscriptionFlag"
+          />
+        </div>
+        <div v-if="isProperty" class="carousel-item bg-white">
+          <buyer-score
+            :forecast="forecast"
+            :subscriptionFlag="subscriptionFlag"
+          />
+        </div>
+        <div v-if="isProperty" class="carousel-item bg-white">
+          <investment-calculator
+            :forecast="forecast"
+            :subscriptionFlag="subscriptionFlag"
+          />
+        </div>
+      </div>
     </div>
     <!-- /forecast-carousel-wrapper -->
     <!-- <div v-else class="section-wrapper forecast-no-data">
@@ -53,7 +58,7 @@
     </div> -->
 
     <!-- service providers -->
-    <div class="forecast-services-wrapper" v-if="forecast.property_forecast && forecast.property_forecast.property_id">
+    <div class="forecast-services-wrapper" v-if="forecast && forecast.property_forecast && forecast.property_forecast.property_id">
       <services
         :service-providers="serviceProviders"
         :forecast="forecast"
@@ -72,6 +77,7 @@
       :schools="schools"
       :rental-trends="rentalTrendData"
       :option-lists="optionLists"
+      :report_counter="report_counter"
     />
     <!-- /report-form -->
 
@@ -117,8 +123,11 @@
       ContactAgentForm: () => import('@/components/base/ContactAgentForm'),
     },
     data: () => ({
+      report_counter: null,
       loading: false,
       user: null,
+      userId: '',
+      subscriptionFlag : false,
       fips: null,
       apn: null,
       propertyId: null,
@@ -273,12 +282,38 @@
       this.apn = this.$route.params.apn
       this.propertyId = this.$route.params.property_id
       this.address = this.$route.query.address
-      this.getForecastData()
       this.getUserData()
+      // this.getForecastData()
     },
     created () {
     },
     methods: {
+      subscriptionStatusCheck (x) {
+        var month = x.substring(0, 16).split(' ')[2]
+        var monthNumMapping = {
+          Jan: '01',
+          Feb: '02',
+          Mar: '03',
+          Apr: '04',
+          May: '05',
+          Jun: '06',
+          Jul: '07',
+          Aug: '08',
+          Sep: '09',
+          Oct: '10',
+          Nov: '11',
+          Dec: '12'
+        }
+        // console.log(monthNumMapping[month])
+        var monthNum = monthNumMapping[month]
+        var day = x.substring(0, 16).split(' ')[1]
+        var year = x.substring(0, 16).split(' ')[3]
+        var date = new Date(monthNum + '/' + day + '/' + year + ' 00:00:00')
+        var milliseconds = date.getTime()
+        // console.log(milliseconds)
+        // console.log(Date.now())
+        return (Date.now() < milliseconds)
+      },
       getForecastData () {
         let params = {}
         let userId = ''
@@ -313,7 +348,7 @@
           params: params,
         }).then((response) => {
           this.loading = false
-          // console.log(response.data)
+          console.log(response.data)
           this.forecast = response.data
           if (this.forecast.property_forecast) {
             this.controllers = 5
@@ -342,8 +377,40 @@
         })
       },
       getUserData () {
+        if (!this.isCognitoUserLoggedIn) {
+          this.getForecastData()
+        }
         if (this.$store.getters['auth/userProfile']) {
           this.user = this.$store.getters['auth/userProfile']
+          this.userId = this.user.user_id
+          this.getForecastData()
+        }
+        if (this.isCognitoUserLoggedIn) {
+          if (!this.user) {
+            axios.get('https://api.honely.com/lookup-test/user_profile', {
+              params: {
+                email: this.cognitoUser.attributes.email,
+              },
+            }).then((response) => {
+              // console.log(response.data)
+              this.$store.dispatch('auth/setUserProfile', response.data)
+              this.user = response.data
+              this.userId = this.user.user_id
+              this.getForecastData()
+            }).catch((error) => {
+              console.log('[ERROR] Failed to fetch user data')
+              console.log(error.response.data.errorMessage)
+            })
+          }
+          axios.get('https://api.honely.com/lookup-test/fetch-user-subscription?email=' + this.cognitoUser.attributes.email)
+          .then((response) => {
+            if (response.data.subscriopions.length > 0) {
+              if (this.subscriptionStatusCheck(response.data.subscriopions[0].end_date)) {
+                this.subscriptionFlag = true
+                this.report_counter = response.data.subscriopions[0].report_counter
+              }
+            }
+          })
         }
       },
       getPropertyData (propertyId) {
@@ -368,10 +435,8 @@
       },
       getPropertyZipData (propertyId) {
         if(propertyId) {
-          axios.get('https://api.honely.com/lookup/forecast/property_to_zipcode?property_id=' + propertyId, {
-            params: {
-            },
-          }).then((response) => {
+          axios.get('https://api.honely.com/searches/forecast/property_to_zipcode?property_id=' + propertyId + '&user_id=' + this.userId)
+            .then((response) => {
             // console.log(response.data)
             if (response.data) {
               if (response.data.result_status === 'Success') {

@@ -27,6 +27,8 @@ import '@/assets/styles/forecast-form.css'
 import '@/assets/styles/account.css'
 import '@/assets/styles/static.css'
 import '@/assets/styles/popup.css'
+import '@/assets/styles/newsroom.css'
+import '@/assets/styles/user-subscription.css'
 
 Vue.config.productionTip = false
 export const bus = new Vue()

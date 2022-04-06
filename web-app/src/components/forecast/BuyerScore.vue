@@ -9,6 +9,20 @@
     <!-- /forecast-heading-wrapper -->
 
     <!-- forecast-buyer-score -->
+    <div class="honely-property-position-relative" >
+      <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn && !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+        </div>
+      </div>
+    <div class="forecast-buyer-score-main-block" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
     <div class="forecast-buyer-score">
       <buyer-score-block
         :forecast="forecast"
@@ -49,11 +63,14 @@
       </div>
     </div>
     <!-- /forecast-buyer-score-search -->
+    </div>
+    </div>
   </div>
   <!-- eslint-enable -->
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
     name: 'BuyerScore',
     components: {
@@ -63,14 +80,17 @@
     },
     props: {
       forecast: Object,
+      subscriptionFlag: Boolean,
     },
     data () {
       return {
+        // blocked: true,
         loading: false,
         properties: [],
       }
     },
     computed: {
+      ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       isProperty () {
         if (this.forecast && this.forecast.property_forecast) {
           return true
@@ -147,6 +167,9 @@
       this.properties = []
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       capitalize (string) {
         if (string) {
           let result = ''

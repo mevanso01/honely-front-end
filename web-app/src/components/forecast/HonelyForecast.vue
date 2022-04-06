@@ -91,7 +91,20 @@
     <!-- honely-property-zip-data -->
     <div class="honely-property-zip-data">
       <div class="forecast-section-title">Property Relative to Zip Code: {{ getZipcode }}</div>
-      <div class="honely-property-zip-data-charts">
+      <div class="honely-property-position-relative">
+      <!-- <div v-if="!isCognitoUserLoggedIn" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Message prompting to login</p>
+          <button class="bg-primary">Sign In</button>
+        </div>
+      </div> -->
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+        <div class="overlay-wrapper">
+          <p>Please subscribe to view all of our statistics</p>
+          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+        </div>
+      </div>
+      <div class="honely-property-zip-data-charts" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
         <div class="chart-container">
           <p class="chart-tilte">
             <span class="mdi mdi-chart-bar"></span>
@@ -158,6 +171,7 @@
         </div>
       </div>
     </div>
+    </div>
     <!-- /honely-property-zip-data -->
   </div>
   <!-- eslint-enable -->
@@ -174,9 +188,11 @@
       forecast: Object,
       property: Object,
       propertyZipData: Object,
+      subscriptionFlag: Boolean,
     },
     data () {
       return {
+        // blocked: true,
         image: null,
         validImage: false,
         activeForecastStatus: '',
@@ -609,6 +625,9 @@
     created () {
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       checkImage () {
         const self = this
         if (this.forecast && this.forecast.property_forecast) {
@@ -756,8 +775,12 @@
         }
       },
       showForecastReportModal () {
-        document.getElementById('report-form-overlay').classList.add('active')
-        window.dispatchEvent(new Event('resize'))
+        if (this.subscriptionFlag) {
+          document.getElementById('report-form-overlay').classList.add('active')
+          window.dispatchEvent(new Event('resize'))
+        } else {
+          window.location.href = '/smart-data-subscription'
+        }
       },
       showHonelyCalculatorModal () {
         document.getElementById('calculator-form-overlay').classList.add('active')

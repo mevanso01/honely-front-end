@@ -111,6 +111,8 @@
       async userLogIn () {
         this.$store.dispatch('auth/cognitoSignIn',{username : this.username, password: this.password})
         .then(()=>{
+          // store user profile data
+          this.getUserProfile ()
           this.spinner = false
           this.$store.dispatch('auth/setLeadDetails', null)
           this.$store.dispatch('auth/setLeadZipCodeList', null)
@@ -119,7 +121,7 @@
           // console.log("vx: login path: " + this.$route.path)
           if (this.$route.path) {
             // if is one of the following paths, reload the page
-            if (this.$route.path === '/subscribe' || this.$route.path === '/leadmoderation'  || this.$route.path.startsWith('/forecast')) {
+            if (this.$route.path === '/subscribe' || this.$route.path === '/leadmoderation'  || this.$route.path.startsWith('/forecast') || this.$route.path === '/smart-data-subscription') {
               // console.log('vx: this.$route.path', this.$route.path)
               this.$router.go()
             }
@@ -128,8 +130,6 @@
               this.$router.replace(this.$route.path).catch(()=>{})
             }
           }
-          // store user profile data
-          this.getUserProfile ()
         }).catch((error)=>{
           this.spinner = false
           if(error.message=='Cannot read property \'username\' of null'){
