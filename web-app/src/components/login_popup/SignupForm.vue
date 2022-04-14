@@ -14,6 +14,7 @@
         :rules="[checkUserNameRule/*...requiredRules, ...userNameRules*/]"
         @change="checkUserName"
         v-model="userName"
+        @keypress="isNumberOrCharacter($event)"
       ></v-text-field>
       <!-- <label>Email</label> -->
       <v-text-field
@@ -43,20 +44,20 @@
         @focus="() => passwordPolicy = true"
       ></v-text-field>      
       <ul v-if="passwordPolicy" class="password-policy" style="margin-bottom: 10px;">
-        <li :class="`${isPasswordValid(0) ? '' : 'invalid'}`">
-          <i :class="`fa ${isPasswordValid(0) ? 'fa-check' : 'fa-times'}`"/>
+        <li :class="`${isPasswordValid(0, '') ? '' : 'invalid'}`">
+          <i :class="`fa ${isPasswordValid(0, '') ? 'fa-check' : 'fa-times'}`"/>
           <span>At least 8 characters in length</span>
         </li>
-        <li :class="`${isPasswordValid([1, 2, 3, 4,]) ? '' : 'invalid'}`">
-          <i :class="`fa ${isPasswordValid([1, 2, 3, 4,]) ? 'fa-check' : 'fa-times'}`"/>
+        <li :class="`${isPasswordValid([1, 2, 3, 4,], '') ? '' : 'invalid'}`">
+          <i :class="`fa ${isPasswordValid([1, 2, 3, 4,], '') ? 'fa-check' : 'fa-times'}`"/>
           <span>Should contain:</span>
           <ul>
-            <li :class="`${isPasswordValid([1, 2,]) ? '' : 'invalid'}`">
-              <i :class="`fa ${isPasswordValid([1, 2,]) ? 'fa-check' : 'fa-times'}`"/>
+            <li :class="`${isPasswordValid([1, 2,], '') ? '' : 'invalid'}`">
+              <i :class="`fa ${isPasswordValid([1, 2,], '') ? 'fa-check' : 'fa-times'}`"/>
               <span>At least 1 number and 1 special character</span>
             </li>
-            <li :class="`${isPasswordValid([3, 4,]) ? '' : 'invalid'}`">
-              <i :class="`fa ${isPasswordValid([3, 4,]) ? 'fa-check' : 'fa-times'}`"/>
+            <li :class="`${isPasswordValid([3, 4,], '') ? '' : 'invalid'}`">
+              <i :class="`fa ${isPasswordValid([3, 4,], '') ? 'fa-check' : 'fa-times'}`"/>
               <span>At least 1 uppercase and 1 lowercase character</span>
             </li>
           </ul>
@@ -264,8 +265,8 @@
         </v-btn>
       </div>
     </v-form>
-    <span v-if="successTxt" class="success--text" style="margin-top: 10px;">{{ successTxt }}</span>
-    <span v-if="errTxt" class="error--text" style="margin-top: 10px;">{{ errTxt }}</span>
+    <span v-if="successTxt" class="success--text d-flex justify-center" style="margin-top: 10px">{{ successTxt }}</span>
+    <span v-if="errTxt" class="error--text d-flex justify-center" style="margin-top: 10px">{{ errTxt }}</span>
     <div class="d-flex justify-center mt-5">
       <v-btn
         rounded
@@ -463,6 +464,14 @@
     },
 
     methods: {
+      isNumberOrCharacter: function (evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode < 48 || (charCode > 57 && charCode < 65) || (charCode > 90 && charCode < 97) || charCode > 122) {
+          evt.preventDefault()
+        } else {
+          return true
+        }
+      },
       isNumber: function (evt) {
         var charCode = (evt.which) ? evt.which : evt.keyCode
         if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
@@ -471,14 +480,20 @@
           return true
         }
       },
-      isPasswordValid (ruleId) {
+      isPasswordValid (ruleId, errorMessage) {
         let arr
         if (Array.isArray(ruleId)) {
           arr = ruleId
         } else {
           arr = [ruleId]
         }
-        return arr.every(item => this.passwordRules[item](this.password))
+        return arr.every(item => {
+          if (errorMessage !== '' && this.passwordRules[item](this.password) === '') {
+            this.errTxt = 'Invalid Password'
+          }
+          return this.passwordRules[item](this.password)
+        },
+        )
       },
       checkUserName () {
         const usernameToCheck = this.userName
@@ -518,8 +533,10 @@
         })
       },
       onSubmitForm: function () {
+        this.isPasswordValid([0, 1, 2, 3, 4], 'Invalid Password')
         const form = this.$refs[`form${this.step}`]
         if (form.validate() && this.agreementChecked) {
+          this.errTxt = ''
           if (this.step < 3) {
             this.$emit('stepNext')
           } else if (this.step === 3) {
@@ -527,6 +544,9 @@
           } else {
             this.confirmSignUpAndLogIn()
           }
+        }
+        if (!this.agreementChecked) {
+          this.errTxt = 'Please agree to the Honely Privacy Policy, Terms of Usage, Disclaimer and Licensing Agreement.'
         }
       },
       onClickResendCode: function () {

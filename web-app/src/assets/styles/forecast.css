@@ -243,16 +243,25 @@ PAGE - SMART SEARCH
 }
 .honely-forecast-property-data .property-options span {
     font-size: 40px;
-    color: #cccccc;
+    color: #24cb43;
     margin-right: 10px;
 }
 .honely-forecast-property-data .property-options p {
-    color:#5a6778;
+    color: #24cb43;
     max-width: 465px;
     margin-bottom: 0;
 }
-.honely-forecast-property-data .property-options-item:hover > span {
+.honely-forecast-property-data .property-options-item span {
     color: #24cb43;
+}
+.honely-forecast-property-data .property-options-item p {
+    color: #24cb43;
+}
+.honely-forecast-property-data .property-options-item.honely-forecast-not-subscribed span {
+    color: #cccccc;
+}
+.honely-forecast-property-data .property-options-item.honely-forecast-not-subscribed p {
+    color:#5a6778;
 }
 .honely-forecast-property-data .property-link-wrapper {
     width: 100%;

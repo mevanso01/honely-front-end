@@ -197,7 +197,7 @@ a.links-underline {
 }
 .error--text {
     display: block;
-    color: #e74c3c;
+    color: #e74c3c !important;
 }
 p.msg-system {
     padding: 2rem 0;
@@ -830,6 +830,9 @@ DIALOGS
 }
 .auth-dialog .auth-modal-form-control.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded).v-input--is-focused .v-input__control .v-input__slot fieldset {
     border-color: #24cb43 !important;
+}
+.auth-dialog .auth-modal-form-control.error--text.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded) .v-input__control .v-input__slot fieldset {
+    border-color: red !important;
 }
 .auth-dialog .auth-modal-form-control.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded).v-input--is-focused .v-input__control .v-input__slot .v-input__icon i {
     color: #24cb43;

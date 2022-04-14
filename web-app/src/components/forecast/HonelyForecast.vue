@@ -68,7 +68,7 @@
         <span>{{ getPropertySqft }}</span>
       </div>
       <div class="property-options">
-        <div class="property-options-item" @click="showForecastReportModal">
+        <div class="property-options-item" :class="subscriptionFlag?'':'honely-forecast-not-subscribed'" @click="showForecastReportModal">
           <span class="mdi mdi-file-chart"></span>
           <p>Generate Report</p>
         </div>

@@ -57,7 +57,7 @@
           <!-- listing-data-basic -->
           <div class="listing-data-basic">
             <div class="listing-fact">
-              <p><span class="mdi mdi-map-marker"></span> {{ getAddress1 }}, {{ getAddress2 }}</p>
+              <p><span class="mdi mdi-map-marker"></span> {{ getAddress1 }}</p>
               <p>{{ getPropertyBeds }} bds | {{ getPropertyBaths }} ba | {{ getPropertySqft }} sqft</p>
               <div v-if="isListHub" class="listing-value">
                 <p><span>Listing Status: </span>{{ getPropertyStatus }}</p>
@@ -69,7 +69,7 @@
               <p class="text-large">{{ getHonelyEstimate }}</p>
               <a
                 v-if="property"
-                :href="'/forecast/' + property.address.property_id"
+                :href="'/forecast/' + property.property_id"
                 class="forecast-links"
                 >
                   Find Future Value
@@ -381,9 +381,9 @@
               <img src="~@/assets/site_images/graphics/list_agent_default.png" />
             </div>
             <div class="list-agent-info">
-              <p class="list-agent-name">{{ getListhubData(true, this.getListAgent.list_agent_full_name) }}</p>
-              <p class="list-agent-company">{{ getListhubData(true, this.getListAgent.list_office_name) }}</p>
-              <p class="list-agent-phone">{{ Math.trunc(getListhubData(true, this.getListAgent.list_office_phone)) }}</p>
+              <p class="list-agent-name">{{ getListhubData(true, this.getListAgent.agent_full_name) }}</p>
+              <p class="list-agent-company">{{ getListhubData(true, this.getListAgent.office_name) }}</p>
+              <p class="list-agent-phone">{{ Math.trunc(getListhubData(true, this.getListAgent.office_phone)) }}</p>
             </div>
           </div>
         </div>
@@ -408,15 +408,15 @@
           </p>
           <p>
             <span>Phone:</span>
-            {{ getListhubData(false, this.getBrokerInfo.list_brokerage_phone) }}
+            {{ getListhubData(false, this.getBrokerInfo.brokerage_phone) }}
           </p>
           <p>
             <span>Email:</span>
-            {{ getListhubData(false, this.getBrokerInfo.list_brokerage_email) }}
+            {{ getListhubData(false, this.getBrokerInfo.brokerage_email) }}
           </p>
           <p>
             <span>Broker name:</span>
-            {{ getListhubData(true, this.getListAgent.list_office_name) }}
+            {{ getListhubData(true, this.getListAgent.office_name) }}
           </p>
           <p class="listhub-disclaimer">
             {{ getListhubData(true, this.getListAgent.disclaimer) }}
@@ -427,8 +427,8 @@
 
       <!-- comparable-properties-container -->
       <div class="comparable-properties-container">
-        <div class="section-heading">Comparable Properties</div>
-        <div v-if="properties && properties.length > 0" class="comparable-properties">
+        <div class="section-heading" v-if="properties && properties.length > 0">Comparable Properties</div>
+        <div class="comparable-properties">
           <property-block
             v-for="property in properties"
             :property-data="property"
@@ -471,7 +471,7 @@
         mapsKey: 'AIzaSyClIFG-ONBwyXrn4_kaA4yMYHGpZD5EEko',
         property: null,
         listingkey: null,
-        isListHub: false,
+        isListHub: true,
         image: '',
         validImage: false,
         properties: [],
@@ -659,8 +659,8 @@
       getListAgent () {
         let agent = null
         if (this.isListHub) {
-          if (this.property && this.property.list_agent_information) {
-            agent = this.property.list_agent_information
+          if (this.property && this.property.agent_information) {
+            agent = this.property.agent_information
           }
         }
         return agent
@@ -681,18 +681,18 @@
         this.apn = this.$route.params.apn
         this.search_id = this.$route.params.search_id
         if (this.search_id) {
-          if (isNaN(this.search_id)) {
-            this.listingkey = this.search_id
-            this.property_id = null
-          } else {
-            this.listingkey = null
-            this.property_id = this.search_id
-          }
-          if (this.listingkey) {
-            this.isListHub = true
-          } else {
-            this.isListHub = false
-          }
+          // if (isNaN(this.search_id)) {
+          //   this.listingkey = this.search_id
+          //   this.property_id = null
+          // } else {
+          //   this.listingkey = null
+          //   this.property_id = this.search_id
+          // }
+          // if (this.listingkey) {
+          //   this.isListHub = true
+          // } else {
+          //   this.isListHub = false
+          // }
         }
         if (this.query !== null) {
           this.query = this.$route.query.address
@@ -715,20 +715,20 @@
       this.fips = this.$route.params.fips
       this.apn = this.$route.params.apn
       this.search_id = this.$route.params.search_id
-      if (this.search_id) {
-        if (isNaN(this.search_id)) {
-          this.listingkey = this.search_id
-          this.property_id = null
-        } else {
-          this.listingkey = null
-          this.property_id = this.search_id
-        }
-      }
-      if (this.listingkey) {
-        this.isListHub = true
-      } else {
-        this.isListHub = false
-      }
+      // if (this.search_id) {
+      //   if (isNaN(this.search_id)) {
+      //     this.listingkey = this.search_id
+      //     this.property_id = null
+      //   } else {
+      //     this.listingkey = null
+      //     this.property_id = this.search_id
+      //   }
+      // }
+      // if (this.listingkey) {
+      //   this.isListHub = true
+      // } else {
+      //   this.isListHub = false
+      // }
       this.address = this.$route.query.address
       this.load()
     },
@@ -788,7 +788,7 @@
           userId = this.user.user_id
         }
         if (this.search_id) {
-          axios.get('https://listhub.honely.com/locate/listhub_listing', {
+          axios.get('https://api.honely.com/searches/listing', {
             params: {
               search_id: this.search_id,
               user_id: userId,
@@ -800,6 +800,15 @@
             if (!this.property_id) {
               this.property_id = this.property.property_id
             }
+            if (this.property.listing_key) {
+              this.isListHub = true
+            } else {
+              this.isListHub = false
+            }
+            //     this.listingkey = this.search_id
+            //     this.property_id = null
+            this.listingkey = this.property.listing_key
+            this.property_id = this.property.property_id
             this.loading = false
             this.checkImage()
             this.getSchoolData()
@@ -927,7 +936,7 @@
         }
       },
       getRelatedListings () {
-        axios.get('https://api.honely.com/lookup/comparable_homes?property_id=' + this.property.address.property_id, {
+        axios.get('https://api.honely.com/lookup/comparable_homes?property_id=' + this.property.property_id, {
           params: {
           },
         }).then((response) => {
@@ -1063,7 +1072,7 @@
         if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
           if (!(!this.isFavorite && this.favoriteListings.length === 5)) {
             const payload = {
-              property_id: listing.address.property_id,
+              property_id: listing.property_id,
               apn: listing.address.apn,
               fips: listing.address.fips,
               user_id: this.user.user_id,
@@ -1166,7 +1175,7 @@
           message: message,
           email: email,
           phone_number: phone,
-          agent_email: this.getListAgent.list_agent_email,
+          agent_email: this.getListAgent.agent_email,
           // agent_email: 'chenxin.lin@allocaterite.com',
         }
         axios.post('https://api.honely.com/lookup-test/agent_contact', params)
