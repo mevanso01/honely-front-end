@@ -7,7 +7,8 @@
         <div class="section-col-left">
           <p class="home-text-heading-smaller">Get a free market report on your home.</p>
           <p>Both the value and quality of our insights go beyond what's currently reserved for institutions and large enterprises. Never before has the public been able to access investor-grade home value forecasts, relocation trends, zip code rankings, and much more.</p>
-          <button class="bg-primary home-search-button" @click="showLoginPopup">Sign Up</button>
+          <!-- vx: if user not logged in or not subscribed show this -->
+          <button v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="bg-primary" @click="goToSubscriptionPage">Subscribe for $9.99 a month</button>
         </div>
         <div class="section-col-right">
           <!-- <p class="color-primary text-small align-center">Access advanced insights, rankings, forecasts and more.</p> -->
@@ -56,6 +57,10 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {
+    mapGetters,
+  } from 'vuex'
   export default {
     name: 'HomeMain',
     components: {
@@ -65,12 +70,27 @@
     },
     data: () => ({
       showLogin: false,
+      subscriptionFlag: false,
     }),
     computed: {
+        ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser', 'userProfile']),
     },
     mounted () {
+      if (this.isCognitoUserLoggedIn) {
+        axios.get('https://api.honely.com/lookup-test/fetch-user-subscription?email=' + this.cognitoUser.attributes.email)
+          .then((response) => {
+            if (response.data.subscriopions.length > 0) {
+              if (this.subscriptionStatusCheck(response.data.subscriopions[0].end_date)) {
+                this.subscriptionFlag = true
+              }
+            }
+          })
+      }
     },
     methods: {
+      goToSubscriptionPage () {
+        window.location.href = '/smart-data-subscription'
+      },
       showLoginPopup () {
         this.showLogin = true
       },

@@ -97,9 +97,13 @@
               <!-- overview -->
               <div class="listing-data-detail-tab-content active">
                 <table class="table-data">
+                  <tr v-if="property && property.listing_key">
+                    <td width="50%">MLS Number</td>
+                    <td width="50%">{{ property.listing_key.substring(property.listing_key.lastIndexOf('-') + 1) }}</td>
+                  </tr>
                   <tr>
-                    <td width="50%">Beds</td>
-                    <td width="50%">{{ getPropertyBeds }}</td>
+                    <td>Beds</td>
+                    <td>{{ getPropertyBeds }}</td>
                   </tr>
                   <tr>
                     <td>Baths</td>
@@ -418,6 +422,10 @@
             <span>Broker name:</span>
             {{ getListhubData(true, this.getListAgent.office_name) }}
           </p>
+          <p>
+            <span>Redirect URL:</span>
+            <a :href="getListhubData(false, getBrokerInfo.brokerage_listing_url)" class="listhub-redirect-link color-primary">{{ getListhubData(false, this.getBrokerInfo.brokerage_listing_url) }}</a>
+          </p>
           <p class="listhub-disclaimer">
             {{ getListhubData(true, this.getListAgent.disclaimer) }}
           </p>
@@ -492,14 +500,14 @@
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       listhubTrackerUrl: function () {
         if (this.listingkey) {
-          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('DETAIL_PAGE_VIEWED') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.address.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
+          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('DETAIL_PAGE_VIEWED') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
         } else {
           return ''
         }
       },
       listhubTrackerUrl2: function () {
         if (this.listingkey) {
-          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('AGENT_OFFICE_EMAIL_SENT') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.address.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
+          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('AGENT_OFFICE_EMAIL_SENT') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
         } else {
           return ''
         }
@@ -1089,7 +1097,7 @@
                 zip_code: listing.address.zip_code,
                 tier: '2',
               }
-              axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
+              // axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
             }
             this.$store.dispatch('listings/toggleFavorite', payload)
           } else {

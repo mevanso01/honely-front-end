@@ -12,6 +12,7 @@
       @keyup.enter="onSubmit"
       :rules="requiredRules"
       :maxlength="50"
+      :readonly="confirmationCodeRequested"
       v-model="email"
     ></v-text-field>
     <!-- <label>Password</label> -->
@@ -28,12 +29,42 @@
       @keyup.enter="onSubmit"
       :rules="requiredRules"
       v-model="password"
+      :readonly="confirmationCodeRequested"
     ></v-text-field>
     <span v-if="errTxt" class="error--text" style="margin-bottom: 15px;">{{ errTxt }}</span>
     <div class="d-flex justify-end" @click="changeTab()">
       <a class="primary-link">Forgot your password?</a>
     </div>
-    <div class="d-flex justify-center mt-5">
+    <div v-if="!confirmationCodeRequested" class="d-flex justify-center mt-5">
+      <v-btn
+        rounded
+        color="success"
+        class="btn-submit"
+        :disabled="spinner"
+        @click="onSubmit()"
+      >
+        {{ spinner ? 'Please wait...' : 'Login' }}
+      </v-btn>
+      <!-- <circle-spin :loading='true'></circle-spin> -->
+    </div>
+    <br v-if="confirmationCodeRequested">
+    <v-text-field
+      v-if="confirmationCodeRequested"
+      outlined
+      shaped
+      dense
+      label=""
+      placeholder="Email Confirmation Code"
+      class="auth-modal-form-control"
+      @keyup.enter="onSubmit"
+      :rules="requiredRules"
+      :maxlength="50"
+      v-model="confirmationCode"
+    ></v-text-field>
+    <div v-if="confirmationCodeRequested" class="d-flex justify-end" @click="resendVerificationCode()">
+      <a class="primary-link">Resend email verification code</a>
+    </div>
+    <div v-if="confirmationCodeRequested" class="d-flex justify-center mt-5">
       <v-btn
         rounded
         color="success"
@@ -61,6 +92,7 @@
     props: ['bus'],
 
     data: () => ({
+      emailConsent: null,
       valid: false,
       email: '',
       password: '',
@@ -71,6 +103,9 @@
       username: null,
       spinner: false,
       errTxt: '',
+      confirmationCode: null,
+      confirmationCodeRequested: false,
+      userType: null,
     }),
 
     mounted () {
@@ -96,7 +131,11 @@
           axios.get('https://api.honely.com/lookup/user_name_fetch?user_identifier=' + this.email)
             .then(async (response) => {
               this.username = response.data.user_name
-              await this.userLogIn()
+              if (!this.confirmationCodeRequested) {
+                await this.userLogIn()
+              } else {
+                await this.confirmSignUpAndLogIn()
+              }
             })
             .catch((error) => {
               this.spinner = false
@@ -168,12 +207,75 @@
                 this.email= response.data.email
                 this.phone_number= response.data.phone_number
                 this.emailConsent = response.data.email_consent
+                this.userType = response.data.user_type
               })
             })
           } else {
             this.errTxt=error.message
           }
             // console.log('vx: error signing in', error)
+        })
+      },
+      async confirmSignUp() {
+        var siteLeads = "FALSE"
+        if (this.userType.includes('AGENT/BROKER') || this.userType.includes('LENDER') || this.userType.includes('GENERAL CONTRACTOR')) {
+          siteLeads = "TRUE"
+        }
+        const params = {
+          user_name: this.username,
+          first_name: this.first_name,
+          last_name: this.last_name,
+          email: this.email,
+          phone_number: this.phone_number,
+          membership_type: 'FREE',
+          email_consent: this.emailConsent,
+          promo_code: '',
+          user_type: this.userType,
+          site_leads: siteLeads,
+          button_leads: "FALSE",
+          home_url: null,
+          interested_zip_codes: '',
+          home_address: '',
+          home_zip_code: '',
+          company_name: '',
+        }
+        if(this.confirmationCode) {
+          try {
+            await this.$store.dispatch('auth/cognitoConfirmSignUp',{username : this.username, code: this.confirmationCode})
+            this.errTxt=null
+            await axios.post('https://api.honely.com/lookup/register_service', params)
+            await this.userLogIn()
+            await axios.delete('https://api.honely.com/lookup/unconfirmed_user_deletion', {data: {email: this.email}})
+            this.confirmationCodeRequested=false
+          } catch (error) {
+            // console.log('vx: Error while confirming and signing in', error)
+            this.errTxt=error.message
+            this.showLoading = false
+          }
+        } else {
+          this.errTxt='Confirmation Code cannot be empty'
+        }
+      },
+      async confirmSignUpAndLogIn() {
+        try {
+          await this.confirmSignUp()
+          .then(()=>{
+            // this.userLogIn()
+          })
+          // await axios.post('https://api.honely.com/lookup/register_service', params)
+        } catch (error) {
+          // console.log('vx: Error while confirming and signing in', error)
+          this.errTxt=error.message
+        }
+      },
+      async resendVerificationCode () {
+        axios.get('https://api.honely.com/lookup-test/email_verification_service?email='+this.email)
+        .then(async () => {
+          this.errTxt='Too much time has elapsed. Please sign up again.'
+        }).catch(async ()=>{
+          await this.$store.dispatch('auth/cognitoResendConfirmationCode',{username : this.username})
+          this.errTxt='Resent Email Verification Code!'
+          this.confirmationCodeRequested=true
         })
       },
       getUserProfile () {

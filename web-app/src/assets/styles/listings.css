@@ -11,8 +11,8 @@ PAGE - LISTINGS
     padding: 1.5rem 1rem 2rem 1rem;
 }
 .listings-search {
-    width: 20%;
-    max-width: 380px;
+    width: 44%;
+    max-width: 618px;
     min-width: 320px;
 }
 .listings-filters {
@@ -495,6 +495,9 @@ PAGE - LISTINGS
 }
 .listhub-broker-wrapper p.listhub-disclaimer {
     font-size: 12px;
+}
+.listhub-redirect-link {
+    margin-left: 5px;
 }
 /* Favorite Listings */
 .pg-fav-listings {

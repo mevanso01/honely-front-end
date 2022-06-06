@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="provider-wrapper" @click="setLeadForm(true)">
+  <div class="provider-wrapper">
     <div
       v-if="picture"
       class="provider-picture"

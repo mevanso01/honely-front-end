@@ -150,7 +150,7 @@
       },
       listhubTrackerUrl: function () {
         if (this.propertyData && this.propertyData.listingkey) {
-          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('DETAIL_PAGE_VIEWED') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.propertyData.listingkey) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
+          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('SEARCH_DISPLAY') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.propertyData.listingkey) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
         } else {
           return ''
         }

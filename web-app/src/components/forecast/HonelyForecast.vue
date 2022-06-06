@@ -2,9 +2,14 @@
   <!-- eslint-disable -->
   <div class="forecast-section section-wrapper">
     <!-- forecast-heading-wrapper -->
+    <div class="forecast-heading-super-wrapper">
     <div class="forecast-heading-wrapper">
       <div class="forecast-section-title">Honely Property Value Forecast</div>
       <p class="forecast-address">Property Found: <span class="mdi mdi-map-marker"></span> {{ getAddress1}} {{ getAddress2}}</p>
+    </div>
+    <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag">
+      <button class="bg-primary forecast-subscription-btn" @click="goToSubscriptionPage" >Subscribe for $9.99 a month for unlimited access to Forecast Data</button>
+    </div>
     </div>
     <!-- /forecast-heading-wrapper -->
 
@@ -728,7 +733,7 @@
                 zip_code: listing.address.zip_code,
                 tier: '2',
               }
-              axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
+              // axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
             }
             this.$store.dispatch('listings/toggleFavorite', payload)
           } else {

@@ -1979,7 +1979,7 @@
       doGetForecastResult (data) {
         if (data) {
           if (this.forecast.property_forecast.appraisal && data.current_value) {
-            return parseFloat(this.forecast.property_forecast.appraisal) * data.current_value
+            return parseFloat(this.forecast.property_forecast.appraisal) * (data.current_value / this.initialRate)
           } else {
             return null
           }
@@ -2046,7 +2046,7 @@
           if (zip === null || zip === '') {
             zip = null
           }
-          if (yearBuilt !== null || yearBuilt !== '') {
+          if (yearBuilt !== null && yearBuilt !== '') {
             yearBuilt = yearBuilt.toString()
           }
           if (stories == null) {

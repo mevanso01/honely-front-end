@@ -254,7 +254,7 @@
           :rules="requiredRules"
           v-model="confirmationCode"
         ></v-text-field>
-        <v-btn
+        <!-- <v-btn
           color="success"
           class="btn-submit"
           style="padding-left: 10px !important; padding-right: 10px !important;"
@@ -262,7 +262,8 @@
           @click="onClickResendCode()"
         >
           {{ spinner1 ? 'Please wait...' : 'Resend Code' }}
-        </v-btn>
+        </v-btn> -->
+        <a @click="onClickResendCode()" style="color: #24cb43; padding-left: 10px !important; padding-right: 10px !important;" >{{ spinner1 ? 'Please wait...' : 'Resend Code' }}</a>
       </div>
     </v-form>
     <span v-if="successTxt" class="success--text d-flex justify-center" style="margin-top: 10px">{{ successTxt }}</span>
@@ -604,6 +605,7 @@
           interested_zip_codes: this.interestedZipcode,
           home_address: this.fullAddress,
           home_zip_code: this.homeZipCode,
+          company_name: '',
         }
         this.errTxt = ''
         this.successTxt = ''
@@ -671,6 +673,7 @@
           interested_zip_codes: this.interestedZipcode,
           home_address: this.fullAddress,
           home_zip_code: this.homeZipCode,
+          company_name: '',
         }
         try {
           this.errTxt = ''
@@ -694,7 +697,7 @@
               lead_category: 'AGENT/BROKER,LENDER,',
               came_from: "SITE"
             }
-            axios.post('https://api.honely.com/lookup-test/lead', paramsTier2)
+            // axios.post('https://api.honely.com/lookup-test/lead', paramsTier2)
           }
           if (this.homeZipCode) {
             if (!leadZipCodeList.includes(this.homeZipCode)) {
@@ -745,7 +748,7 @@
               lead_category: lead_category,
               came_from: "SITE"
             }
-            axios.post('https://api.honely.com/lookup-test/lead', paramsTier22)
+            // axios.post('https://api.honely.com/lookup-test/lead', paramsTier22)
           }
           if (leadZipCodeList.length > 0) {
             this.$store.dispatch('auth/setLeadZipCodeList', leadZipCodeList)

@@ -203,7 +203,7 @@
         if (form.validate()) {
             this.regSuccess = ''
             this.regError = ''
-            await this.$store.dispatch('auth/cognitoSendForgotPasswordCode',{username : this.username})        
+            await this.$store.dispatch('auth/cognitoSendForgotPasswordCode',{username : this.email})        
             this.regSuccess = 'A code has been sent to your inbox. Please enter the code and your new password'
             this.requestSent = true
         }

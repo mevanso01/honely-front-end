@@ -33,6 +33,7 @@
             <li><a href="/aup.pdf">AUP</a></li>
         </ul>
       </div>
+      <div class="footer-social-app-download-container">
       <div class="footer-col-social">
         <!-- <p class="footer-feature-text">Sign Up For Our Insights</p>
         <p>Please provide your email in the form below and you will be notified when a new insight gets posted.</p> -->
@@ -48,6 +49,19 @@
           <li><a href="https://www.instagram.com/honelyrealestate/"><span class="mdi mdi-instagram"></span></a></li>
         </ul>
       </div>
+      <div class="footer-app-download-links">
+        <a href="https://apps.apple.com/us/app/honely/id1617107784">
+        <img
+          src="@/assets/site_images/icons/app-store-download-icon.png"
+        />
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.honely">
+        <img
+          src="@/assets/site_images/icons/google-play-download-icon.png"
+        />
+        </a>
+      </div>
+    </div>
       <div class="copyright">
         &copy; {{ getCurrentYear }} Honely, LLC.
       </div>

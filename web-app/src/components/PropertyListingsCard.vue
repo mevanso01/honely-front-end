@@ -543,7 +543,7 @@
                 zip_code: listing.address.zip_code,
                 tier: '2',
               }
-              axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
+              // axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
             }
             this.$store.dispatch('listings/toggleFavorite', payload)
           } else {

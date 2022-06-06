@@ -20,6 +20,7 @@
               v-for="(item, i) in headerMenu"
             >
               <router-link
+                v-if="item.text !== 'API'"
                 :id="'header-menu-' + i"
                 :key="i"
                 :to="item.link"
@@ -27,6 +28,7 @@
               >
                 {{ item.text }}
               </router-link>
+              <a v-if="item.text === 'API'" href="https://developer.honely.com">API</a>
             </li>
           </ul>
         </div>
@@ -45,8 +47,9 @@
             >
               Sign in
             </button>
-          </div>     
-          <span v-if="isCognitoUserLoggedIn" id="btn_user_menu" class="mdi mdi-account-circle" @click="toggleUserMenu"></span>
+          </div> 
+          <div>    
+          <span v-if="isCognitoUserLoggedIn" id="btn_user_menu" class="mdi mdi-account-circle" @click="toggleUserMenu"></span></div>
           <div v-if="isCognitoUserLoggedIn" class="menu-user" id="menu-user">
             <ul class="list-menu-user">
               <li
@@ -119,7 +122,7 @@
           label: 'forecast',
         }, */
         {
-          text: 'Properties',
+          text: 'Listings',
           link: '/listings',
           label: 'listings',
         },
@@ -147,6 +150,11 @@
           text: 'Partner With Us',
           link: '/partner',
           label: 'partner',
+        },
+        {
+          text: 'API',
+          link: '',
+          label: 'api',
         },
       ],
       actionMenuItems: [

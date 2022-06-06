@@ -285,7 +285,7 @@
           <div class="forecast-wrapper-inner align-center">
             <p class="text-large">Browse Listings</p>
             <p>Find other homes in {{ getZipcode }} zip code.</p>
-            <p><a href="#" class="theme-links">Explore All Property</a></p>
+            <p><a @click="goToListings(getZipcode)" class="theme-links">Explore All Properties</a></p>
           </div>
         </div>
         <!-- /forecast-neighborhood-listings -->
@@ -614,6 +614,9 @@
       }
     },
     methods: {
+      goToListings (zipcode) {
+        window.location.href = '/listings?address=' + zipcode + '&offset=0'
+      },
       goToSubscriptionPage () {
         window.location.href = '/smart-data-subscription'
       },

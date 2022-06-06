@@ -1071,7 +1071,7 @@
               user_types: ["AGENT/BROKER"],
               tier: '2.1',
             }
-            axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
+            // axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier2)
           }
           if (this.homeZipCode) {
             if (!leadZipCodeList.includes(this.homeZipCode)) {
@@ -1096,11 +1096,11 @@
               user_types: tier2Targets,
               tier: '2.1',
             }
-            axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier22)
+            // axios.post('https://api.honely.com/lookup-test/leads_tier_notification', paramsTier22)
           }
-          if (leadZipCodeList.length > 0) {
-            this.$store.dispatch('auth/setLeadZipCodeList', leadZipCodeList)
-          }
+          // if (leadZipCodeList.length > 0) {
+          //   this.$store.dispatch('auth/setLeadZipCodeList', leadZipCodeList)
+          // }
           await this.signIn()
           this.$emit('successfulLogin')
           bus.$emit('successfulLogin')

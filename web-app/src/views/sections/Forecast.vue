@@ -4,7 +4,21 @@
     <page-loader :loading="loading" />
     <!-- forecast-carousel-wrapper -->
     <div v-if="forecast" class="forecast-carousel-wrapper">
+      <!-- <div>
+          <ul class="forecast-header-menu" id="forecast-header-menu">
+            <li id="btn-mobile-menu-close">
+              <span class="mdi mdi-close forecast-menu-close-button" @click="toggleMobileMenu"></span>
+            </li>
+            <li
+              v-for="i in controllers"
+              @click="moveCarousel(i-1)"
+            >
+              {{ menu_items[i - 1] }}
+            </li>
+          </ul>
+        </div> -->
       <div class="forecast-carousel-controller">
+        <!-- <span class="mdi mdi-menu forecast-mobile-hamburger" id="btn-mobile-menu-smart"  @click="toggleMobileMenu"></span> -->
         <ul v-if="controllers > 1" class="carousel-controller">
           <li
             v-for="i in controllers"
@@ -12,9 +26,19 @@
             @click="moveCarousel(i-1)"
             :class="{active : i == 1}"
           >
-            &nbsp;
+          <span class="carousel-menu-item">{{ menu_items[i - 1] }}</span>
           </li>
         </ul>
+      </div>
+      <div v-if="controllers > 1" class="forecast-carousel-controller forecast-dropdown-container" v-click-outside="() => toggleDropDown(false)">
+        <div class="forecast-nav-dropdown-curr-val" id="forecast-nav-dropdown-curr-val" @click="() => toggleDropDown(true)">
+          Property Value Forecast<span class="mdi mdi-chevron-down forecast-nav-dropdown-arrow"></span>
+        </div>
+        <div class="forecast-nav-dropdown-container" v-if="dropdownFlag">
+          <ul>
+            <li v-for="i in controllers" @click="moveCarousel(i-1)">{{ menu_items[i - 1] }}</li>
+          </ul>
+        </div>
       </div>
       <div class="forecast-carousel-content">
         <div v-if="isProperty" class="carousel-item bg-white active">
@@ -123,6 +147,8 @@
       ContactAgentForm: () => import('@/components/base/ContactAgentForm'),
     },
     data: () => ({
+      dropdownFlag: false,
+      menu_items: ['Property Value Forecast', 'Neighborhood at a Glance', 'Rental Trends', 'Compare Deals', 'Investment Calculators'],
       report_counter: null,
       loading: false,
       user: null,
@@ -288,6 +314,23 @@
     created () {
     },
     methods: {
+      toggleDropDown(value) {
+        this.dropdownFlag = value
+      },
+      toggleMobileMenu () {
+        const menu = document.getElementById('forecast-header-menu')
+        if (menu.classList.contains('active')) {
+          menu.classList.remove('active')
+        } else {
+          menu.classList.add('active')
+        }
+      },
+      closeMobileMenu () {
+        const menu = document.getElementById('forecast-header-menu')
+        if (menu.classList.contains('active')) {
+          menu.classList.remove('active')
+        }
+      },
       subscriptionStatusCheck (x) {
         var month = x.substring(0, 16).split(' ')[2]
         var monthNumMapping = {
@@ -620,6 +663,12 @@
             carouselItems[current].classList.add('prev')
           }
         }
+        if (document.getElementById('forecast-nav-dropdown-curr-val')) {
+          document.getElementById('forecast-nav-dropdown-curr-val').innerHTML = this.menu_items[target] + '<span class="mdi mdi-chevron-down forecast-nav-dropdown-arrow"></span>'
+        }
+        if (this.dropdownFlag) {
+          this.toggleDropDown(false)
+        }
       },
       clearCarousel () {
         const carouselItems = document.getElementsByClassName('carousel-item')
@@ -631,24 +680,25 @@
         }
       },
       leadFormNeeded (value) {
-        let flag = true
-        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-          flag = false
-        } else {
-          const zipInQuery = value.substring(value.length - 5, value.length)
-          if (isNaN(zipInQuery)) {
-            flag = false
-          } else {
-            const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
-            if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
-              flag = false
-            } else {
-              flag = true
-            }
-          }
-        }
-        // console.log('flag: ' + flag)
-        return flag
+        return false
+        // let flag = true
+        // if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+        //   flag = false
+        // } else {
+        //   const zipInQuery = value.substring(value.length - 5, value.length)
+        //   if (isNaN(zipInQuery)) {
+        //     flag = false
+        //   } else {
+        //     const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
+        //     if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
+        //       flag = false
+        //     } else {
+        //       flag = true
+        //     }
+        //   }
+        // }
+        // // console.log('flag: ' + flag)
+        // return flag
       },
     },
   }
