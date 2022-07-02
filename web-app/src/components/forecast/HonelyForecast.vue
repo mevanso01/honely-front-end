@@ -8,7 +8,10 @@
       <p class="forecast-address">Property Found: <span class="mdi mdi-map-marker"></span> {{ getAddress1}} {{ getAddress2}}</p>
     </div>
     <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag">
-      <button class="bg-primary forecast-subscription-btn" @click="goToSubscriptionPage" >Subscribe for $9.99 a month for unlimited access to Forecast Data</button>
+      <button
+        class="bg-primary forecast-subscription-btn"
+        @click="showSubscriptionPopup()"
+      >Subscribe for $9.99 a month for unlimited access to Forecast Data</button>
     </div>
     </div>
     <!-- /forecast-heading-wrapper -->
@@ -178,6 +181,10 @@
     </div>
     </div>
     <!-- /honely-property-zip-data -->
+    <subscription-popup
+      :show="showSubscription"
+      @toggleShow="toggleSubscriptionShow"
+    />
   </div>
   <!-- eslint-enable -->
 </template>
@@ -194,6 +201,9 @@
       property: Object,
       propertyZipData: Object,
       subscriptionFlag: Boolean,
+    },
+    components: {
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup')
     },
     data () {
       return {
@@ -214,6 +224,7 @@
           '2 Years Honely Forecast',
           '3 Years Honely Forecast',
         ],
+        showSubscription: false
       }
     },
     computed: {
@@ -790,6 +801,12 @@
       showHonelyCalculatorModal () {
         document.getElementById('calculator-form-overlay').classList.add('active')
       },
+      showSubscriptionPopup () {
+        this.showSubscription = true
+      },
+      toggleSubscriptionShow (value) {
+        this.showSubscription = value
+      }
     },
   }
 </script>
