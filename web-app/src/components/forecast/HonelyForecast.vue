@@ -73,10 +73,10 @@
         <span>{{ getPropertySqft }}</span>
       </div>
       <div class="property-options">
-        <div class="property-options-item" :class="subscriptionFlag?'':'honely-forecast-not-subscribed'" @click="showForecastReportModal">
+        <!-- <div class="property-options-item" :class="subscriptionFlag?'':'honely-forecast-not-subscribed'" @click="showForecastReportModal">
           <span class="mdi mdi-file-chart"></span>
           <p>Generate Report</p>
-        </div>
+        </div> -->
         <div class="property-options-item" @click="showHonelyCalculatorModal">
           <span class="mdi mdi-calculator"></span>
           <p>Enter most up-to-date property information to calculate most accurate estimate</p>

@@ -258,6 +258,11 @@ const router = new Router({
           component: () => import('@/views/paymentFailed/Index.vue'),
         },
         {
+          path: '/login',
+          name: 'Login',
+          component: () => import('@/views/login/Index.vue'),
+        },
+        {
           path: '*',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),

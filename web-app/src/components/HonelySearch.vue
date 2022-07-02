@@ -210,27 +210,27 @@
         }
       },
       leadFormNeeded (value) {
-        return false
-        // if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-        //   return false
-        // } else {
-        //   if (value.length === 5) {
-        //     this.listingDirect = true
-        //     return false
-        //   } else {
-        //     const zipInQuery = value.substring(value.length - 5, value.length)
-        //     if (isNaN(zipInQuery)) {
-        //       return false
-        //     } else {
-        //       const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
-        //       if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
-        //         return false
-        //       } else {
-        //         return true
-        //       }
-        //     }
-        //   }
-        // }
+        // return false
+        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+          return false
+        } else {
+          if (value.length === 5) {
+            this.listingDirect = true
+            return false
+          } else {
+            const zipInQuery = value.substring(value.length - 5, value.length)
+            if (isNaN(zipInQuery)) {
+              return false
+            } else {
+              const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
+              if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
+                return false
+              } else {
+                return true
+              }
+            }
+          }
+        }
       },
       toggleResult (value) {
         this.showResult = value;

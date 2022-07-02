@@ -28,7 +28,7 @@
               >
                 {{ item.text }}
               </router-link>
-              <a v-if="item.text === 'API'" href="https://developer.honely.com">API</a>
+              <a v-if="item.text === 'API'" href="https://developer.honely.com">Business</a>
             </li>
           </ul>
         </div>

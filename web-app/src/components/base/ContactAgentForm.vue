@@ -70,7 +70,7 @@
               placeholder="Email"
              ></v-text-field>
           </div>            
-          <label>Phone number (optional)</label>
+          <label>Phone number</label>
            <div class="input-container mt-2">
             <v-text-field
               outlined
@@ -234,8 +234,8 @@
       purposes: {
         buying: { label: 'Buying', value: false },
         selling: { label: 'Selling', value: false },
-        refinancing: { label: 'Refinancing', value: false },
-        browsing: { label: 'Just Browsing', value: false },
+        // refinancing: { label: 'Refinancing', value: false },
+        // browsing: { label: 'Just Browsing', value: false },
       },
     }),
     computed: {
@@ -262,12 +262,12 @@
       isSelling () {
         return this.purposes.selling.value
       },
-      isRefinancing () {
-        return this.purposes.refinancing.value
-      },
-      isJustBrowsing () {
-        return this.purposes.browsing.value
-      },
+      // isRefinancing () {
+      //   return this.purposes.refinancing.value
+      // },
+      // isJustBrowsing () {
+      //   return this.purposes.browsing.value
+      // },
     },
     methods: {
       formatValue (value) {
@@ -347,12 +347,12 @@
       },
       submitRandomLead () {
         // TO BE IMPLEMENTED
-        if (!this.firstName || !this.email) {
+        if (!this.firstName || !this.email || !this.phone) {
           this.leadFormErrorMessage = 'Please enter all the fields!'
           setTimeout(() => {
             this.leadFormErrorMessage = ''
           }, 2000)
-        } else if (!(this.$route.name === 'Buying Landing Page' || this.$route.name === 'Selling Landing Page' || this.$route.name === 'Refinancing Landing Page' || this.$route.name === 'Investing Landing Page') && (!this.isBuying && !this.isSelling && !this.isRefinancing && !this.isJustBrowsing)) {
+        } else if (!(this.$route.name === 'Buying Landing Page' || this.$route.name === 'Selling Landing Page' || this.$route.name === 'Refinancing Landing Page' || this.$route.name === 'Investing Landing Page') && (!this.isBuying && !this.isSelling)) {
           this.leadFormErrorMessage = 'Please enter all the fields!'
           setTimeout(() => {
             this.leadFormErrorMessage = ''
@@ -376,8 +376,8 @@
             phone: this.phone,
             isBuying: this.isBuying,
             isSelling: this.isSelling,
-            isRefinancing: this.isRefinancing,
-            isJustBrowsing: this.isJustBrowsing,
+            // isRefinancing: this.isRefinancing,
+            // isJustBrowsing: this.isJustBrowsing,
           }
           this.$store.dispatch('auth/setLeadDetails', leadDetails)
           var leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
@@ -436,63 +436,67 @@
             else endUserTypes.push('')
           } else {
             if (this.isBuying) {
-              endUserTypes.push('BUYING')
-            } else {
-              endUserTypes.push('')
+              messageParam = 'BUYING'
             }
             if (this.isSelling) {
-              endUserTypes.push('SELLING')
-            } else {
-              endUserTypes.push('')
+              messageParam = 'SELLING'
             }
-            if (this.isRefinancing) {
-              endUserTypes.push('REFINANCING')
-            } else {
-              endUserTypes.push('')
-            }
-            if (this.isJustBrowsing) {
-              endUserTypes.push('JUST BROWSING')
-            } else {
-              endUserTypes.push('')
-            }
+            // if (this.isRefinancing) {
+            //   endUserTypes.push('REFINANCING')
+            // } else {
+            //   endUserTypes.push('')
+            // }
+            // if (this.isJustBrowsing) {
+            //   endUserTypes.push('JUST BROWSING')
+            // } else {
+            //   endUserTypes.push('')
+            // }
           }
           //set phone param
           var phoneParam = ""
           if (this.phone) {
             phoneParam = "+1" + this.phone
           }
-          messageParam = endUserTypes.join(',')
+          // messageParam = endUserTypes.join(',')
           //convert tier2Targets -> lead_category
           const lead_category = tier2Targets.join(',')
           var paramsTier2 = null
           if (!this.agent) {
+            // paramsTier2 = {
+            //   name: this.firstName,
+            //   email: this.email,
+            //   phone_number: phoneParam,
+            //   search_address: addressParam,
+            //   zip_code: zipCodeParam,
+            //   lead_category: lead_category,
+            //   lead_type: messageParam,
+            //   came_from: "SITE"
+            // }
             paramsTier2 = {
               name: this.firstName,
               email: this.email,
               phone_number: phoneParam,
-              search_address: addressParam,
+              searched_address: addressParam,
               zip_code: zipCodeParam,
-              lead_category: lead_category,
               lead_type: messageParam,
-              came_from: "SITE"
             }
           }
-          if (this.agent) {
-            paramsTier2 = {
-              name: this.firstName,
-              email: this.email,
-              phone_number: phoneParam,
-              search_address: addressParam,
-              zip_code: zipCodeParam,
-              lead_category: lead_category,
-              lead_type: messageParam,
-              came_from: "FORECAST",
-              agent_id: this.agent.agent_id,
-              message: this.message
-            }
-          }
+          // if (this.agent) {
+          //   paramsTier2 = {
+          //     name: this.firstName,
+          //     email: this.email,
+          //     phone_number: phoneParam,
+          //     search_address: addressParam,
+          //     zip_code: zipCodeParam,
+          //     lead_category: lead_category,
+          //     lead_type: messageParam,
+          //     came_from: "FORECAST",
+          //     agent_id: this.agent.agent_id,
+          //     message: this.message
+          //   }
+          // }
           // console.log('vx: paramsTier2', paramsTier2)
-          axios.post('https://api.honely.com/lookup-test/lead', paramsTier2)
+          axios.post('https://api.honely.com/dev/lead', paramsTier2)
           .then(() => {
             if (this.searchQuery) {
               if (this.$route.path.startsWith('/forecast')) {
@@ -514,6 +518,32 @@
           .catch(() => {
             this.leadFormErrorMessage = 'Something went wrong. Please refresh the page and try again.'
           })
+          // fetch('https://api.honely.com/dev/lead', {
+          //   method: 'post',
+          //   mode: 'cors',
+          //   body: JSON.stringify(paramsTier2)
+          // })
+          // .then(() => {
+          //   if (this.searchQuery) {
+          //     if (this.$route.path.startsWith('/forecast')) {
+          //       if (this.agent) {
+          //         this.successMessage = 'Submitted Successfully'
+          //         setTimeout(() => {
+          //           this.successMessage = ''
+          //           // this.dialog = !this.dialog
+          //           this.toggleDialog()
+          //         }, 2000);
+          //       } else {
+          //         this.dialog = !this.dialog
+          //       }
+          //     } else {
+          //       this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
+          //     }
+          //   }
+          // })
+          // .catch(() => {
+          //   this.leadFormErrorMessage = 'Something went wrong. Please refresh the page and try again.'
+          // })
         }
       },
       toggleDialog () {
@@ -545,15 +575,15 @@
         }
       },
       selectPurpose (item) {
-        this.purposes[item].value = !this.purposes[item].value
-        // const selected = this.purposes[item].value = !this.purposes[item].value
-        // if (selected) {
-        // for (const key in this.purposes) {
-        // if (key !== item) {
-        //   this.purposes[key].value = false
-        // }
-        // }
-        // }
+        // this.purposes[item].value = !this.purposes[item].value
+        const selected = this.purposes[item].value = !this.purposes[item].value
+        if (selected) {
+        for (const key in this.purposes) {
+        if (key !== item) {
+          this.purposes[key].value = false
+        }
+        }
+        }
       },
       loginDialog () {
         this.dialog = !this.dialog

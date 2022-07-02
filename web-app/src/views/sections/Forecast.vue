@@ -55,13 +55,13 @@
             :subscriptionFlag="subscriptionFlag"
           />
         </div>
-        <div v-if="isProperty" class="carousel-item bg-white">
+        <!-- <div v-if="isProperty" class="carousel-item bg-white">
           <rental-trends
             :forecast="forecast"
             :rental-trends="rentalTrendData"
             :subscriptionFlag="subscriptionFlag"
           />
-        </div>
+        </div> -->
         <div v-if="isProperty" class="carousel-item bg-white">
           <buyer-score
             :forecast="forecast"
@@ -148,7 +148,7 @@
     },
     data: () => ({
       dropdownFlag: false,
-      menu_items: ['Property Value Forecast', 'Neighborhood at a Glance', 'Rental Trends', 'Compare Deals', 'Investment Calculators'],
+      menu_items: ['Property Value Forecast', 'Neighborhood at a Glance', 'Compare Deals', 'Investment Calculators'],
       report_counter: null,
       loading: false,
       user: null,
@@ -394,7 +394,7 @@
           console.log(response.data)
           this.forecast = response.data
           if (this.forecast.property_forecast) {
-            this.controllers = 5
+            this.controllers = 4
           } else {
             this.controllers = 1
           }
@@ -467,7 +467,7 @@
             this.getSchoolData(this.property)
             this.getWalkScore(this.property)
             this.getPropertyOptionLists()
-            this.getRentalTrendData()
+            // this.getRentalTrendData()
             this.getServiceProviders()
             this.getCountySupportedOptions()
           }).catch((error) => {
@@ -680,25 +680,25 @@
         }
       },
       leadFormNeeded (value) {
-        return false
-        // let flag = true
-        // if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-        //   flag = false
-        // } else {
-        //   const zipInQuery = value.substring(value.length - 5, value.length)
-        //   if (isNaN(zipInQuery)) {
-        //     flag = false
-        //   } else {
-        //     const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
-        //     if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
-        //       flag = false
-        //     } else {
-        //       flag = true
-        //     }
-        //   }
-        // }
-        // // console.log('flag: ' + flag)
-        // return flag
+        // return false
+        let flag = true
+        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+          flag = false
+        } else {
+          const zipInQuery = value.substring(value.length - 5, value.length)
+          if (isNaN(zipInQuery)) {
+            flag = false
+          } else {
+            const leadZipCodeList = this.$store.getters['auth/leadZipCodeList']
+            if (leadZipCodeList !== null && leadZipCodeList.includes(zipInQuery)) {
+              flag = false
+            } else {
+              flag = true
+            }
+          }
+        }
+        // console.log('flag: ' + flag)
+        return flag
       },
     },
   }

@@ -67,8 +67,8 @@
           { text: 'Zip Code', value: 'zip_code' },
           { text: 'Searched Address', value: 'searched_address' },
           { text: 'Purpose', value: 'lead_type' },
-          { text: 'Message', value: 'message' },
-          { text: 'Lead Generated From', value: 'came_from' },
+          { text: 'Lead Price', value: 'lead_price' },
+          { text: 'Average Home Price', value: 'average_home_price' },
         ],
         errorMessage: null,
       }
@@ -77,22 +77,43 @@
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser'], 'userProfile'),
     },
     mounted () {
-      if (this.isCognitoUserLoggedIn) {
-        if (this.cognitoUser.attributes.email === 'venkat@honely.com' || this.cognitoUser.attributes.email === 'jonathan@honely.com') {
-          this.isAuthorized = true
-        }
-        console.log('vx: cognitoUser email', this.cognitoUser.attributes.email)
-      }
-      axios.get('https://api.honely.com/lookup-test/leads/moderation')
-        .then((response) => {
-          this.errorMessage = null
-          this.moderation_leads = [...response.data.leads.site, ...response.data.leads.button, ...response.data.leads.forecast]
-          this.getModerationApiLoaded = true
+      this.$store.dispatch('auth/checkIsCognitoUserLoggedIn')
+        .then(() => {
+          if (this.cognitoUser.attributes.email === 'venkat@honely.com' || this.cognitoUser.attributes.email === 'jonathan@honely.com') {
+            this.isAuthorized = true
+            const config = {
+              headers: {
+                Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+              },
+            }
+            axios.get('https://api.honely.com/dev/lead/moderation', config)
+              .then((response) => {
+                this.errorMessage = null
+                this.moderation_leads = response.data.data.moderation_leads
+                this.getModerationApiLoaded = true
+              })
+              .catch((error) => {
+                this.getModerationApiLoaded = true
+                this.errorMessage = error
+              })
+          }
         })
-        .catch((error) => {
-          this.getModerationApiLoaded = true
-          this.errorMessage = error
-        })
+      // if (this.isCognitoUserLoggedIn) {
+      //   if (this.cognitoUser.attributes.email === 'venkat@honely.com' || this.cognitoUser.attributes.email === 'jonathan@honely.com') {
+      //     this.isAuthorized = true
+      //   }
+      //   console.log('vx: cognitoUser email', this.cognitoUser.attributes.email)
+      // }
+      // axios.get('https://api.honely.com/lookup-test/leads/moderation')
+      //   .then((response) => {
+      //     this.errorMessage = null
+      //     this.moderation_leads = [...response.data.leads.site, ...response.data.leads.button, ...response.data.leads.forecast]
+      //     this.getModerationApiLoaded = true
+      //   })
+      //   .catch((error) => {
+      //     this.getModerationApiLoaded = true
+      //     this.errorMessage = error
+      //   })
     },
     methods: {
       sendOutLeads () {
@@ -114,12 +135,20 @@
           rejected: this.rejectedLeadIds,
         }
         // delete selected leads and send out rest
-        axios.patch('https://api.honely.com/lookup-test/leads/moderation', params)
+        this.$store.dispatch('auth/checkIsCognitoUserLoggedIn')
           .then(() => {
-            location.reload()
-          })
-          .catch((error) => {
-            this.errorMessage = error
+            const config = {
+              headers: {
+                Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+              },
+            }
+            axios.patch('https://api.honely.com/dev/lead/moderation', params, config)
+              .then(() => {
+                location.reload()
+              })
+              .catch((error) => {
+                this.errorMessage = error
+              })
           })
       },
     },

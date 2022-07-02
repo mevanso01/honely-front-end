@@ -6,20 +6,16 @@
       <div class="flex-wrapper page-section flex-align-center partner">
         <div class="section-copy">
           <h2 class="page-sub-title">
-            Realtors, Lenders, Contractors &amp; Other Service Providers
+            Realtors, Brokerages, Lenders, &amp; Other Service Providers
           </h2>
           <p>
-            Sponsor listings and have your information and branding appear
-            directly under properties for FREE. Honely has a unique
-            advantage when it comes to the leads we procure. We differ from
-            other real estate media sites in that we are far more than a
-            home surfing tool.
+            Brokerages of all sizes, and other service providers, leverage our predictive analytics to capture leads and demonstrate a unique advantage over the competition. We&rsquo;ve built an affordable, effective lead gen tool so agents can procure leads and drive traffic to their own sites.
           </p>
           <a
-            @click="goToLeadSubscriptions()"
+            href="https://calendly.com/honelyb2b/leadgen"
             class="theme-links"
           >
-            Apply for free leads
+            Schedule a call
           </a>
         </div>
         <div class="section-img">
@@ -74,13 +70,13 @@
       toggleLoginPopupShow (value) {
         this.showLogin = value
       },
-      goToLeadSubscriptions () {
-        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
-          window.location.href = '/leads-subscriptions'
-        } else {
-          this.showLoginPopup()
-        }
-      },
+      // goToLeadSubscriptions () {
+      //   if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+      //     window.location.href = '/leads-subscriptions'
+      //   } else {
+      //     this.showLoginPopup()
+      //   }
+      // },
     },
   }
 </script>
