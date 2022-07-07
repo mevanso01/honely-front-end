@@ -115,7 +115,7 @@
             this.isConfirmLoading = false
           } else {
             this.isConfirmLoading = false
-            this.$emit('sucessAdded')
+            this.$emit('successAdded')
             this.hideDialog()
           }
         })

@@ -52,11 +52,12 @@
         <span v-if="isPro">Subscribe for $14.99</span>
         <span v-else>Subscribe for $2.99</span>
       </button>
+      <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
     <stripe-card-form
       :show="showStripeCardForm"
       @toggleShow="toggleStripeCardFormShow"
-      @sucessAdded="handlePaymethodAdded"
+      @successAdded="handlePaymethodAdded"
     />
   </div>
 </template>
@@ -79,7 +80,8 @@
         paymethods: [],
         selectedPaymethodId: null,
         paymethodDefaultChecked: false,
-        isPro: false
+        isPro: false,
+        subScriptionError: null
       }
     },
     computed: {
@@ -119,13 +121,18 @@
         this.getPaymethods()
       },
       doSubscription () {
+        if (!this.selectedPaymethodId) {
+          this.subScriptionError = 'Please select payment'
+          return
+        }
+        this.subScriptionError = null
         if (this.isPro) this.handleCreateSubscription()
         else this.handleCreatePayment()
       },
       handleCreateSubscription () {
-        axios.post('https://api.honely.com/dev/create-subscription',
+        axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
-            "payment-method": this.selectedPaymethodId
+            "payment-method": this.selectedPaymethodId + "test"
           },
           {
             headers: {
@@ -134,15 +141,19 @@
           }
         )
         .then(response => {
-          console.log(response)
+          if (response.data.data.message === 'Subscription Successful') {
+            this.$router.push('/paymentSuccess')
+          } else {
+            this.subScriptionError = response.data.data.error
+          }
         })
-        .catch(error => console.log(error))
+        .catch(error => this.subScriptionError = error)
       },
       handleCreatePayment () {
-        axios.post('https://api.honely.com/dev/create-payment',
+        axios.post('https://api.honely.com/dev/payments/create-payment',
           {
             amount: 299,
-            "payment-method": this.selectedPaymethodId,
+            "payment-method": this.selectedPaymethodId + "1",
             "property-id": this.subscriptionMode.propertyId,
             "default-pm": this.paymethodDefaultChecked
           },
@@ -153,9 +164,13 @@
           }
         )
         .then(response => {
-          console.log(response)
+          if (response.data.data.message === 'Payment Successful') {
+            this.$router.push('/paymentSuccess')
+          } else {
+            this.subScriptionError = response.data.data.error
+          }
         })
-        .catch(error => console.log(error))
+        .catch(error => this.subScriptionError = error)
       }
     }
   }
@@ -217,5 +232,11 @@
   .paymethod-default-checkbox label {
     margin-left: 10px;
     font-size: 18px;
+  }
+  p.subscription-error {
+    color: #df1b41;
+    font-size: 16px;
+    margin-top: 16px;
+    margin-bottom: 0;
   }
 </style>
