@@ -183,6 +183,7 @@
     <!-- /honely-property-zip-data -->
     <subscription-popup
       :show="showSubscription"
+      :propertyId="getPropertyId"
       @toggleShow="toggleSubscriptionShow"
     />
   </div>
@@ -203,7 +204,7 @@
       subscriptionFlag: Boolean,
     },
     components: {
-      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup')
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
     },
     data () {
       return {
@@ -603,6 +604,9 @@
         }
         return data
       },
+      getPropertyId () {
+        return this.property?.address?.property_id
+      }
     },
     updated () {
     },

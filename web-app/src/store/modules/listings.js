@@ -85,6 +85,7 @@ export const state = () => ({
         '36061/01408-00339C': ['Apt10-1.jpg', 'Apt10-2.jpg', 'Apt10-3.jpg'],
     },
     computed_zip: null,
+    subscription: {}
 })
 
 // getters
@@ -109,6 +110,9 @@ export const getters = {
     },
     computedZip: state => {
         return state.computed_zip
+    },
+    subscriptionMode: state => {
+        return state.subscription
     }
 }
 
@@ -321,6 +325,9 @@ export const actions = {
                 })
         }
     },
+    setSubscriptionMode ({ commit }, payload) {
+        commit('SET_SUBSCRIPTION_MODE', payload)
+    }
 }
 
 // mutations
@@ -349,6 +356,9 @@ export const mutations = {
     },
     SET_COMPUTED_ZIP (state, computedZip) {
         state.computed_zip = computedZip
+    },
+    SET_SUBSCRIPTION_MODE (state, obj) {
+        state.subscription = obj
     },
     // SET_MY_SPONSORED_LISTINGS (state, sponsoredListings) {
     //     state.mySponsoredListings = sponsoredListings

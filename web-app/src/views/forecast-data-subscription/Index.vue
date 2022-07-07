@@ -11,9 +11,10 @@
       <div v-if="mountedApisLoaded" class="static-body feature-text text-exsmall user-sub-body" >
         <!-- non-subscribed portion -->
         <div v-if="!subscriptionFlag" class="user-sub-body text-small">
-        <p><i class="fas fa-arrow-right user-sub-tick" />Before purchasing, investing in, or selling a home you should have an unbiased, analytical overview of not only the home itself but of the surrounding area and the specific housing market you’re interested in.</p>
-        <p><i class="fas fa-arrow-right user-sub-tick" />A $9.99 subscription to Honely.com includes a number of forward-looking statistics and data points that are crucial for understanding a property’s future, along with its surrounding neighborhood and the specific housing market that it lies in.</p>
-        <button class="bg-primary" @click="doUserSubscriptionPayment">Subscribe now</button>
+          <p><i class="fas fa-arrow-right user-sub-tick" />Before purchasing, investing in, or selling a home you should have an unbiased, analytical overview of not only the home itself but of the surrounding area and the specific housing market you’re interested in.</p>
+          <p><i class="fas fa-arrow-right user-sub-tick" />A $9.99 subscription to Honely.com includes a number of forward-looking statistics and data points that are crucial for understanding a property’s future, along with its surrounding neighborhood and the specific housing market that it lies in.</p>
+          <fore-cast-subscription />
+          <button class="bg-primary" @click="doUserSubscriptionPayment">Subscribe now</button>
         </div>
         <!-- subscribed portion -->
         <div v-if="subscriptionFlag" class="text-small user-sub-subscription-details" >
@@ -99,6 +100,7 @@
 </template>
 
 <script>
+  /* eslint-disable */
   import { StripeCheckout } from '@vue-stripe/vue-stripe'
   import axios from 'axios'
   import {
@@ -108,6 +110,8 @@
     components: {
       StripeCheckout,
       LoginPopup: () => import('@/components/login_popup/Index'),
+      StripeCardForm: () => import('@/components/forecastDataSubscription/StripeCardForm'),
+      ForeCastSubscription: () => import('@/components/forecastDataSubscription/ForecastSubscription'),
     },
     data () {
       return {

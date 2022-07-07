@@ -932,15 +932,6 @@ PAGE - SMART SEARCH
     padding: 40px 20px 30px 20px;
     position: relative;
 }
-.subscription-dialog .btn-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: transparent;
-    border: none;
-    padding: 10px;
-    min-width: initial;
-}
 .subscription-dialog-header {
     display: flex;
     align-items: center;
@@ -1063,11 +1054,17 @@ PAGE - SMART SEARCH
 }
 .subscription-dialog-bottom {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.subscription-dialog-bottom > div {
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 30px;
+    width: 100%;
 }
-.subscription-dialog-bottom .btn {
+.subscription-dialog-bottom > div .btn {
     background: #24CB43;
     border: 1px solid #24CB43;
     font-weight: 500;
@@ -1077,7 +1074,7 @@ PAGE - SMART SEARCH
     border-radius: 10px;
     font-size: 18px;
 }
-.subscription-dialog-bottom .btn:hover {
+.subscription-dialog-bottom > div .btn:hover {
     background: #fff;
     color: #24CB43;
 }
@@ -1085,6 +1082,21 @@ PAGE - SMART SEARCH
     text-decoration: underline;
     font-weight: 700;
     color: #000000;
+}
+.subscription-dialog-bottom .continue-btn {
+    background: #C4C4C4;
+    border-radius: 10px;
+    margin-top: 30px;
+    font-weight: 500;
+    color: #000000;
+    outline: none;
+    border: 1px solid #C4C4C4;
+    font-size: 18px;
+    padding: 10px 20px;
+    min-width: 50%;
+}
+.subscription-dialog-bottom .continue-btn:hover {
+    background: #FFF;
 }
 
 /* ======================================================

@@ -24,6 +24,7 @@
     "highcharts-vue": "^1.4.0",
     "puppeteer": "^10.4.0",
     "scriptjs": "^2.5.9",
+    "skeleton-loader-vue": "^1.0.10",
     "v-cookie-consent": "^1.0.0",
     "vue": "^2.6.12",
     "vue-apexcharts": "^1.6.2",

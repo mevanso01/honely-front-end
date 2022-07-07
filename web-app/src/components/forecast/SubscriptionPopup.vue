@@ -9,9 +9,6 @@
   >
     <template #default>
       <div class="subscription-dialog">
-        <button class="btn-close" @click="hideDialog()">
-          <i class="fa fa-times" style="color: black;"/>
-        </button>
         <div class="subscription-dialog-header">
           <p>Get Honely Pro</p>
           <div class="logo-wrapper">
@@ -61,9 +58,12 @@
           </div>
         </div>
         <div class="subscription-dialog-bottom">
-          <button class="btn">Get a Honely Pro Subscription</button>
-          <span>or</span>
-          <button class="btn">Purchase Report for $2.99</button>
+          <div>
+            <button class="btn" @click="goToSubscriptionPage(true)">Get a Honely Pro Subscription</button>
+            <span>or</span>
+            <button class="btn" @click="goToSubscriptionPage(false)">Purchase Report for $2.99</button>
+          </div>
+          <button class="continue-btn" @click="hideDialog">Continue with Free Search</button>
         </div>
       </div>
     </template>
@@ -74,7 +74,8 @@
   /* eslint-disable */
   export default {
     props: {
-      show: Boolean
+      show: Boolean,
+      propertyId: String || Number
     },
     computed: {
       dialog: {
@@ -89,6 +90,13 @@
     methods: {
       hideDialog () {
         this.dialog = false
+      },
+      goToSubscriptionPage (mode) {
+        this.$store.dispatch('listings/setSubscriptionMode', {
+          propertyId: this.propertyId,
+          isPro: mode
+        })
+        this.$router.push('/smart-data-subscription')
       },
     }
   }

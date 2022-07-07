@@ -1,0 +1,221 @@
+<template>
+  <!-- eslint-disable -->
+  <div class="forecast-subscription-container">
+    <div class="paymethods-container">
+      <p>Payment</p>
+      <template v-if="paymethodsLoading">
+        <div
+          v-for="n in 3"
+          class="stripe-paymethod-wrapper"
+        >
+          <vue-skeleton-loader
+            type="circle"
+            :width="16"
+            :height="16"
+          />
+          <div class="stripe-logo-wrapper">
+            <vue-skeleton-loader
+              type="rect"
+              radius="8"
+              :width="80"
+              :height="16"
+            />
+          </div>
+          <vue-skeleton-loader
+            type="rect"
+            radius="8"
+            :width="200"
+            :height="20"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <div
+          v-for="paymethod in paymethods"
+          :key="paymethod.id"
+          class="stripe-paymethod-wrapper"
+          @click="handleSelectPaymethod(paymethod.id)"
+        >
+          <input type="radio" v-model="selectedPaymethodId" :value="paymethod.id">
+          <div class="stripe-logo-wrapper">
+            <img :src ="'/site_images/icons/' + paymethod.brand + '.png'" alt="" />
+          </div>
+          <span>●●●● ●●●● ●●●● {{ paymethod.last4 }}</span>
+        </div>
+      </template>
+      <button @click="toggleStripeCardFormShow(true)" class="stripe-card-add-btn">Add another card</button>
+      <div class="paymethod-default-checkbox">
+        <input type="checkbox" id="defaultCheckBox" v-model="paymethodDefaultChecked">
+        <label for="defaultCheckBox">Save this card as default.</label>
+      </div>
+      <button class="bg-primary" @click="doSubscription">
+        <span v-if="isPro">Subscribe for $14.99</span>
+        <span v-else>Subscribe for $2.99</span>
+      </button>
+    </div>
+    <stripe-card-form
+      :show="showStripeCardForm"
+      @toggleShow="toggleStripeCardFormShow"
+      @sucessAdded="handlePaymethodAdded"
+    />
+  </div>
+</template>
+
+<script>
+  /* eslint-disable */
+  import axios from 'axios'
+  import { mapState, mapGetters } from 'vuex'
+  import VueSkeletonLoader from 'skeleton-loader-vue'
+
+  export default {
+    components: {
+      VueSkeletonLoader,
+      StripeCardForm: () => import("@/components/forecastDataSubscription/StripeCardForm"),
+    },
+    data () {
+      return {
+        showStripeCardForm: false,
+        paymethodsLoading: true,
+        paymethods: [],
+        selectedPaymethodId: null,
+        paymethodDefaultChecked: false,
+        isPro: false
+      }
+    },
+    computed: {
+      ...mapState('auth', ['cognitoUser']),
+      ...mapGetters('listings', ['subscriptionMode'])
+    },
+    mounted () {
+      this.isPro = this.subscriptionMode.isPro
+      if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+        this.getPaymethods()
+      }
+    },
+    methods: {
+      toggleStripeCardFormShow (value) {
+        this.showStripeCardForm = value
+      },
+      getPaymethods () {
+        this.paymethodsLoading = true
+        axios.get('https://api.honely.com/dev/payments/payment-methods', {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          }
+        })
+        .then(response => {
+          this.paymethods = response.data.data
+          this.selectedPaymethodId = response.data.data.find(paymethod => paymethod.default)?.id
+          this.paymethodsLoading = false
+        }).catch(error => {
+          this.paymethodsLoading = false
+          console.log(error)
+        })
+      },
+      handleSelectPaymethod (paymethodId) {
+        this.selectedPaymethodId = paymethodId
+      },
+      handlePaymethodAdded () {
+        this.getPaymethods()
+      },
+      doSubscription () {
+        if (this.isPro) this.handleCreateSubscription()
+        else this.handleCreatePayment()
+      },
+      handleCreateSubscription () {
+        axios.post('https://api.honely.com/dev/create-subscription',
+          {
+            "payment-method": this.selectedPaymethodId
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+            }
+          }
+        )
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => console.log(error))
+      },
+      handleCreatePayment () {
+        axios.post('https://api.honely.com/dev/create-payment',
+          {
+            amount: 299,
+            "payment-method": this.selectedPaymethodId,
+            "property-id": this.subscriptionMode.propertyId,
+            "default-pm": this.paymethodDefaultChecked
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+            }
+          }
+        )
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => console.log(error))
+      }
+    }
+  }
+</script>
+
+<style>
+  .forecast-subscription-container {
+    margin: 30px 0;
+    border-top: 1px solid #0000001A;
+    border-bottom: 1px solid #0000001A;
+    padding: 20px 0;
+  }
+  .stripe-card-add-btn {
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #000;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 20px 0;
+  }
+  .stripe-card-add-btn:hover {
+    color: #24cb43;
+    background: transparent;
+  }
+  .stripe-paymethod-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  .stripe-paymethod-wrapper span {
+    font-size: 18px;
+  }
+  .stripe-logo-wrapper {
+    border: 1px solid #0000001A;
+    border-radius: 3px;
+    width: 54px;
+    height: 25px;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+  }
+  .stripe-logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    box-sizing: border-box;
+  }
+  .paymethod-default-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+  .paymethod-default-checkbox label {
+    margin-left: 10px;
+    font-size: 18px;
+  }
+</style>
