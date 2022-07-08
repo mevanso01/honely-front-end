@@ -165,7 +165,7 @@
 <script>
   /* eslint-disable */
   import axios from 'axios'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   import { REQUIRED_EMAIL_RULE, REQUIRED_PHONE_RULE } from '@/utils/validators'
   export default {
     name: 'ContactAgentForm',
@@ -240,6 +240,7 @@
     }),
     computed: {
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser', 'leadDetails', 'leadZipCodeList']),
+      ...mapState('auth', ['cognitoUser']),
       searchedAddress () {
         if (this.forecast && this.forecast.property_forecast) {
           return this.forecast.property_forecast.address
@@ -282,6 +283,9 @@
       },
       getEstimatedValue () {
         axios.get('https://api.honely.com/searches/dev/forecast', {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          },
           params: {
             address: this.searchQuery,
           },

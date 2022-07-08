@@ -495,7 +495,7 @@
       }
     },
     computed: {
-      ...mapState('auth', ['currentUser']),
+      ...mapState('auth', ['currentUser', 'cognitoUser']),
       ...mapGetters('listings', ['favoriteListings']),
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       listhubTrackerUrl: function () {
@@ -935,6 +935,9 @@
       getForecast () {
         if (this.property_id) {
           axios.get('https://api.honely.com/searches/dev/forecast', {
+            headers: {
+              Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+            },
             params: {
               property_id: this.property_id,
             },

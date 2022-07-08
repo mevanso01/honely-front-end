@@ -260,6 +260,7 @@
       },
     }),
     computed: {
+      ...mapState('auth', ['cognitoUser']),
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       listings: function () {
         if (this.forecast && this.forecast.property_forecast) {
@@ -388,6 +389,9 @@
         // get forecast data ----------------------
         this.loading = true
         axios.get('https://api.honely.com/searches/dev/forecast', {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          },
           params: params,
         }).then((response) => {
           this.loading = false
