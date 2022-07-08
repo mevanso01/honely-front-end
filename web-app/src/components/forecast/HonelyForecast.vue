@@ -14,7 +14,7 @@
         >Subscribe for $14.99 a month for unlimited access to Forecast Data</button>
       </div>
       <div v-else-if="subscriptionFlag && !forecastAccess">
-        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Subscribe for $1.00</button>
+        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
       </div>
 
     </div>

@@ -33,7 +33,7 @@
         </div>
       </div>
       <div v-else-if="subscriptionFlag && !forecastAccess">
-        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Subscribe for $1.00</button>
+        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
       </div>
     <div class="forecast-neighborhood-data" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
       <!-- forecast-neighborhood-leftcol -->
