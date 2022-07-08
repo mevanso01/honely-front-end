@@ -387,7 +387,7 @@
         }
         // get forecast data ----------------------
         this.loading = true
-        axios.get('https://api.honely.com/searches/forecast', {
+        axios.get('https://api.honely.com/searches/dev/forecast', {
           params: params,
         }).then((response) => {
           this.loading = false

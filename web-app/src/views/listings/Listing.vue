@@ -934,7 +934,7 @@
       },
       getForecast () {
         if (this.property_id) {
-          axios.get('https://api.honely.com/searches/forecast', {
+          axios.get('https://api.honely.com/searches/dev/forecast', {
             params: {
               property_id: this.property_id,
             },
