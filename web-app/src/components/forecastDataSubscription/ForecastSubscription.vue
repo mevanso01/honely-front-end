@@ -50,7 +50,7 @@
       </div>
       <button class="bg-primary" @click="doSubscription">
         <span v-if="isSubscribing">Loading...</span>
-        <span v-else>Subscribe for ${{ subscriptionPrice / 100 }}</span>
+        <span v-else>Subscribe for ${{ (subscriptionPrice / 100).toFixed(2) }}</span>
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -109,6 +109,7 @@
         .then(response => {
           this.paymethods = response.data.data
           this.selectedPaymethodId = response.data.data.find(paymethod => paymethod.default)?.id
+          this.paymethodDefaultChecked = this.selectedPaymethodId ? true : false
           this.paymethodsLoading = false
         }).catch(error => {
           this.paymethodsLoading = false

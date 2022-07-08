@@ -75,6 +75,7 @@
   export default {
     props: {
       show: Boolean,
+      forecastAccess: Boolean,
       propertyId: String || Number
     },
     computed: {
@@ -95,7 +96,8 @@
         this.$store.dispatch('listings/setSubscriptionMode', {
           propertyId: this.propertyId,
           price: price,
-          successURL: window.location.href
+          successURL: window.location.href,
+          forecastAccess: this.forecastAccess
         })
         this.$router.push('/smart-data-subscription')
       },

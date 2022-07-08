@@ -14,7 +14,7 @@
         >Subscribe for $14.99 a month for unlimited access to Forecast Data</button>
       </div>
       <div v-else-if="subscriptionFlag && !forecastAccess">
-        <button @click="continueSubscription(100)" class="bg-primary">Subscribe for $1.00</button>
+        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Subscribe for $1.00</button>
       </div>
 
     </div>
@@ -187,8 +187,16 @@
     <!-- /honely-property-zip-data -->
     <subscription-popup
       :show="showSubscription"
+      :forecastAccess="forecastAccess"
       :propertyId="getPropertyId"
       @toggleShow="toggleSubscriptionShow"
+    />
+    <single-subscription-popup
+      :show="showSingleSubscription"
+      :forecastAccess="forecastAccess"
+      :propertyId="getPropertyId"
+      :defaultPaymethod="defaultPaymethod"
+      @toggleShow="toggleSingleSubscriptionShow"
     />
   </div>
   <!-- eslint-enable -->
@@ -197,7 +205,7 @@
 <script>
   /* eslint-disable */
   import axios from 'axios'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
 
   export default {
     name: 'HonelyForeast',
@@ -209,6 +217,7 @@
     },
     components: {
       SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
+      SingleSubscriptionPopup: () => import('@/components/forecast/SingleSubscriptionPopup'),
     },
     data () {
       return {
@@ -229,10 +238,13 @@
           '2 Years Honely Forecast',
           '3 Years Honely Forecast',
         ],
-        showSubscription: false
+        showSubscription: false,
+        showSingleSubscription: false,
+        defaultPaymethod: {}
       }
     },
     computed: {
+      ...mapState('auth', ['cognitoUser']),
       ...mapGetters('listings', ['favoriteListings']),
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       isFavorite () {
@@ -637,6 +649,7 @@
           console.log('[ERROR] Failed to fetch user data', error)
           console.log(error.response.data.errorMessage)
         })
+        this.getPaymethods()
       }
       if (this.forecast && this.forecast.property_forecast) {
         this.activeForecastTimeframe = 1
@@ -654,14 +667,6 @@
     methods: {
       goToSubscriptionPage () {
         window.location.href = '/smart-data-subscription'
-      },
-      continueSubscription (price) {
-        this.$store.dispatch('listings/setSubscriptionMode', {
-          propertyId: this.propertyId,
-          price: price,
-          successURL: window.location.href
-        })
-        this.$router.push('/smart-data-subscription')
       },
       checkImage () {
         const self = this
@@ -823,8 +828,27 @@
       showSubscriptionPopup () {
         this.showSubscription = true
       },
+      showSingleSubscriptionPopup () {
+        this.showSingleSubscription = true
+      },
       toggleSubscriptionShow (value) {
         this.showSubscription = value
+      },
+      toggleSingleSubscriptionShow (value) {
+        this.showSingleSubscription = value
+      },
+      getPaymethods () {
+        this.paymethodsLoading = true
+        axios.get('https://api.honely.com/dev/payments/payment-methods', {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          }
+        })
+        .then(response => {
+          this.defaultPaymethod = response.data.data.find(paymethod => paymethod.default) || {}
+        }).catch(error => {
+          console.log(error)
+        })
       }
     },
   }
