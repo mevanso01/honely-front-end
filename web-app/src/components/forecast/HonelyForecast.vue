@@ -7,7 +7,7 @@
         <div class="forecast-section-title">Honely Property Value Forecast</div>
         <p class="forecast-address">Property Found: <span class="mdi mdi-map-marker"></span> {{ getAddress1}} {{ getAddress2}}</p>
       </div>
-      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag">
+      <div v-if="!isCognitoUserLoggedIn || !forecastAccess">
         <button
           class="bg-primary forecast-subscription-btn"
           @click="showSubscriptionPopup()"

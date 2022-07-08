@@ -50,7 +50,11 @@
       </div>
       <button class="bg-primary" @click="doSubscription">
         <span v-if="isSubscribing">Loading...</span>
-        <span v-else>Subscribe for ${{ (subscriptionPrice / 100).toFixed(2) }}</span>
+        <span v-else>
+          <span v-if="subscriptionPrice === 1499">Subscribe </span>
+          <span v-else>Purchase </span>
+           for ${{ (subscriptionPrice / 100).toFixed(2) }}
+        </span>
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -162,14 +166,14 @@
         if (this.subscriptionMode.propertyId) {
           params = {
             amount: this.subscriptionPrice,
-            "payment-method": this.defaultPaymethod.id,
+            "payment-method": this.selectedPaymethodId,
             "property-id": this.subscriptionMode.propertyId,
             "default-pm": true
           }
         } else if (this.subscriptionMode.zipCode) {
           params = {
             amount: this.subscriptionPrice,
-            "payment-method": this.defaultPaymethod.id,
+            "payment-method": this.selectedPaymethodId,
             "zip-code": this.subscriptionMode.zipCode,
             "default-pm": true
           }

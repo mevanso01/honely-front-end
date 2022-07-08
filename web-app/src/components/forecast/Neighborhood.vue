@@ -26,7 +26,7 @@
           <button class="bg-primary">Sign In</button>
         </div>
       </div> -->
-      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+      <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
           <p>Please subscribe to view all of our statistics</p>
           <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
@@ -35,7 +35,7 @@
       <div v-else-if="subscriptionFlag && !forecastAccess">
         <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
       </div>
-    <div class="forecast-neighborhood-data" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
+    <div class="forecast-neighborhood-data" :class="!isCognitoUserLoggedIn || !forecastAccess?'blocked':''" >
       <!-- forecast-neighborhood-leftcol -->
       <div class="forecast-neighborhood-left">
         <!-- forecast-neighborhood-home-value -->
