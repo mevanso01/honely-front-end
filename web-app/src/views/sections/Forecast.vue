@@ -47,12 +47,14 @@
             :property="property"
             :property-zip-data="propertyZipData"
             :subscriptionFlag="subscriptionFlag"
+            :defaultPaymethod="defaultPaymethod"
           />
         </div>
         <div v-if="forecast" class="carousel-item bg-default" :class="{active : !isProperty}">
           <neighborhood
             :forecast="forecast"
             :subscriptionFlag="subscriptionFlag"
+            :defaultPaymethod="defaultPaymethod"
           />
         </div>
         <!-- <div v-if="isProperty" class="carousel-item bg-white">
@@ -258,6 +260,7 @@
         general_contractors: null,
         lenders: null,
       },
+      defaultPaymethod: {}
     }),
     computed: {
       ...mapState('auth', ['cognitoUser']),
@@ -310,6 +313,9 @@
       this.propertyId = this.$route.params.property_id
       this.address = this.$route.query.address
       this.getUserData()
+      if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+        this.getPaymethods()
+      }
       // this.getForecastData()
     },
     created () {
@@ -704,6 +710,19 @@
         // console.log('flag: ' + flag)
         return flag
       },
+      getPaymethods () {
+        this.paymethodsLoading = true
+        axios.get('https://api.honely.com/dev/payments/payment-methods', {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          }
+        })
+        .then(response => {
+          this.defaultPaymethod = response.data.data.find(paymethod => paymethod.default) || {}
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
   }
 </script>

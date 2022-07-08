@@ -32,7 +32,8 @@
       show: Boolean,
       propertyId: String || Number,
       defaultPaymethod: Object,
-      forecastAccess: Boolean
+      forecastAccess: Boolean,
+      zipCode: String || Number
     },
     data () {
       return {
@@ -58,6 +59,7 @@
       goToSubscriptionPage () {
         this.$store.dispatch('listings/setSubscriptionMode', {
           propertyId: this.propertyId,
+          zipCode: this.zipCode,
           price: 100,
           successURL: window.location.href,
           forecastAccess: this.forecastAccess
@@ -74,13 +76,24 @@
       handleCreatePayment () {
         this.isSubscribing = true
         this.subScriptionError = null
-        axios.post('https://api.honely.com/dev/payments/create-payment',
-          {
+        let params
+        if (this.propertyId) {
+          params = {
             amount: 100,
             "payment-method": this.defaultPaymethod.id,
             "property-id": this.propertyId,
             "default-pm": true
-          },
+          }
+        } else if (this.zipCode) {
+          params = {
+            amount: 100,
+            "payment-method": this.defaultPaymethod.id,
+            "zip-code": this.zipCode,
+            "default-pm": true
+          }
+        }
+        axios.post('https://api.honely.com/dev/payments/create-payment',
+          params,
           {
             headers: {
               Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,

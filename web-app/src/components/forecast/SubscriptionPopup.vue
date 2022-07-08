@@ -76,7 +76,8 @@
     props: {
       show: Boolean,
       forecastAccess: Boolean,
-      propertyId: String || Number
+      propertyId: String || Number,
+      zipCode: String || Number
     },
     computed: {
       dialog: {
@@ -95,6 +96,7 @@
       goToSubscriptionPage (price) {
         this.$store.dispatch('listings/setSubscriptionMode', {
           propertyId: this.propertyId,
+          zipCode: this.zipCode,
           price: price,
           successURL: window.location.href,
           forecastAccess: this.forecastAccess

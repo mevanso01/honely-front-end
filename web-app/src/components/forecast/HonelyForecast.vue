@@ -214,6 +214,7 @@
       property: Object,
       propertyZipData: Object,
       subscriptionFlag: Boolean,
+      defaultPaymethod: Object
     },
     components: {
       SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
@@ -240,7 +241,6 @@
         ],
         showSubscription: false,
         showSingleSubscription: false,
-        defaultPaymethod: {}
       }
     },
     computed: {
@@ -649,7 +649,6 @@
           console.log('[ERROR] Failed to fetch user data', error)
           console.log(error.response.data.errorMessage)
         })
-        this.getPaymethods()
       }
       if (this.forecast && this.forecast.property_forecast) {
         this.activeForecastTimeframe = 1
@@ -836,19 +835,6 @@
       },
       toggleSingleSubscriptionShow (value) {
         this.showSingleSubscription = value
-      },
-      getPaymethods () {
-        this.paymethodsLoading = true
-        axios.get('https://api.honely.com/dev/payments/payment-methods', {
-          headers: {
-            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
-          }
-        })
-        .then(response => {
-          this.defaultPaymethod = response.data.data.find(paymethod => paymethod.default) || {}
-        }).catch(error => {
-          console.log(error)
-        })
       }
     },
   }

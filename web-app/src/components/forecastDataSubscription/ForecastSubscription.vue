@@ -158,13 +158,25 @@
         })
       },
       handleCreatePayment () {
-        axios.post('https://api.honely.com/dev/payments/create-payment',
-          {
+        let params = null
+        if (this.subscriptionMode.propertyId) {
+          params = {
             amount: this.subscriptionPrice,
-            "payment-method": this.selectedPaymethodId,
+            "payment-method": this.defaultPaymethod.id,
             "property-id": this.subscriptionMode.propertyId,
-            "default-pm": this.paymethodDefaultChecked
-          },
+            "default-pm": true
+          }
+        } else if (this.subscriptionMode.zipCode) {
+          params = {
+            amount: this.subscriptionPrice,
+            "payment-method": this.defaultPaymethod.id,
+            "zip-code": this.subscriptionMode.zipCode,
+            "default-pm": true
+          }
+        }
+
+        axios.post('https://api.honely.com/dev/payments/create-payment',
+          params,
           {
             headers: {
               Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,

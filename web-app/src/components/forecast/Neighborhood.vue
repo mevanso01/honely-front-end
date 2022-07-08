@@ -29,8 +29,11 @@
       <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
         <div class="overlay-wrapper">
           <p>Please subscribe to view all of our statistics</p>
-          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+          <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
         </div>
+      </div>
+      <div v-else-if="subscriptionFlag && !forecastAccess">
+        <button @click="showSingleSubscriptionPopup()" class="bg-primary">Subscribe for $1.00</button>
       </div>
     <div class="forecast-neighborhood-data" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
       <!-- forecast-neighborhood-leftcol -->
@@ -294,6 +297,19 @@
     </div>
     </div>
     <!-- /forecast-neighborhood-data -->
+    <subscription-popup
+      :show="showSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      @toggleShow="toggleSubscriptionShow"
+    />
+    <single-subscription-popup
+      :show="showSingleSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      :defaultPaymethod="defaultPaymethod"
+      @toggleShow="toggleSingleSubscriptionShow"
+    />
   </div>
   <!-- eslint-enable -->
 </template>
@@ -303,10 +319,13 @@
   export default {
     name: 'Neighborhood',
     components: {
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
+      SingleSubscriptionPopup: () => import('@/components/forecast/SingleSubscriptionPopup'),
     },
     props: {
       forecast: Object,
       subscriptionFlag: Boolean,
+      defaultPaymethod: Object,
     },
     data () {
       return {
@@ -321,6 +340,8 @@
         activeValueStateRank: '--',
         activeValueNationalRank: '--',
         activeChartType: 0,
+        showSubscription: false,
+        showSingleSubscription: false,
       }
     },
     computed: {
@@ -579,6 +600,9 @@
         }
         return data
       },
+      forecastAccess () {
+        return this.forecast.access
+      },
     },
     watch: {
       forecast: function () {
@@ -728,6 +752,18 @@
           result = '#' + num
         }
         return result
+      },
+      showSubscriptionPopup () {
+        this.showSubscription = true
+      },
+      showSingleSubscriptionPopup () {
+        this.showSingleSubscription = true
+      },
+      toggleSubscriptionShow (value) {
+        this.showSubscription = value
+      },
+      toggleSingleSubscriptionShow (value) {
+        this.showSingleSubscription = value
       },
     },
   }
