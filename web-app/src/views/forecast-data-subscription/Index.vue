@@ -12,7 +12,7 @@
         <!-- non-subscribed portion -->
         <div v-if="!subscriptionFlag" class="user-sub-body text-small">
           <p><i class="fas fa-arrow-right user-sub-tick" />Before purchasing, investing in, or selling a home you should have an unbiased, analytical overview of not only the home itself but of the surrounding area and the specific housing market you’re interested in.</p>
-          <p><i class="fas fa-arrow-right user-sub-tick" />A $9.99 subscription to Honely.com includes a number of forward-looking statistics and data points that are crucial for understanding a property’s future, along with its surrounding neighborhood and the specific housing market that it lies in.</p>
+          <p><i class="fas fa-arrow-right user-sub-tick" />A $14.99 subscription to Honely.com includes a number of forward-looking statistics and data points that are crucial for understanding a property’s future, along with its surrounding neighborhood and the specific housing market that it lies in.</p>
           <fore-cast-subscription />
           <button class="bg-primary" @click="doUserSubscriptionPayment">Subscribe now</button>
         </div>
