@@ -4,8 +4,8 @@
   <div class="container-home-maps">
     <!-- map-selection -->
     <div class="map-selection">
-      <button class="btn-map-selection active" id="migration">Migration</button>
-      <button class="btn-map-selection" id="accuracy">Accuracy</button>
+      <!-- <button class="btn-map-selection active" id="migration">Migration</button> -->
+      <!-- <button class="btn-map-selection" id="accuracy">Accuracy</button> -->
     </div>
     <!-- /map-selection -->
 
