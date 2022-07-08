@@ -26,7 +26,7 @@
           <button class="bg-primary">Sign In</button>
         </div>
       </div> -->
-      <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
+      <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)" class="container-overlay">
         <div class="overlay-wrapper">
           <p>Please subscribe to view all of our statistics</p>
           <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>

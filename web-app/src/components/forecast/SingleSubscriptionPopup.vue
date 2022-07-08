@@ -15,7 +15,7 @@
           <span v-if="isSubscribing">Loading...</span>
           <span v-else>Continue</span>
         </button>
-        <button class="bg-primary" @click="hideDialog()">No</button>
+        <button class="" @click="hideDialog()">No</button>
       </div>
       <p v-if="subScriptionError">{{ subScriptionError }}</p>
     </div>

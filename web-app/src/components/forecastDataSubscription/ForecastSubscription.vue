@@ -2,7 +2,7 @@
   <!-- eslint-disable -->
   <div class="forecast-subscription-container">
     <div class="paymethods-container">
-      <p>Payment</p>
+      <p>Payment methods</p>
       <template v-if="paymethodsLoading">
         <div
           v-for="n in 3"
@@ -128,7 +128,7 @@
       },
       doSubscription () {
         if (!this.selectedPaymethodId) {
-          this.subScriptionError = 'Please select payment'
+          this.subScriptionError = 'Please select a payment method'
           return
         }
         this.subScriptionError = null
