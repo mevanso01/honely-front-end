@@ -132,7 +132,7 @@
       handleCreateSubscription () {
         axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
-            "payment-method": this.selectedPaymethodId + "test"
+            "payment-method": this.selectedPaymethodId
           },
           {
             headers: {
@@ -153,7 +153,7 @@
         axios.post('https://api.honely.com/dev/payments/create-payment',
           {
             amount: 299,
-            "payment-method": this.selectedPaymethodId + "1",
+            "payment-method": this.selectedPaymethodId,
             "property-id": this.subscriptionMode.propertyId,
             "default-pm": this.paymethodDefaultChecked
           },
