@@ -393,12 +393,20 @@
         }
         // get forecast data ----------------------
         this.loading = true
-        axios.get('https://api.honely.com/searches/dev/forecast', {
-          headers: {
-            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
-          },
-          params: params,
-        }).then((response) => {
+        let requestOptions = {}
+        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+          requestOptions = {
+            headers: {
+              Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+            },
+            params: params,
+          }
+        } else {
+          requestOptions = {
+            params: params,
+          }
+        }
+        axios.get('https://api.honely.com/searches/dev/forecast', requestOptions).then((response) => {
           this.loading = false
           console.log(response.data)
           this.forecast = response.data

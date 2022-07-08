@@ -281,14 +281,24 @@
         }
       },
       getEstimatedValue () {
-        axios.get('https://api.honely.com/searches/dev/forecast', {
-          headers: {
-            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
-          },
-          params: {
-            address: this.searchQuery,
-          },
-        }).then((response) => {
+        let requestOptions = {}
+        if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
+          requestOptions = {
+            headers: {
+              Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+            },
+            params: {
+              address: this.searchQuery,
+            },
+          }
+        } else {
+          requestOptions = {
+             params: {
+              address: this.searchQuery,
+            },
+          }
+        }
+        axios.get('https://api.honely.com/searches/dev/forecast', requestOptions).then((response) => {
           // console.log('response', response)
           if (response) {
             this.estimatedValue = response.data.property_forecast?.appraisal
