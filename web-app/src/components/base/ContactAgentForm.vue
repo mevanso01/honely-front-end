@@ -165,7 +165,7 @@
 <script>
   /* eslint-disable */
   import axios from 'axios'
-  import { mapGetters, mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   import { REQUIRED_EMAIL_RULE, REQUIRED_PHONE_RULE } from '@/utils/validators'
   export default {
     name: 'ContactAgentForm',
@@ -240,7 +240,6 @@
     }),
     computed: {
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser', 'leadDetails', 'leadZipCodeList']),
-      ...mapState('auth', ['cognitoUser']),
       searchedAddress () {
         if (this.forecast && this.forecast.property_forecast) {
           return this.forecast.property_forecast.address

@@ -130,7 +130,7 @@
 <script>
   /* eslint-disable */
   import axios from 'axios'
-  import { mapGetters, mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   import { bus } from '../../main'
 
   export default {
@@ -263,7 +263,6 @@
       defaultPaymethod: {}
     }),
     computed: {
-      ...mapState('auth', ['cognitoUser']),
       ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       listings: function () {
         if (this.forecast && this.forecast.property_forecast) {
