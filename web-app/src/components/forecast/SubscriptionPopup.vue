@@ -59,9 +59,9 @@
         </div>
         <div class="subscription-dialog-bottom">
           <div>
-            <button class="btn" @click="goToSubscriptionPage(true)">Get a Honely Pro Subscription</button>
+            <button class="btn" @click="goToSubscriptionPage(1499)">Get a Honely Pro Subscription</button>
             <span>or</span>
-            <button class="btn" @click="goToSubscriptionPage(false)">Purchase Report for $2.99</button>
+            <button class="btn" @click="goToSubscriptionPage(299)">Purchase Report for $2.99</button>
           </div>
           <button class="continue-btn" @click="hideDialog">Continue with Free Search</button>
         </div>
@@ -91,10 +91,11 @@
       hideDialog () {
         this.dialog = false
       },
-      goToSubscriptionPage (mode) {
+      goToSubscriptionPage (price) {
         this.$store.dispatch('listings/setSubscriptionMode', {
           propertyId: this.propertyId,
-          isPro: mode
+          price: price,
+          successURL: window.location.href
         })
         this.$router.push('/smart-data-subscription')
       },

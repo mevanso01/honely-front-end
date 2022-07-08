@@ -49,8 +49,7 @@
         <label for="defaultCheckBox">Save this card as default.</label>
       </div>
       <button class="bg-primary" @click="doSubscription">
-        <span v-if="isPro">Subscribe for $14.99</span>
-        <span v-else>Subscribe for $2.99</span>
+        <span>Subscribe for ${{ subscriptionPrice / 100 }}</span>
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -80,7 +79,7 @@
         paymethods: [],
         selectedPaymethodId: null,
         paymethodDefaultChecked: false,
-        isPro: false,
+        subscriptionPrice: false,
         subScriptionError: null
       }
     },
@@ -89,7 +88,7 @@
       ...mapGetters('listings', ['subscriptionMode'])
     },
     mounted () {
-      this.isPro = this.subscriptionMode.isPro
+      this.subscriptionPrice = this.subscriptionMode.price
       if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
         this.getPaymethods()
       }
@@ -126,7 +125,7 @@
           return
         }
         this.subScriptionError = null
-        if (this.isPro) this.handleCreateSubscription()
+        if (this.subscriptionPrice === 1499) this.handleCreateSubscription()
         else this.handleCreatePayment()
       },
       handleCreateSubscription () {
@@ -142,7 +141,7 @@
         )
         .then(response => {
           if (response.data.data.message === 'Subscription Successful') {
-            this.$router.push('/paymentSuccess')
+            window.location.href = this.subscriptionMode.successURL
           } else {
             this.subScriptionError = response.data.data.error
           }
@@ -152,7 +151,7 @@
       handleCreatePayment () {
         axios.post('https://api.honely.com/dev/payments/create-payment',
           {
-            amount: 299,
+            amount: this.subscriptionPrice,
             "payment-method": this.selectedPaymethodId,
             "property-id": this.subscriptionMode.propertyId,
             "default-pm": this.paymethodDefaultChecked
@@ -165,7 +164,7 @@
         )
         .then(response => {
           if (response.data.data.message === 'Payment Successful') {
-            this.$router.push('/paymentSuccess')
+            window.location.href = this.subscriptionMode.successURL
           } else {
             this.subScriptionError = response.data.data.error
           }
