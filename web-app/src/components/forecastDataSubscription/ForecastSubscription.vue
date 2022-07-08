@@ -49,7 +49,8 @@
         <label for="defaultCheckBox">Save this card as default.</label>
       </div>
       <button class="bg-primary" @click="doSubscription">
-        <span>Subscribe for ${{ subscriptionPrice / 100 }}</span>
+        <span v-if="isSubscribing">Loading...</span>
+        <span v-else>Subscribe for ${{ subscriptionPrice / 100 }}</span>
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -80,7 +81,8 @@
         selectedPaymethodId: null,
         paymethodDefaultChecked: false,
         subscriptionPrice: false,
-        subScriptionError: null
+        subScriptionError: null,
+        isSubscribing: false
       }
     },
     computed: {
@@ -125,6 +127,7 @@
           return
         }
         this.subScriptionError = null
+        this.isSubscribing = true
         if (this.subscriptionPrice === 1499) this.handleCreateSubscription()
         else this.handleCreatePayment()
       },
@@ -141,12 +144,17 @@
         )
         .then(response => {
           if (response.data.data.message === 'Subscription Successful') {
+            this.isSubscribing = false
             window.location.href = this.subscriptionMode.successURL
           } else {
+            this.isSubscribing = false
             this.subScriptionError = response.data.data.error
           }
         })
-        .catch(error => this.subScriptionError = error)
+        .catch(error => {
+          this.isSubscribing = false
+          this.subScriptionError = error
+        })
       },
       handleCreatePayment () {
         axios.post('https://api.honely.com/dev/payments/create-payment',
@@ -164,12 +172,17 @@
         )
         .then(response => {
           if (response.data.data.message === 'Payment Successful') {
+            this.isSubscribing = false
             window.location.href = this.subscriptionMode.successURL
           } else {
+            this.isSubscribing = false
             this.subScriptionError = response.data.data.error
           }
         })
-        .catch(error => this.subScriptionError = error)
+        .catch(error => {
+          this.isSubscribing = false
+          this.subScriptionError = error
+        })
       }
     }
   }

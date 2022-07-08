@@ -3,16 +3,20 @@
   <div class="forecast-section section-wrapper">
     <!-- forecast-heading-wrapper -->
     <div class="forecast-heading-super-wrapper">
-    <div class="forecast-heading-wrapper">
-      <div class="forecast-section-title">Honely Property Value Forecast</div>
-      <p class="forecast-address">Property Found: <span class="mdi mdi-map-marker"></span> {{ getAddress1}} {{ getAddress2}}</p>
-    </div>
-    <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag">
-      <button
-        class="bg-primary forecast-subscription-btn"
-        @click="showSubscriptionPopup()"
-      >Subscribe for $9.99 a month for unlimited access to Forecast Data</button>
-    </div>
+      <div class="forecast-heading-wrapper">
+        <div class="forecast-section-title">Honely Property Value Forecast</div>
+        <p class="forecast-address">Property Found: <span class="mdi mdi-map-marker"></span> {{ getAddress1}} {{ getAddress2}}</p>
+      </div>
+      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag">
+        <button
+          class="bg-primary forecast-subscription-btn"
+          @click="showSubscriptionPopup()"
+        >Subscribe for $14.99 a month for unlimited access to Forecast Data</button>
+      </div>
+      <div v-else-if="subscriptionFlag && !forecastAccess">
+        <button @click="continueSubscription(100)" class="bg-primary">Subscribe for $1.00</button>
+      </div>
+
     </div>
     <!-- /forecast-heading-wrapper -->
 
@@ -606,6 +610,9 @@
       },
       getPropertyId () {
         return this.property?.address?.property_id
+      },
+      forecastAccess () {
+        return this.forecast.access
       }
     },
     updated () {
@@ -647,6 +654,14 @@
     methods: {
       goToSubscriptionPage () {
         window.location.href = '/smart-data-subscription'
+      },
+      continueSubscription (price) {
+        this.$store.dispatch('listings/setSubscriptionMode', {
+          propertyId: this.propertyId,
+          price: price,
+          successURL: window.location.href
+        })
+        this.$router.push('/smart-data-subscription')
       },
       checkImage () {
         const self = this
