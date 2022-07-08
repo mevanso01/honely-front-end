@@ -8,7 +8,7 @@
     content-class="singlie-subscription-dialog-wrapper"
   >
     <div class="single-subscription-dialog">
-      <h2>You'll be charged $1 for this property.</h2>
+      <h2>You'll be charged $1.00 for this property.</h2>
       <p>Are you sure you want to continue?</p>
       <div class="btn-group">
         <button class="bg-primary" @click="continueSubscription()">
