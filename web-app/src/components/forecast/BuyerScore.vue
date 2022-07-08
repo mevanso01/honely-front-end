@@ -16,13 +16,18 @@
           <button class="bg-primary">Sign In</button>
         </div>
       </div> -->
-      <div v-if="!isCognitoUserLoggedIn && !subscriptionFlag" class="container-overlay">
+      <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
           <p>Please subscribe to view all of our statistics</p>
-          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+          <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)">
+            <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
+          </div>
+          <div v-else-if="subscriptionFlag && !forecastAccess">
+            <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
+          </div>
         </div>
       </div>
-    <div class="forecast-buyer-score-main-block" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
+    <div class="forecast-buyer-score-main-block" :class="!isCognitoUserLoggedIn || !forecastAccess?'blocked':''" >
     <div class="forecast-buyer-score">
       <buyer-score-block
         :forecast="forecast"
@@ -65,6 +70,21 @@
     <!-- /forecast-buyer-score-search -->
     </div>
     </div>
+    <subscription-popup
+      :show="showSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      :propertyId="getPropertyId"
+      @toggleShow="toggleSubscriptionShow"
+    />
+    <single-subscription-popup
+      :show="showSingleSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      :propertyId="getPropertyId"
+      :defaultPaymethod="defaultPaymethod"
+      @toggleShow="toggleSingleSubscriptionShow"
+    />
   </div>
   <!-- eslint-enable -->
 </template>
@@ -77,16 +97,21 @@
       SectionLoader: () => import('@/components/SectionLoader'),
       BuyerScoreBlock: () => import('@/components/forecast/BuyerScoreBlock'),
       HonelySearchSimple: () => import('@/components/HonelySearchSimple'),
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
+      SingleSubscriptionPopup: () => import('@/components/forecast/SingleSubscriptionPopup'),
     },
     props: {
       forecast: Object,
       subscriptionFlag: Boolean,
+      defaultPaymethod: Object,
     },
     data () {
       return {
         // blocked: true,
         loading: false,
         properties: [],
+        showSubscription: false,
+        showSingleSubscription: false,
       }
     },
     computed: {
@@ -108,6 +133,9 @@
         } else {
           return '--'
         }
+      },
+      getPropertyId () {
+        return this.forecast?.property_forecast?.address?.property_id
       },
       getCity () {
         if (this.forecast) {
@@ -162,6 +190,9 @@
         }
         return address2
       },
+      forecastAccess () {
+        return this.forecast.access
+      },
     },
     mounted () {
       this.properties = []
@@ -206,6 +237,18 @@
             this.properties.splice(index, 1)
           }
         }
+      },
+      showSubscriptionPopup () {
+        this.showSubscription = true
+      },
+      showSingleSubscriptionPopup () {
+        this.showSingleSubscription = true
+      },
+      toggleSubscriptionShow (value) {
+        this.showSubscription = value
+      },
+      toggleSingleSubscriptionShow (value) {
+        this.showSingleSubscription = value
       },
     },
   }

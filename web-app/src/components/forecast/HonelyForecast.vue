@@ -110,13 +110,17 @@
           <button class="bg-primary">Sign In</button>
         </div>
       </div> -->
-      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+      <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
-          <p>Please subscribe to view all of our statistics</p>
-          <button class="bg-primary" @click="goToSubscriptionPage">Subscribe</button>
+          <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)">
+            <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
+          </div>
+          <div v-else-if="subscriptionFlag && !forecastAccess">
+            <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
+          </div>
         </div>
       </div>
-      <div class="honely-property-zip-data-charts" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
+      <div class="honely-property-zip-data-charts" :class="!isCognitoUserLoggedIn || !forecastAccess?'blocked':''" >
         <div class="chart-container">
           <p class="chart-tilte">
             <span class="mdi mdi-chart-bar"></span>

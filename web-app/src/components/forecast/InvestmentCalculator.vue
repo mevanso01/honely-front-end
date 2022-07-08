@@ -24,13 +24,18 @@
           <button class="bg-primary">Sign In</button>
         </div>
       </div> -->
-      <div v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="container-overlay">
+      <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
           <p>Please subscribe to view all of our statistics</p>
-          <button class="bg-primary">Subscribe</button>
+          <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)">
+            <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
+          </div>
+          <div v-else-if="subscriptionFlag && !forecastAccess">
+            <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
+          </div>
         </div>
       </div>
-        <div class="flex-wrapper" :class="!isCognitoUserLoggedIn || !subscriptionFlag?'blocked':''" >
+        <div class="flex-wrapper" :class="!isCognitoUserLoggedIn || !forecastAccess?'blocked':''" >
           <div class="flex-col-md-6">
             <label class="text-0">Home Value</label>
             <input id="homeValue" type="text" :placeholder="getHonelyEstimate" @keyup="getBuyerScore">
@@ -192,6 +197,21 @@
       </v-tab-item> -->
     </v-tabs>
     <!-- /forecast-content-wrapper -->
+    <subscription-popup
+      :show="showSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      :propertyId="getPropertyId"
+      @toggleShow="toggleSubscriptionShow"
+    />
+    <single-subscription-popup
+      :show="showSingleSubscription"
+      :forecastAccess="forecastAccess"
+      :zipCode="getZipcode"
+      :propertyId="getPropertyId"
+      :defaultPaymethod="defaultPaymethod"
+      @toggleShow="toggleSingleSubscriptionShow"
+    />
   </div>
   <!-- eslint-enable -->
 </template>
@@ -208,10 +228,13 @@
     components: {
       apexcharts: VueApexCharts,
       nformat: VueNumberFormat,
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
+      SingleSubscriptionPopup: () => import('@/components/forecast/SingleSubscriptionPopup'),
     },
     props: {
       forecast: Object,
       subscriptionFlag: Boolean,
+      defaultPaymethod: Object,
     },
     data () {
       return {
@@ -263,6 +286,8 @@
           },
           labels: ['Total', 'Mortgage', 'Remaining'],
         },
+        showSubscription: false,
+        showSingleSubscription: false,
       }
     },
     computed: {
@@ -275,6 +300,15 @@
           }
         }
         return estimate
+      },
+      forecastAccess () {
+        return this.forecast.access
+      },
+      getZipcode () {
+        return this.forecast?.zipcode
+      },
+      getPropertyId () {
+        return this.forecast?.property_forecast?.address?.property_id
       },
     },
     watch: {
@@ -592,6 +626,18 @@
         document.getElementById('studentloan').value = ''
         document.getElementById('otherloan').value = ''
         this.series = [0, 0, 0]
+      },
+      showSubscriptionPopup () {
+        this.showSubscription = true
+      },
+      showSingleSubscriptionPopup () {
+        this.showSingleSubscription = true
+      },
+      toggleSubscriptionShow (value) {
+        this.showSubscription = value
+      },
+      toggleSingleSubscriptionShow (value) {
+        this.showSingleSubscription = value
       },
     },
   }

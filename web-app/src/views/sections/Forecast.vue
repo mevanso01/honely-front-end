@@ -68,12 +68,14 @@
           <buyer-score
             :forecast="forecast"
             :subscriptionFlag="subscriptionFlag"
+            :defaultPaymethod="defaultPaymethod"
           />
         </div>
         <div v-if="isProperty" class="carousel-item bg-white">
           <investment-calculator
             :forecast="forecast"
             :subscriptionFlag="subscriptionFlag"
+            :defaultPaymethod="defaultPaymethod"
           />
         </div>
       </div>
