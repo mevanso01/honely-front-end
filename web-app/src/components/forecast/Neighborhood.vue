@@ -301,12 +301,14 @@
       :show="showSubscription"
       :forecastAccess="forecastAccess"
       :zipCode="getZipcode"
+      :propertyId="getPropertyId"
       @toggleShow="toggleSubscriptionShow"
     />
     <single-subscription-popup
       :show="showSingleSubscription"
       :forecastAccess="forecastAccess"
       :zipCode="getZipcode"
+      :propertyId="getPropertyId"
       :defaultPaymethod="defaultPaymethod"
       @toggleShow="toggleSingleSubscriptionShow"
     />
@@ -363,6 +365,9 @@
         } else {
           return '--'
         }
+      },
+      getPropertyId () {
+        return this.forecast.property_forecast?.property_id
       },
       getCity () {
         if (this.forecast) {
