@@ -52,7 +52,7 @@
           <div class="user-sub-feature-list list-ordered user-sub-list-tick user-sub-features-box" >
             <br>
           <ul>
-            <li><i class="fas fa-check user-sub-tick" />Unlimited searches</li>
+            <li><i class="fas fa-check user-sub-tick" />15 Honely Pro property searches each month</li>
             <li><i class="fas fa-check user-sub-tick" />Ability to generate and download comprehensive report on any home (includes all data points that we offer)</li>
             <li><i class="fas fa-check user-sub-tick" />
                 Neighborhood statistics
