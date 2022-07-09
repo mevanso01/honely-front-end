@@ -11,9 +11,6 @@
       <button class="btn-close" @click="hideDialog()">
         <i class="fa fa-times" style="color: black;"/>
       </button>
-      <div v-if="loading" class="loading-wrapper">
-        <span class='mdi mdi-loading mdi-spin spin'></span>
-      </div>
       <div id="stripe-payment-element">
         <!-- Elements will create form elements here -->
       </div>
@@ -37,7 +34,6 @@
     },
     data () {
       return {
-        loading: true,
         stripe: null,
         elements: null,
         stripeError: null,
@@ -48,7 +44,7 @@
     },
     watch: {
       show: function () {
-        if (this.show && this.loading) {
+        if (this.show) {
           setTimeout(() => {
             this.initStripe();
           }, 100);
@@ -99,7 +95,6 @@
         this.elements = this.stripe.elements(options);
         const paymentElement = this.elements.create('payment');
         paymentElement.mount('#stripe-payment-element');
-        this.loading = false
       },
       onConfirm () {
         this.isConfirmLoading = true
@@ -135,16 +130,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-  .stripe-form-dialog .loading-wrapper {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .stripe-form-dialog .loading-wrapper .mdi-spin {
-    font-size: 80px;
-    color: #24cb43;
   }
   .stripe-form-dialog-wrapper .btn-close {
     position: absolute;
