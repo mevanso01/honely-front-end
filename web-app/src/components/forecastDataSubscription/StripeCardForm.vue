@@ -109,6 +109,7 @@
             this.stripeError = response.error.message
             this.isConfirmLoading = false
           } else {
+            this.getPaymentIntent();
             this.isConfirmLoading = false
             this.$emit('successAdded')
             this.hideDialog()
