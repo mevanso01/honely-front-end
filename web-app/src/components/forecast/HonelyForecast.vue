@@ -113,6 +113,7 @@
       <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
           <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)">
+            <p>Please subscribe to view all of our statistics</p>
             <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
           </div>
           <div v-else-if="subscriptionFlag && !forecastAccess">
