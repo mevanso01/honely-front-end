@@ -165,7 +165,7 @@
       },
       handleCreatePayment () {
         let params = null
-        if (this.subscriptionMode.propertyId) {
+        if (this.subscriptionMode?.propertyId) {
           params = {
             amount: this.subscriptionPrice,
             "payment-method": this.selectedPaymethodId,

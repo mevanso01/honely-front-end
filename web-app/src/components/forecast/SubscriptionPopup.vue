@@ -110,8 +110,8 @@
       },
       goToSubscriptionPage (price) {
         this.$store.dispatch('listings/setSubscriptionMode', {
-          propertyId: this.propertyId,
-          zipCode: this.zipCode,
+          propertyId: this?.propertyId || null,
+          zipCode: this?.zipCode || null,
           price: price,
           successURL: window.location.href,
           forecastAccess: this.forecastAccess
