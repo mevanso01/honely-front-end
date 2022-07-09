@@ -929,7 +929,7 @@ PAGE - SMART SEARCH
     background: #fff;
 }
 .subscription-dialog {
-    padding: 40px 20px 30px 20px;
+    padding: 40px 20px 0px 20px;
     position: relative;
 }
 .subscription-dialog-header {
@@ -1056,12 +1056,12 @@ PAGE - SMART SEARCH
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 30px 0;
 }
 .subscription-dialog-bottom > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 30px;
     width: 100%;
 }
 .subscription-dialog-bottom > div .btn {
@@ -1411,7 +1411,7 @@ MOBILE STYLES
     .property-search-forecast-wrapper {
         flex-direction: column;
     }
-    .subscription-dialog-bottom {
+    .subscription-dialog-bottom > div {
         flex-direction: column;
         padding: 0 10px;
     }
@@ -1424,11 +1424,14 @@ MOBILE STYLES
         line-height: 16px;
     }
     .subscription-dialog-bottom .btn {
-        width: 100%;
+        width: calc(100% - 20px);
         font-size: 16px;
         padding: 10px;
     }
-    .subscription-dialog-bottom span {
+    .subscription-dialog-bottom .continue-btn {
+        width: calc(100% - 20px);
+    }
+    .subscription-dialog-bottom > div span {
         margin: 10px 0;
     }
 }
