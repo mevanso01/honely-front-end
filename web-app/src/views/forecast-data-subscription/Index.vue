@@ -131,8 +131,8 @@
     computed: {
        ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       ...mapGetters('listings', ['subscriptionMode']),
-      foreCastAccess () {
-        return this.subscriptionMode?.foreCastAccess
+      forecastAccess () {
+        return this.subscriptionMode?.foreCastAccess ?? true
       }
     },
     mounted () {
