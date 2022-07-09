@@ -84,7 +84,7 @@
         paymethods: [],
         selectedPaymethodId: null,
         paymethodDefaultChecked: false,
-        subscriptionPrice: false,
+        subscriptionPrice: 1499,
         subScriptionError: null,
         isSubscribing: false
       }
@@ -94,7 +94,9 @@
       ...mapGetters('listings', ['subscriptionMode'])
     },
     mounted () {
-      this.subscriptionPrice = this.subscriptionMode.price
+      if (this.subscriptionMode?.price) {
+        this.subscriptionPrice = this.subscriptionMode.price
+      }
       if (this.$store.getters['auth/isCognitoUserLoggedIn']) {
         this.getPaymethods()
       }
