@@ -18,11 +18,12 @@
       </div> -->
       <div v-if="!isCognitoUserLoggedIn || !forecastAccess" class="container-overlay">
         <div class="overlay-wrapper">
-          <p>Please subscribe to view all of our statistics</p>
           <div v-if="!isCognitoUserLoggedIn || (!forecastAccess && !subscriptionFlag)">
+            <p>Please subscribe to view all of our statistics</p>
             <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
           </div>
           <div v-else-if="subscriptionFlag && !forecastAccess">
+            <p>Please purchase $1.00 to view this statistics</p>
             <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
           </div>
         </div>

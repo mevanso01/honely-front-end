@@ -117,6 +117,7 @@
             <button class="bg-primary" @click="showSubscriptionPopup()">Subscribe</button>
           </div>
           <div v-else-if="subscriptionFlag && !forecastAccess">
+            <p>Please purchase $1.00 to view this statistics</p>
             <button @click="showSingleSubscriptionPopup()" class="bg-primary">Purchase for $1.00</button>
           </div>
         </div>
