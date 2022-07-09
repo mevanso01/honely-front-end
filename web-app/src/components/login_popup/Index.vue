@@ -42,7 +42,8 @@
           <div style="margin-top: 25px;" />
           <login-form
             v-if="form_type === 'login'"
-            :bus="busLoginForm"            
+            :bus="busLoginForm"
+            :redirectPath="redirectPath"       
             @stepForgot="onChangeFormType('forgot-password')"
           />
           <signup-form
@@ -74,6 +75,7 @@
 
     props: {
       show: Boolean,
+      redirectPath: String,
     },
 
     data: () => ({

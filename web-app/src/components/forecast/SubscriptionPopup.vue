@@ -65,12 +65,18 @@
           </div>
           <button class="continue-btn" @click="hideDialog">Continue with Free Search</button>
         </div>
+        <login-popup
+          :show="showLogin"
+          :redirectPath="'/smart-data-subscription'"
+          @toggleShow="toggleLoginPopupShow"
+        />
       </div>
     </template>
   </v-dialog>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   /* eslint-disable */
   export default {
     props: {
@@ -78,6 +84,9 @@
       forecastAccess: Boolean,
       propertyId: String || Number,
       zipCode: String || Number
+    },
+    components: {
+      LoginPopup: () => import('@/components/login_popup/Index'),
     },
     computed: {
       dialog: {
@@ -87,6 +96,12 @@
         set (value) {
           this.$emit('toggleShow', value)
         }
+      },
+       ...mapGetters('auth', ['isCognitoUserLoggedIn']),
+    },
+    data () {
+      return {
+        showLogin: false
       }
     },
     methods: {
@@ -101,7 +116,14 @@
           successURL: window.location.href,
           forecastAccess: this.forecastAccess
         })
-        this.$router.push('/smart-data-subscription')
+        if (this.isCognitoUserLoggedIn) {
+          this.$router.push('/smart-data-subscription')
+        } else {
+          this.showLogin = true
+        }
+      },
+      toggleLoginPopupShow (value) {
+        this.showLogin = value
       },
     }
   }
