@@ -170,14 +170,14 @@
             amount: this.subscriptionPrice,
             "payment-method": this.selectedPaymethodId,
             "property-id": this.subscriptionMode.propertyId,
-            "default-pm": true
+            "default-pm": this.paymethodDefaultChecked
           }
         } else if (this.subscriptionMode.zipCode) {
           params = {
             amount: this.subscriptionPrice,
             "payment-method": this.selectedPaymethodId,
             "zip-code": this.subscriptionMode.zipCode,
-            "default-pm": true
+            "default-pm": this.paymethodDefaultChecked
           }
         }
 
