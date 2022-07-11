@@ -63,9 +63,11 @@
         </li>
       </ul>
     </div>
-     <contact-agent-form
-        :searchQuery="searchQuery"
-        v-if="leadFormFlag"
+
+    <subscription-popup
+      v-if="leadFormFlag"
+      :searchQuery="searchQuery"
+      :show="leadFormFlag"
     />
   </div>
   <!-- eslint-enable -->
@@ -77,6 +79,7 @@
     name: 'HonelySearch',
     components: {
       ContactAgentForm: () => import('@/components/base/ContactAgentForm'),
+      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
     },
     props: {
       listings: Boolean,

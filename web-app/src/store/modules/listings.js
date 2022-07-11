@@ -327,6 +327,9 @@ export const actions = {
     },
     setSubscriptionMode ({ commit }, payload) {
         commit('SET_SUBSCRIPTION_MODE', payload)
+    },
+    resetSubscription ({ commit }) {
+        commit('SET_SUBSCRIPTION_MODE', {})
     }
 }
 

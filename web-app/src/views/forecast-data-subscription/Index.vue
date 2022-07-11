@@ -132,7 +132,7 @@
        ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       ...mapGetters('listings', ['subscriptionMode']),
       forecastAccess () {
-        return this.subscriptionMode?.foreCastAccess ?? true
+        return this.subscriptionMode?.forecastAccess ?? true
       }
     },
     mounted () {

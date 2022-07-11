@@ -761,20 +761,20 @@
           await axios.post('https://api.honely.com/lookup/register_service', params)
           if (this.$route.path) {
               // if is one of the following paths, reload the page
-              if (this.$route.path.startsWith('/forecast') || this.$route.path === '/subscribe' || this.$route.path === '/leads-dashboard' || this.$route.path === '/smart-data-subscription') {
-                // console.log('vx: this.$route.path', this.$route.path)
-                // location.reload()
-                if (this.redirectPath) {
-                  this.$router.push(this.redirectPath)
-                } else {
+              if (this.redirectPath) {
+                this.$router.push(this.redirectPath)
+              } else {
+                if (this.$route.path.startsWith('/forecast') || this.$route.path === '/subscribe' || this.$route.path === '/leads-dashboard' || this.$route.path === '/smart-data-subscription') {
+                  // console.log('vx: this.$route.path', this.$route.path)
+                  // location.reload()       
                   this.$router.go()
                 }
-              }
-              /* if (this.$route.path.startsWith('/listing')) {
-                this.$router.push({ name: 'Home'})
-              }*/
-              if (this.$route.path.startsWith('/listing')) {
-                this.$router.replace(this.$route.path).catch(()=>{})
+                /* if (this.$route.path.startsWith('/listing')) {
+                  this.$router.push({ name: 'Home'})
+                }*/
+                if (this.$route.path.startsWith('/listing')) {
+                  this.$router.replace(this.$route.path).catch(()=>{})
+                }
               }
             }
         } catch (error) {

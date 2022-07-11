@@ -101,6 +101,9 @@
         this.getPaymethods()
       }
     },
+    beforeDestroy () {
+      this.$store.dispatch('listings/resetSubscription')
+    },
     methods: {
       toggleStripeCardFormShow (value) {
         this.showStripeCardForm = value
@@ -153,6 +156,7 @@
         .then(response => {
           if (response.data.data.message === 'Subscription Successful') {
             this.isSubscribing = false
+            this.$store.dispatch('listings/resetSubscription')
             window.location.href = this.subscriptionMode.successURL
           } else {
             this.isSubscribing = false
@@ -193,6 +197,7 @@
         .then(response => {
           if (response.data.data.message === 'Payment Successful') {
             this.isSubscribing = false
+            this.$store.dispatch('listings/resetSubscription')
             window.location.href = this.subscriptionMode.successURL
           } else {
             this.isSubscribing = false

@@ -59,11 +59,11 @@
         </div>
         <div class="subscription-dialog-bottom">
           <div>
-            <button class="btn" @click="goToSubscriptionPage(1499)">Get a Honely Pro Subscription</button>
+            <button class="btn" @click="goToSubscriptionPage(1499)" @disabled="!estimatedValueLoaded">Get a Honely Pro Subscription</button>
             <span>or</span>
-            <button class="btn" @click="goToSubscriptionPage(299)">Purchase Report for $2.99</button>
+            <button class="btn" @click="goToSubscriptionPage(299)" @disabled="!estimatedValueLoaded">Purchase Report for $2.99</button>
           </div>
-          <button class="continue-btn" @click="hideDialog">Continue with Free Search</button>
+          <button class="continue-btn" @click="onClickContinue()">Continue with Free Search</button>
         </div>
         <login-popup
           :show="showLogin"
@@ -83,10 +83,19 @@
       show: Boolean,
       forecastAccess: Boolean,
       propertyId: String || Number,
-      zipCode: String || Number
+      zipCode: String || Number,
+      searchQuery: String
     },
     components: {
       LoginPopup: () => import('@/components/login_popup/Index'),
+    },
+    data () {
+      return {
+        showLogin: false,
+        forecastPropertyId: this.propertyId || null,
+        forecastZipcode: this.zipCode || null,
+        estimatedValueLoaded: true
+      }
     },
     computed: {
       dialog: {
@@ -99,9 +108,9 @@
       },
        ...mapGetters('auth', ['isCognitoUserLoggedIn']),
     },
-    data () {
-      return {
-        showLogin: false
+    mounted () {
+      if (!this.$store.getters['auth/isCognitoUserLoggedIn'] && this.searchQuery) {
+        this.getEstimatedValue()
       }
     },
     methods: {
@@ -109,12 +118,16 @@
         this.dialog = false
       },
       goToSubscriptionPage (price) {
+        let successURL = window.location.href
+        if (this.searchQuery) {
+          successURL += "forecast?address=" + encodeURI(this.searchQuery)
+        }
         this.$store.dispatch('listings/setSubscriptionMode', {
-          propertyId: this?.propertyId || null,
-          zipCode: this?.zipCode || null,
+          propertyId: this.forecastPropertyId,
+          zipCode: this.forecastZipcode,
           price: price,
-          successURL: window.location.href,
-          forecastAccess: this.forecastAccess
+          successURL: successURL,
+          forecastAccess: this.forecastAccess || false
         })
         if (this.isCognitoUserLoggedIn) {
           this.$router.push('/smart-data-subscription')
@@ -125,6 +138,31 @@
       toggleLoginPopupShow (value) {
         this.showLogin = value
       },
-    }
+      getEstimatedValue () {
+        this.estimatedValueLoaded = false
+        const requestOptions = {
+          params: {
+            address: this.searchQuery,
+          },
+        }
+        axios.get('https://api.honely.com/searches/dev/forecast', requestOptions).then((response) => {
+          if (response) {
+            this.forecastPropertyId = response.data.property_forecast?.property_id
+            this.forecastZipcode = response.data?.zipcode
+          }
+        })
+        .catch((error) => {
+          this.estimatedValueLoaded = true
+          console.log(error)
+        })
+      },
+      onClickContinue () {
+        if (this.searchQuery) {
+          this.$router.push({ name: 'Smart Search', query: { address: this.searchQuery } })
+        } else {
+          this.hideDialog()
+        }
+      }
+    },
   }
 </script>
