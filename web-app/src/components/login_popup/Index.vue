@@ -49,6 +49,7 @@
           <signup-form
             v-if="form_type === 'signup'"
             :step="signup_step"
+            :redirectPath="redirectPath"       
             @stepNext="signupStepNext()"
           />
           <forgot-password-form 

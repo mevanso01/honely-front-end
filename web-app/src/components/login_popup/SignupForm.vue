@@ -305,6 +305,7 @@
 
     props: {
       step: Number,
+      redirectPath: String,
     },
 
     data: () => ({
@@ -763,7 +764,11 @@
               if (this.$route.path.startsWith('/forecast') || this.$route.path === '/subscribe' || this.$route.path === '/leads-dashboard' || this.$route.path === '/smart-data-subscription') {
                 // console.log('vx: this.$route.path', this.$route.path)
                 // location.reload()
-                this.$router.go()
+                if (this.redirectPath) {
+                  this.$router.push(this.redirectPath)
+                } else {
+                  this.$router.go()
+                }
               }
               /* if (this.$route.path.startsWith('/listing')) {
                 this.$router.push({ name: 'Home'})
