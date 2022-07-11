@@ -141,7 +141,8 @@
       handleCreateSubscription () {
         axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
-            "payment-method": this.selectedPaymethodId
+            "payment-method": this.selectedPaymethodId,
+            "default-pm": this.paymethodDefaultChecked
           },
           {
             headers: {
