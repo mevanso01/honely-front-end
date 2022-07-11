@@ -127,7 +127,8 @@
           zipCode: this.forecastZipcode,
           price: price,
           successURL: successURL,
-          forecastAccess: this.forecastAccess || false
+          forecastAccess: this.forecastAccess || false,
+          searchQuery: this.searchQuery || null
         })
         if (this.isCognitoUserLoggedIn) {
           this.$router.push('/smart-data-subscription')

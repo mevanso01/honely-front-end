@@ -107,6 +107,9 @@
     mapGetters,
   } from 'vuex'
   export default {
+    props: {
+      searchQuery: String,
+    },
     components: {
       StripeCheckout,
       LoginPopup: () => import('@/components/login_popup/Index'),
@@ -126,16 +129,28 @@
         subscription_id: null,
         start_date: null,
         end_date: null,
+        forecastAccess: this.subscriptionMode?.forecastAccess ?? true,
+        forecastApiLoaded: false
       }
     },
     computed: {
        ...mapGetters('auth', ['loggedIn', 'username', 'vxAuth', 'vxAuthDependent', 'isCognitoUserLoggedIn', 'cognitoUser']),
       ...mapGetters('listings', ['subscriptionMode']),
-      forecastAccess () {
-        return this.subscriptionMode?.forecastAccess ?? true
+      oneTimePayment () {
+        return this.subscriptionFlag && !this.forecastAccess && this.forecastApiLoaded
+      }
+    },
+    watch: {
+      oneTimePayment: function () {
+        if (this.oneTimePayment) {
+          this.$store.dispatch('listings/setSubscriptionMode', { ...this.subscriptionMode, price: 100 })
+        }
       }
     },
     mounted () {
+      if (this.subscriptionMode?.searchQuery) {
+        this.getEstimatedValue(this.subscriptionMode?.searchQuery)
+      }
       if (this.isCognitoUserLoggedIn) {
         axios.get('https://api.honely.com/lookup-test/user_profile?email=' + this.cognitoUser.attributes.email)
           .then((response) => {
@@ -206,6 +221,32 @@
           .then(() => {
             location.reload()
           })
+      },
+      getEstimatedValue (searchQuery) {
+        this.forecastApiLoaded = false
+        const requestOptions = {
+          headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          },
+          params: {
+            address: searchQuery,
+          },
+        }
+        axios.get('https://api.honely.com/searches/dev/forecast', requestOptions).then((response) => {
+          if (response) {
+            this.forecastAccess = response.data.access
+            this.forecastApiLoaded = true
+            if (this.forecastAccess) {
+              const redirectUrl = this.subscriptionMode.successURL
+              this.$store.dispatch('listings/resetSubscription')
+              window.location.href = redirectUrl
+            }
+          }
+        })
+        .catch((error) => {
+          this.forecastApiLoaded = true
+          console.log(error)
+        })
       },
     },
   }

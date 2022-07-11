@@ -156,8 +156,9 @@
         .then(response => {
           if (response.data.data.message === 'Subscription Successful') {
             this.isSubscribing = false
+            const redirectUrl = this.subscriptionMode.successURL
             this.$store.dispatch('listings/resetSubscription')
-            window.location.href = this.subscriptionMode.successURL
+            window.location.href = redirectUrl
           } else {
             this.isSubscribing = false
             this.subScriptionError = response.data.data.error
@@ -197,8 +198,9 @@
         .then(response => {
           if (response.data.data.message === 'Payment Successful') {
             this.isSubscribing = false
+            const redirectUrl = this.subscriptionMode.successURL
             this.$store.dispatch('listings/resetSubscription')
-            window.location.href = this.subscriptionMode.successURL
+            window.location.href = redirectUrl
           } else {
             this.isSubscribing = false
             this.subScriptionError = response.data.data.error
