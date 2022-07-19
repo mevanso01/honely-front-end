@@ -940,6 +940,16 @@ PAGE - SMART SEARCH
     padding: 0 15px;
     margin-bottom: 10px;
 }
+.subscription-dialog .btn-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    min-width: initial;
+    cursor: pointer;
+}
 .subscription-dialog-header h2 {
     font-size: 28px;
     color: #000000;

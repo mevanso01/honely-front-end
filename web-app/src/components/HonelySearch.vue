@@ -68,6 +68,7 @@
       v-if="leadFormFlag"
       :searchQuery="searchQuery"
       :show="leadFormFlag"
+      @toggleShow="toggleSubscriptionShow"
     />
   </div>
   <!-- eslint-enable -->
@@ -237,6 +238,9 @@
       },
       toggleResult (value) {
         this.showResult = value;
+      },
+      toggleSubscriptionShow (value) {
+        this.leadFormFlag = value
       },
     },
   }

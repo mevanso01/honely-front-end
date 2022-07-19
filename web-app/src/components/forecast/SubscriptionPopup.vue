@@ -9,6 +9,9 @@
   >
     <template #default>
       <div class="subscription-dialog">
+        <div class="btn-close" @click="hideDialog()">
+          <i class="fa fa-times"/>
+        </div>
         <div class="subscription-dialog-header">
           <div>
             <h2>Honely Pro Subscription</h2>
