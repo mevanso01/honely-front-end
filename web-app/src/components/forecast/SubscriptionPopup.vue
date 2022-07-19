@@ -4,13 +4,16 @@
     v-model="dialog"
     scrollable
     persistent
-    max-width="750px"
+    max-width="1024px"
     content-class="subscription-dialog-wrapper"
   >
     <template #default>
       <div class="subscription-dialog">
         <div class="subscription-dialog-header">
-          <p>Get Honely Pro</p>
+          <div>
+            <h2>Honely Pro Subscription</h2>
+            <p>Select payment method</p>
+          </div>
           <div class="logo-wrapper">
             <img
               src="site_images/logo_honely.png"
@@ -21,49 +24,87 @@
           </div>
         </div>
         <div class="subscription-dialog-content">
-          <div class="subscription-slogan-wrapper">
-            <p>Get Honely Pro for just $14.99 a month</p>
-            <p>Honely Pro Members recieve 15 Honely Pro property searches each month. Members enjoy access to additional Honely Pro searches for just $1 each</p>
-          </div>
-          <div class="property-search-forecast-wrapper">
-            <div class="free-container">
-              <div class="bage">
-                <span>Free</span>
-              </div>
-              <h3>Free Honely Property Search</h3>
-              <p>Honely Free limited data Property Search</p>
-              <ul>
-                <li>Current Estimate</li>
-                <li>1 Year Forecast</li>
-              </ul>
-            </div>
-            <div class="pro-container">
-              <div class="bage">
-                <span>$2.99</span>
-              </div>
-              <h3>Honely Pro Property Search</h3>
-              <p>Honely Pro Full Property Search</p>
-              <ul>
-                <li>Current Estimate</li>
-                <li>1, 2 and 3 Year Forecasts</li>
-                <li>Neighborhood Trends</li>
-                <li>Buyers Scores</li>
-                <li>Property Investment Calculator</li>
-              </ul>
-            </div>
-          </div>
-          <div class="subscription-save-container">
-            <h3>Save with a subscription. Honely Pro members get 15 Pro searches each month.</h3>
-            <p>Save on property searches with a Honely Pro Subscription. Gain access to our best tools at our best rates available</p>
-          </div>
-        </div>
-        <div class="subscription-dialog-bottom">
-          <div>
-            <button class="btn" @click="goToSubscriptionPage(1499)" @disabled="!estimatedValueLoaded">Get a Honely Pro Subscription</button>
-            <span>or</span>
-            <button class="btn" @click="goToSubscriptionPage(299)" @disabled="!estimatedValueLoaded">Purchase Report for $2.99</button>
-          </div>
-          <button class="continue-btn" @click="onClickContinue()">Continue with Free Search</button>
+          <table class="subscription-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Free Search</th>
+                <th>Single Property Report</th>
+                <th>Honely Pro Subscription</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="name">Current Estimate</td>
+                <td colspan="3"></td>
+              </tr>
+              <tr>
+                <td class="name">1 Year Forecast</td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+               <tr>
+                <td class="name">2 Year Forecast</td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+               <tr>
+                <td class="name">3 Year Forecast</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+               <tr>
+                <td class="name">Neighberhood trends</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+               <tr>
+                <td class="name">Buyers Score</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+              <tr>
+                <td class="name">Property Investmaent Calculator</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+              <tr>
+                <td class="name primary">15 Reports Per month</td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><span class="mdi mdi-check"></span></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="price">
+                  <p>$2.99 <span>per report</span></p>
+                </td>
+                <td class="price">
+                  <p>$14.99 <span>per month</span></p>
+                  <p class="extra">+ $1 per extra report</p>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="continue">
+                  <button class="continue-btn" @click="onClickContinue()">Continue</button>
+                </td>
+                <td class="purchase">
+                  <button class="bg-primary" @click="goToSubscriptionPage(299)" @disabled="!estimatedValueLoaded">Purchase</button>
+                </td>
+                <td class="purchase">
+                  <button class="bg-primary" @click="goToSubscriptionPage(1499)" @disabled="!estimatedValueLoaded">Purchase</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <login-popup
           :show="showLogin"

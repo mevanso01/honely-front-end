@@ -927,6 +927,7 @@ PAGE - SMART SEARCH
 }
 .subscription-dialog-wrapper {
     background: #fff;
+    padding: 10px;
 }
 .subscription-dialog {
     padding: 40px 20px 0px 20px;
@@ -936,11 +937,19 @@ PAGE - SMART SEARCH
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 15px;
+    margin-bottom: 10px;
 }
-.subscription-dialog-header p {
+.subscription-dialog-header h2 {
     font-size: 28px;
     color: #000000;
     margin: 0;
+    font-weight: 400;
+}
+.subscription-dialog-header > div p {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #000000;
 }
 .subscription-dialog-header .logo-wrapper {
     display: flex;
@@ -956,147 +965,72 @@ PAGE - SMART SEARCH
     font-weight: 500;
 }
 .subscription-dialog-content {
-    padding: 0 10px;
     color: #000000;
+    padding: 30px 0;
+    overflow: auto;
 }
-.subscription-slogan-wrapper {
-    border-bottom: 1px solid #D7DBE8;
-    padding: 20px;
+.subscription-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 660px;
 }
-.subscription-slogan-wrapper p {
-    margin: 0;
+.subscription-table thead th {
+    font-weight: 500;
+    font-size: 17px;
+    text-align: center;
+    padding: 15px 0;
 }
-.subscription-slogan-wrapper p:first-child {
-    font-weight: 700;
-    margin-bottom: 5px;
-    font-size: 16px;
+.subscription-table tbody td {
+    padding: 7px 0;
 }
-.subscription-slogan-wrapper p:last-child {
-    font-size: 15px;
-    font-weight: 100;
+.subscription-table tbody td button {
+    border-radius: 8px;
+    min-width: 180px;
 }
-.property-search-forecast-wrapper {
-    display: flex;
-    align-items: flex-end;
-    padding: 30px 20px;
-    color: #000000;
-}
-.property-search-forecast-wrapper ul {
-    list-style-type: initial;
-    margin-left: 50px;
-    margin-top: 20px;
-}
-.property-search-forecast-wrapper ul li {
-    font-size: 15px;
-    margin: 8px 0;
-}
-.property-search-forecast-wrapper p {
-    font-size: 12px;
-    margin: 5px 0;
-}
-.property-search-forecast-wrapper .free-container {
-    background: #C4C4C4;
-    padding: 20px 15px;
-    flex: 1;
-    position: relative;
-    box-sizing: border-box;
-}
-.property-search-forecast-wrapper .free-container h3 {
-    font-weight: 700;
-}
-.property-search-forecast-wrapper .pro-container {
-    background: #24CB43;
-    padding: 20px 15px;
-    flex: 1;
-    position: relative;
-    box-sizing: border-box;
-}
-.property-search-forecast-wrapper .bage {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    background: white;
-    border-radius: 3px;
-    background-color: #fff;
-    width: 45px;
-    height: 19px;
-
-}
-.property-search-forecast-wrapper .bage span {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 5px;
-    color: #fff;
-    background-color: #000000;
-    border: 1px solid #FFF;
-    border-radius: 3px;
-    position: absolute;
-    right: -1px;
-    top: -3px;
-    display: block;
-    width: 44px;
-    box-sizing: border-box;
+.subscription-table tbody td.continue {
     text-align: center;
 }
-.subscription-save-container {
-    background: linear-gradient(135deg, rgba(252, 221, 61, 0.71) 34.68%, rgba(255, 218, 90, 0.71) 47.92%, #FDDC69 60.42%, #F7CF46 72.92%);
-    padding: 25px 20px;
-    font-size: 16px;
+.subscription-table tbody td.continue button {
+    background: #737373;
+    color: #fff;
 }
-.subscription-save-container h3 {
-    margin-bottom: 5px;
-    font-weight: 700;
+.subscription-table tbody td.continue button:hover {
+    background: #343434;
 }
-.subscription-save-container p {
+.subscription-table tbody td.purchase {
+    text-align: center;
+}
+.subscription-table tbody td.name {
+    font-weight: 500;
+    font-size: 14px;
+}
+.subscription-table tbody td.primary {
+    color: #24cb43;
+}
+.subscription-table tbody td.border-bottom {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.33);
+    text-align: center;
+}
+.subscription-table tbody td.border-bottom span {
+    color: #24cb43;
+    font-size: 20px;
+}
+.subscription-table tbody td.price {
+    text-align: center;
+    padding: 20px 0;
+}
+.subscription-table tbody td.price p {
+    font-size: 20px;
+    font-weight: 500;
     margin: 0;
-    font-size: 15px;
-    font-weight: 100;
 }
-.subscription-dialog-bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 0;
+.subscription-table tbody td.price p.extra {
+    font-size: 12px;
+    font-weight: 400;
 }
-.subscription-dialog-bottom > div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-.subscription-dialog-bottom > div .btn {
-    background: #24CB43;
-    border: 1px solid #24CB43;
-    font-weight: 500;
-    color: #000000;
-    outline: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 18px;
-}
-.subscription-dialog-bottom > div .btn:hover {
-    background: #fff;
-    color: #24CB43;
-}
-.subscription-dialog-bottom span {
-    text-decoration: underline;
-    font-weight: 700;
-    color: #000000;
-}
-.subscription-dialog-bottom .continue-btn {
-    background: #C4C4C4;
-    border-radius: 10px;
-    margin-top: 30px;
-    font-weight: 500;
-    color: #000000;
-    outline: none;
-    border: 1px solid #C4C4C4;
-    font-size: 18px;
-    padding: 10px 20px;
-    min-width: 50%;
-}
-.subscription-dialog-bottom .continue-btn:hover {
-    background: #FFF;
+.subscription-table tbody td.price p span {
+    font-size: 12px;
+    font-weight: 400;
 }
 
 /* ======================================================
@@ -1269,6 +1203,21 @@ MOBILE STYLES
         text-overflow: ellipsis;
     }
 }
+@media only screen and (max-width: 992px) {
+    .subscription-table thead th {
+        font-size: 14px;
+    }
+    .subscription-table tbody td.name {
+        line-height: 16px;
+    }
+    .subscription-table tbody td button {
+        min-width: 150px;
+        margin: 0 10px;
+    }
+    .subscription-table tbody td.name {
+        font-size: 13px;
+    }
+}
 @media only screen and (max-width: 900px) {
     .forecast-section .flex-wrapper {
         padding: 0 0 1rem 0;
@@ -1366,73 +1315,18 @@ MOBILE STYLES
     .subscription-dialog-header {
         flex-direction: column;
     }
-    .subscription-dialog-header p {
+    .subscription-dialog-header h2 {
         font-size: 24px;
         margin-bottom: 10px;
+        text-align: center;
+        line-height: 30px;
+    }
+    .subscription-dialog-header > div p {
+        text-align: center;
+        margin-bottom: 30px;
     }
     .subscription-dialog-header .logo-wrapper img {
         width: 100px;
-    }
-    .subscription-slogan-wrapper {
-        padding: 20px 0;
-    }
-    .property-search-forecast-wrapper .bage {
-        right: 10px;
-    }
-    .property-search-forecast-wrapper .free-container {
-        width: 100%;
-        padding: 20px 10px;
-    }
-    .subscription-slogan-wrapper p:first-child {
-        font-size: 14px;
-    }
-    .subscription-slogan-wrapper p:last-child {
-        font-size: 13px;
-    }
-    .property-search-forecast-wrapper .pro-container {
-        padding: 20px 10px;
-        width: 100%;
-    }
-    .property-search-forecast-wrapper ul {
-        margin-left: 35px;
-    }
-    .property-search-forecast-wrapper p {
-        font-size: 10px;
-    }
-    .property-search-forecast-wrapper h3 {
-        font-size: 14px;
-    }
-    .property-search-forecast-wrapper ul li {
-        font-size: 13px;
-    }
-    .property-search-forecast-wrapper {
-        padding: 30px 0;
-    }
-    .property-search-forecast-wrapper {
-        flex-direction: column;
-    }
-    .subscription-dialog-bottom > div {
-        flex-direction: column;
-        padding: 0 10px;
-    }
-    .subscription-save-container h3 {
-        font-size: 14px;
-        line-height: 18px;
-    }
-    .subscription-save-container p {
-        font-size: 13px;
-        line-height: 16px;
-    }
-    .subscription-dialog-bottom .btn {
-        width: calc(100% - 20px);
-        font-size: 16px;
-        padding: 10px;
-    }
-    .subscription-dialog-bottom .continue-btn {
-        width: calc(100% - 20px);
-    }
-    .subscription-dialog-bottom > div span {
-        margin: 10px 0;
     }
 }
 @media only screen and (max-width: 400px) {
