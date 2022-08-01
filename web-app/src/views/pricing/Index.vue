@@ -267,8 +267,9 @@
     data () {
       return {
         showLogin: false,
+        forecastPropertyId: null,
+        forecastZipcode: null,
         estimatedValueLoaded: true,
-        address: null,
         searchQuery: null
       }
     },
@@ -285,11 +286,13 @@
       goToSubscriptionPage (price) {
         let successURL = window.location.href
         if (this.searchQuery) {
-          successURL += "forecast?address=" + encodeURI(this.searchQuery)
+          successURL = window.location.href.split('?')[0]
+          successURL = successURL.replace('pricing', '')
+          successURL = successURL + "forecast?address=" + encodeURI(this.searchQuery)
         }
         this.$store.dispatch('listings/setSubscriptionMode', {
-          propertyId: null,
-          zipCode: null,
+          propertyId: this.forecastPropertyId,
+          zipCode: this.forecastZipcode,
           price: price,
           successURL: successURL,
           forecastAccess: false,
