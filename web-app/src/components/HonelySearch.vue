@@ -63,13 +63,6 @@
         </li>
       </ul>
     </div>
-
-    <subscription-popup
-      v-if="leadFormFlag"
-      :searchQuery="searchQuery"
-      :show="leadFormFlag"
-      @toggleShow="toggleSubscriptionShow"
-    />
   </div>
   <!-- eslint-enable -->
 </template>
@@ -80,7 +73,6 @@
     name: 'HonelySearch',
     components: {
       ContactAgentForm: () => import('@/components/base/ContactAgentForm'),
-      SubscriptionPopup: () => import('@/components/forecast/SubscriptionPopup'),
     },
     props: {
       listings: Boolean,
@@ -88,7 +80,6 @@
       searchButton: Boolean,
     },
     data: () => ({
-      searchQuery: '',
       leadFormFlag: false,
       listingDirect: false,
       timer: null,
@@ -194,8 +185,8 @@
             })
         } else {
           if (this.leadFormNeeded(value)) {
-            this.leadFormFlag = true
-            this.searchQuery = value
+            this.$router.push({ name: 'Pricing', query: { address: value } })
+            // this.leadFormFlag = true
           } else {
             if (this.listingDirect) {
               // console.log('search from none listing page')
@@ -238,9 +229,6 @@
       },
       toggleResult (value) {
         this.showResult = value;
-      },
-      toggleSubscriptionShow (value) {
-        this.leadFormFlag = value
       },
     },
   }

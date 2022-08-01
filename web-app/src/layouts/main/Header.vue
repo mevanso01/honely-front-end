@@ -152,10 +152,15 @@
           label: 'partner',
         },
         {
-          text: 'API',
-          link: '',
-          label: 'api',
+          text: 'Pricing',
+          link: '/pricing',
+          label: 'pricing',
         },
+        // {
+        //   text: 'API',
+        //   link: '',
+        //   label: 'api',
+        // },
       ],
       actionMenuItems: [
         /* {

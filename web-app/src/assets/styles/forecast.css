@@ -979,6 +979,15 @@ PAGE - SMART SEARCH
     padding: 30px 0;
     overflow: auto;
 }
+.mobile-subscription-table-container {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #CCC;
+    margin-bottom: 30px;
+}
+.mobile-subscription-table-container .subscription-table {
+    min-width: unset;
+}
 .subscription-table {
     width: 100%;
     border-collapse: collapse;
@@ -1020,6 +1029,7 @@ PAGE - SMART SEARCH
 .subscription-table tbody td.border-bottom {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.33);
     text-align: center;
+    vertical-align: middle;
 }
 .subscription-table tbody td.border-bottom span {
     color: #24cb43;

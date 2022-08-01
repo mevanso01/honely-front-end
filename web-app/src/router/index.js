@@ -202,6 +202,11 @@ const router = new Router({
           component: () => import('@/views/partner/Index.vue'),
         },
         {
+          path: 'pricing',
+          name: 'Pricing',
+          component: () => import('@/views/pricing/Index.vue'),
+        },
+        {
           path: 'post/:year/:month/:day/:slug',
           name: 'Post',
           component: () => import('@/views/insights/Post.vue'),
