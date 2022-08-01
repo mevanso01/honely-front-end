@@ -577,6 +577,18 @@
               },
             },
           },
+          tooltip: {
+            enabled: true,
+            y: {
+              formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
+              if (value === null) {
+                return '--'
+              } else {
+                return parseInt(value)
+              }
+            },
+            },
+          },
           legend: {
             show: false,
           },

@@ -390,7 +390,6 @@
           // console.log('[DEV] forecast using address')
           params = {
             address: this.address,
-            user_id: userId,
           }
         }
         // get forecast data ----------------------
@@ -497,7 +496,11 @@
       },
       getPropertyZipData (propertyId) {
         if(propertyId) {
-          axios.get('https://api.honely.com/searches/forecast/property_to_zipcode?property_id=' + propertyId + '&user_id=' + this.userId)
+          axios.get('https://api.honely.com/searches/forecast/property_to_zipcode?property_id=' + propertyId, {
+            headers: {
+            Authorization: 'Bearer ' + this.cognitoUser.signInUserSession.idToken.jwtToken,
+          }
+          })
             .then((response) => {
             // console.log(response.data)
             if (response.data) {
