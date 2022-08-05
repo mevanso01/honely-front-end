@@ -507,7 +507,7 @@
       },
       listhubTrackerUrl2: function () {
         if (this.listingkey) {
-          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('AGENT_OFFICE_EMAIL_SENT') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
+          return 'https://tracking.listhub.net/tracker?mp=' + encodeURIComponent('M-5383') + '&ev=' + encodeURIComponent('AGENT_EMAIL_SENT') + '&et=' + encodeURIComponent(Date.now()) + '&v=' + encodeURIComponent('3') + '&ep=' + encodeURIComponent(window.location.href) + '&lkey=' + encodeURIComponent(this.property.listing_key) + '&clid=' + encodeURIComponent('123456') + '&ua=' + encodeURIComponent(navigator.userAgent)
         } else {
           return ''
         }

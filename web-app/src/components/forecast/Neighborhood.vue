@@ -197,11 +197,11 @@
                 <td v-else width="20%">--</td>
               </tr>
               <tr>
-                <td>Properties Sold Last Month:</td>
-                <td v-if="this.forecast" width="20%">{{ getStatsTableData(this.forecast.zip_code_listing_statistics.sold_properties_last_month) }}</td>
+                <td>Properties Sold Last 3 Months:</td>
+                <td v-if="this.forecast" width="20%">{{ getStatsTableData(this.forecast.zip_code_listing_statistics.sold_properties_last_three_months) }}</td>
                 <td v-else width="20%">--</td>
                 <td width="5%">&nbsp;</td>
-                <td v-if="this.forecast" width="20%">{{ getStatsTableData(this.forecast.state_statistics.sold_properties_last_month) }}</td>
+                <td v-if="this.forecast" width="20%">{{ getStatsTableData(this.forecast.state_statistics.sold_properties_last_three_months) }}</td>
                 <td v-else width="20%">--</td>
               </tr>
               <tr>

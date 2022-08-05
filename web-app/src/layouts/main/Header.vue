@@ -20,7 +20,7 @@
               v-for="(item, i) in headerMenu"
             >
               <router-link
-                v-if="item.text !== 'API'"
+                v-if="item.text !== 'Realtors'"
                 :id="'header-menu-' + i"
                 :key="i"
                 :to="item.link"
@@ -28,7 +28,7 @@
               >
                 {{ item.text }}
               </router-link>
-              <a v-if="item.text === 'API'" href="https://developer.honely.com">Business</a>
+              <a v-if="item.text === 'Realtors'" href="https://realtors.honely.com">Realtors</a>
             </li>
           </ul>
         </div>
@@ -126,16 +126,21 @@
           link: '/listings',
           label: 'listings',
         },
+        // {
+        //   text: 'Insights',
+        //   link: '/insights',
+        //   label: 'insights',
+        // },
         {
-          text: 'Insights',
-          link: '/insights',
-          label: 'insights',
+          text: 'Realtors',
+          link: '',
+          label: 'realtors',
         },
-        {
-          text: 'Newsroom',
-          link: '/newsroom',
-          label: 'newsroom',
-        },
+        // {
+        //   text: 'Newsroom',
+        //   link: '/newsroom',
+        //   label: 'newsroom',
+        // },
         // {
         //   text: 'Subscribe',
         //   link: '/subscribe',
@@ -152,7 +157,7 @@
           label: 'partner',
         },
         {
-          text: 'Pricing',
+          text: 'Subscribe',
           link: '/pricing',
           label: 'pricing',
         },

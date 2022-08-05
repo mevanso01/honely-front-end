@@ -4,7 +4,7 @@
     <home-main />
     <home-maps />
     <home-locals />
-    <home-insights />
+    <!-- <home-insights /> -->
   </div>
 </template>
 
