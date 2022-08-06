@@ -6,6 +6,7 @@ PROPERTY CONTAINER
     background: #ffffff;
     border: 1px solid #c4c4c4;
     border-radius: 15px;
+    cursor: pointer;
 }
 .property-container.compact {
     border: none;

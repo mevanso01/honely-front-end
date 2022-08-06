@@ -913,16 +913,13 @@
         }
       },
       getWalkScore () {
-        if (this.property.address.street_name &&
-          this.property.address.street_suffix &&
-          this.property.address.city &&
-          this.property.address.state &&
-          this.property.address.zip_code &&
+        console.log('vx: getWalkScore being called!!!!', this.property)
+        if (this.property.address.full_address &&
           this.property.address.latitude &&
           this.property.address.longitude) {
           axios.get('https://api.honely.com/lookup/walk_score', {
             params: {
-              address: this.property.address.street_name + this.property.address.street_suffix + ',' + this.property.address.city + ',' + this.property.address.state + this.property.address.zip_code,
+              address: this.property.address.full_address,
               lat: this.property.address.latitude,
               lon: this.property.address.longitude,
             },

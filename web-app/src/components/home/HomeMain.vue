@@ -8,7 +8,7 @@
           <p class="home-text-heading-smaller">Get a free market report on your home.</p>
           <p>Both the value and quality of our insights go beyond what's currently reserved for institutions and large enterprises. Never before has the public been able to access investor-grade home value forecasts, relocation trends, zip code rankings, and much more.</p>
           <!-- vx: if user not logged in or not subscribed show this -->
-          <button v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="bg-primary" @click="goToSubscriptionPage">Subscribe for $9.99 a month</button>
+          <button v-if="!isCognitoUserLoggedIn || !subscriptionFlag" class="bg-primary" @click="goToSubscriptionPage">Subscribe for $14.99 a month</button>
         </div>
         <div class="section-col-right">
           <!-- <p class="color-primary text-small align-center">Access advanced insights, rankings, forecasts and more.</p> -->

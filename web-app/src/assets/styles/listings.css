@@ -43,6 +43,7 @@ PAGE - LISTINGS
     width: 47%;
     margin-right: 1.5rem;
     margin-bottom: 1.5rem;
+    cursor: pointer;
 }
 .listings-property-list .property-container:nth-last-of-type(2n+1) {
     margin-right: 0;

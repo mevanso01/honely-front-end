@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div v-if="propertyData" class="property-container" :class="{ compact : compact}">
+  <div @click="goToListingPage" v-if="propertyData" class="property-container" :class="{ compact : compact}">
     <!-- property-img -->
 
     <!-- property-img -->
@@ -367,6 +367,13 @@
       }
     },
     methods: {
+      goToListingPage () {
+        if (this.isListhub) {
+          window.location.href = '/listing/' + this.propertyData.listingkey
+        } else {
+          window.location.href = '/listing/' + this.propertyData.property_id
+        }
+      },
       checkImage () {
         // console.log('getting images')
         const self = this

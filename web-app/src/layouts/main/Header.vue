@@ -187,11 +187,11 @@
           text: 'My Messages',
           label: 'messages',
         }, */
-        {
-          link: '/saved-searches',
-          text: 'Saved Searches',
-          label: 'saved-searches',
-        },
+        // {
+        //   link: '/saved-searches',
+        //   text: 'Saved Searches',
+        //   label: 'saved-searches',
+        // },
         {
           link: '/smart-data-subscription',
           text: 'Honely Subscription',

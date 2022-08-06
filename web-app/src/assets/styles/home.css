@@ -206,6 +206,7 @@ HOME PAGE - LOCAL HOMES
     width: 30%;
     margin-right: 3.5rem;
     margin-bottom: 3rem;
+    cursor: pointer;
 }
 .home-local-property-list .property-container:last-of-type{
     margin-right: 0;
