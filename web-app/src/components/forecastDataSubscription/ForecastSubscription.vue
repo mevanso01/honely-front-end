@@ -48,13 +48,23 @@
         <input type="checkbox" id="defaultCheckBox" v-model="paymethodDefaultChecked">
         <label for="defaultCheckBox">Save this card as default.</label>
       </div>
-      <button class="bg-primary" @click="doSubscription">
+      <div v-if="promoCodeFlag" class="promocode-container">
+        <label>Enter Promo Code (if applicable)</label>
+        <input
+          type="text"
+          v-model="promoCode"
+        />
+      </div>
+      <button v-if="!promoCodeFlag" class="bg-primary" @click="doSubscription">
         <span v-if="isSubscribing">Loading...</span>
         <span v-else>
           <span v-if="subscriptionPrice === 1499">Subscribe </span>
           <span v-else>Purchase </span>
            for ${{ (subscriptionPrice / 100).toFixed(2) }}
         </span>
+      </button>
+      <button v-else class="bg-primary" @click="handleCreateSubscription">
+        Continue
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -86,7 +96,9 @@
         paymethodDefaultChecked: false,
         subscriptionPrice: 1499,
         subScriptionError: null,
-        isSubscribing: false
+        isSubscribing: false,
+        promoCode: "",
+        promoCodeFlag: false
       }
     },
     computed: {
@@ -138,14 +150,16 @@
         }
         this.subScriptionError = null
         this.isSubscribing = true
-        if (this.subscriptionPrice === 1499) this.handleCreateSubscription()
-        else this.handleCreatePayment()
+        if (this.subscriptionPrice === 1499) {
+          this.promoCodeFlag = true
+        } else this.handleCreatePayment()
       },
       handleCreateSubscription () {
         axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
             "payment-method": this.selectedPaymethodId,
-            "default-pm": this.paymethodDefaultChecked
+            "default-pm": this.paymethodDefaultChecked,
+            "promo-code": this.promoCode
           },
           {
             headers: {
@@ -277,5 +291,19 @@
     font-size: 16px;
     margin-top: 16px;
     margin-bottom: 0;
+  }
+  .promocode-container {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 0;
+  }
+  .promocode-container label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+  }
+  .promocode-container input {
+    max-width: 300px;
   }
 </style>
