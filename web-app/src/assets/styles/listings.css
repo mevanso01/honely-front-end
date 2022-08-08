@@ -256,6 +256,10 @@ PAGE - LISTINGS
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(40,40,40,0.5);
+}
+.listing-container .listing-image-wrapper .listing-action-row.no-overlay {
+    background: none;
 }
 .listing-container .listing-image-wrapper .listing-action-row .listing-value {
     font-weight: 500;

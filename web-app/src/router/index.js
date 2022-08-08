@@ -202,9 +202,9 @@ const router = new Router({
           component: () => import('@/views/partner/Index.vue'),
         },
         {
-          path: 'subscription',
-          name: 'Subscription',
-          component: () => import('@/views/subscription/Index.vue'),
+          path: 'pricing',
+          name: 'Pricing',
+          component: () => import('@/views/pricing/Index.vue'),
         },
         {
           path: 'post/:year/:month/:day/:slug',

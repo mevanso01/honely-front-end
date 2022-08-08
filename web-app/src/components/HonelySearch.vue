@@ -185,7 +185,7 @@
             })
         } else {
           if (this.leadFormNeeded(value)) {
-            this.$router.push({ name: 'Subscription', query: { address: value } })
+            this.$router.push({ name: 'Pricing', query: { address: value } })
             // this.leadFormFlag = true
           } else {
             if (this.listingDirect) {

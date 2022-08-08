@@ -8,7 +8,7 @@
       class="property-img"
       v-bind:style="[ validImage ? { background: 'url(' + image + ')' } : { background: ''}]"
     >
-      <div v-if="compact" class="property-action-row">
+      <div v-if="compact" :class="(getAddress1 || getAddress2)?'property-action-row':'property-action-row no-overlay'">
         <p class="property-status-value">
           <span>
             {{ getAddress1 }}
@@ -21,7 +21,7 @@
           <span v-else class="mdi mdi-heart-outline"></span>
         </div>
       </div>
-      <div v-else class="property-action-row">
+      <div v-else :class="(getSaleStatus || getListPrice)?'property-action-row':'property-action-row no-overlay'">
         <p class="property-status-value">
           <span>{{ getSaleStatus }}</span>
           <span>{{ getListPrice }}</span>

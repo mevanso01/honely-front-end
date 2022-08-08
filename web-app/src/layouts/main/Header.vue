@@ -158,8 +158,8 @@
         },
         {
           text: 'Subscribe',
-          link: '/subscription',
-          label: 'subscription',
+          link: '/pricing',
+          label: 'pricing',
         },
         // {
         //   text: 'API',

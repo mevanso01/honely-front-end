@@ -36,7 +36,7 @@
             class="listing-image-wrapper"
             v-bind:style="[ validImage ? { backgroundImage: 'url(' + image + ')' } : { background: ''}]"
           >
-            <div class="listing-action-row">
+            <div :class="(getPropertyStatus || getPropertyValue)?'listing-action-row':'listing-action-row no-overlay'">
               <div v-if="isActiveListing" class="listing-value">
                 <p>{{ getPropertyStatus }}</p>
                 <p>{{ getPropertyValue }}</p>

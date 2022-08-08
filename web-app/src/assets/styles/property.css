@@ -28,6 +28,10 @@ PROPERTY CONTAINER
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(40,40,40,0.5);
+}
+.property-action-row.no-overlay {
+    background: none;
 }
 p.property-status-value {
     font-size: 20px;
