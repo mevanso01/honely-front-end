@@ -54,6 +54,7 @@
           type="text"
           v-model="promoCode"
         />
+        <p v-if="promoCodeError" class="promocode-error">{{ promoCodeError }}</p>
       </div>
       <button v-if="!promoCodeFlag" class="bg-primary" @click="doSubscription">
         <span v-if="isSubscribing">Loading...</span>
@@ -82,6 +83,8 @@
   import { mapState, mapGetters } from 'vuex'
   import VueSkeletonLoader from 'skeleton-loader-vue'
 
+  const promocodeList = ['HONELY20', 'HONELYBA1']
+
   export default {
     components: {
       VueSkeletonLoader,
@@ -98,7 +101,8 @@
         subScriptionError: null,
         isSubscribing: false,
         promoCode: "",
-        promoCodeFlag: false
+        promoCodeFlag: false,
+        promoCodeError: null
       }
     },
     computed: {
@@ -152,9 +156,16 @@
         this.isSubscribing = true
         if (this.subscriptionPrice === 1499) {
           this.promoCodeFlag = true
+          this.promoCodeError = null
         } else this.handleCreatePayment()
       },
       handleCreateSubscription () {
+        if (this.promoCode && !promocodeList.includes(this.promoCode)) {
+          this.promoCodeError = 'Invalid Promo Code'
+          return
+        } else {
+          this.promoCodeError = ''
+        }
         axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
             "payment-method": this.selectedPaymethodId,
@@ -305,5 +316,11 @@
   }
   .promocode-container input {
     max-width: 300px;
+  }
+  .promocode-container p.promocode-error {
+    color: #df1b41;
+    font-size: 16px;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 </style>
