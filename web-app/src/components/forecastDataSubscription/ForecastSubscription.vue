@@ -52,7 +52,8 @@
         <label>Enter Promo Code (if applicable)</label>
         <input
           type="text"
-          v-model="promoCode"
+          :value="promoCode.toUpperCase()"
+          @input="promoCode = $event.target.value.toUpperCase()"
         />
         <p v-if="promoCodeError" class="promocode-error">{{ promoCodeError }}</p>
       </div>
