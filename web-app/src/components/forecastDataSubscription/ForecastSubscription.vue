@@ -182,13 +182,9 @@
         .then(response => {
           if (response.data.data.message === 'Subscription Successful') {
             this.isSubscribing = false
-            const redirectUrl = this.subscriptionMode.successURL
+            const redirectUrl = this.subscriptionMode?.successURL || window.location.href
             this.$store.dispatch('listings/resetSubscription')
-            if (redirectUrl) {
-              window.location.href = redirectUrl
-            } else {
-              window.location.reload()
-            }
+            window.location.href = redirectUrl
           } else {
             this.isSubscribing = false
             this.subScriptionError = response.data.data.error
