@@ -66,7 +66,8 @@
         </span>
       </button>
       <button v-else class="bg-primary" @click="handleCreateSubscription">
-        Continue
+        <span v-if="isSubscribing">Loading...</span>
+        <span v-else>Continue</span>
       </button>
       <p v-if="subScriptionError" class="subscription-error">{{ subScriptionError }}</p>
     </div>
@@ -154,7 +155,6 @@
           return
         }
         this.subScriptionError = null
-        this.isSubscribing = true
         if (this.subscriptionPrice === 1499) {
           this.promoCodeFlag = true
           this.promoCodeError = null
@@ -167,6 +167,7 @@
         } else {
           this.promoCodeError = ''
         }
+        this.isSubscribing = true
         axios.post('https://api.honely.com/dev/payments/create-subscription',
           {
             "payment-method": this.selectedPaymethodId,
@@ -212,7 +213,7 @@
             "default-pm": this.paymethodDefaultChecked
           }
         }
-
+        this.isSubscribing = true
         axios.post('https://api.honely.com/dev/payments/create-payment',
           params,
           {
